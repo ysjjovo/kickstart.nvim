@@ -1,26 +1,35 @@
--- toggleterm.nvim: persistent toggleable terminal windows
-vim.pack.add { 'https://github.com/akinsho/toggleterm.nvim' }
+-- toggleterm.nvim: multiple terminal management
+-- https://github.com/akinsho/toggleterm.nvim
 
-require('toggleterm').setup {
-  open_mapping = [[<C-\>]],
-  direction = 'float',
-  size = function(term)
-    if term.direction == 'horizontal' then
-      return math.floor(vim.o.lines * 0.35)
-    elseif term.direction == 'vertical' then
-      return math.floor(vim.o.columns * 0.45)
-    end
-  end,
-  float_opts = { border = 'curved' },
-  shade_terminals = false,
-  start_in_insert = true,
-  close_on_exit = true,
+vim.pack.add {
+  'https://github.com/akinsho/toggleterm.nvim',
 }
 
--- Specific layout variants
-vim.keymap.set('n', '<leader>tf', '<Cmd>ToggleTerm direction=float<CR>',      { desc = '[T]erminal [F]loat' })
+require('toggleterm').setup {
+  size = function(term)
+    if term.direction == 'horizontal' then
+      return 15
+    elseif term.direction == 'vertical' then
+      return vim.o.columns * 0.4
+    end
+  end,
+  shade_terminals = true,
+  shading_factor = 2,
+  start_in_insert = true,
+  persist_size = true,
+  direction = 'float',
+  close_on_exit = true,
+  shell = vim.o.shell,
+  float_opts = {
+    border = 'rounded',
+    winblend = 0,
+  },
+}
+
+-- <leader>t prefix for terminal operations
+vim.keymap.set('n', '<leader>tt', '<Cmd>ToggleTerm direction=float<CR>', { desc = '[T]erminal float [T]oggle' })
 vim.keymap.set('n', '<leader>th', '<Cmd>ToggleTerm direction=horizontal<CR>', { desc = '[T]erminal [H]orizontal' })
-vim.keymap.set('n', '<leader>tv', '<Cmd>ToggleTerm direction=vertical<CR>',   { desc = '[T]erminal [V]ertical' })
+vim.keymap.set('n', '<leader>tv', '<Cmd>ToggleTerm direction=vertical<CR>', { desc = '[T]erminal [V]ertical' })
 
 -- Exit terminal mode and navigate windows
 vim.api.nvim_create_autocmd('TermOpen', {
@@ -35,13 +44,22 @@ vim.api.nvim_create_autocmd('TermOpen', {
     vim.cmd('startinsert')
   end,
 })
+-- 切换编号 terminal
+vim.keymap.set('n', '<leader>t1', '<Cmd>1ToggleTerm<CR>', { desc = '[T]erminal [1]' })
+vim.keymap.set('n', '<leader>t2', '<Cmd>2ToggleTerm<CR>', { desc = '[T]erminal [2]' })
+vim.keymap.set('n', '<leader>t3', '<Cmd>3ToggleTerm<CR>', { desc = '[T]erminal [3]' })
 
--- lazygit (if installed)
+-- lazygit 专用 terminal
 local Terminal = require('toggleterm.terminal').Terminal
 local lazygit = Terminal:new {
   cmd = 'lazygit',
+  dir = 'git_dir',
   direction = 'float',
-  hidden = true,
-  float_opts = { border = 'curved' },
+  float_opts = {
+    border = 'rounded',
+  },
+  on_open = function(term)
+    vim.cmd 'startinsert!'
+  end,
 }
 vim.keymap.set('n', '<leader>tg', function() lazygit:toggle() end, { desc = '[T]erminal Lazygit' })
