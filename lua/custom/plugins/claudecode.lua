@@ -8,6 +8,7 @@ vim.pack.add {
 
 require('claudecode').setup {
   auto_start = true,
+  terminal_cmd = 'claude --dangerously-skip-permissions',
   terminal = {
     split_side = 'right',
     split_width_percentage = 0.35,
