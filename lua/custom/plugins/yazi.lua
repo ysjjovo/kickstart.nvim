@@ -31,7 +31,4 @@ require('yazi').setup {
   },
 }
 
--- Keymaps: <leader>y prefix for yazi operations
-vim.keymap.set('n', '<leader>y', '<Cmd>Yazi<CR>', { desc = '[Y]azi at current file' })
-vim.keymap.set('n', '<leader>Y', '<Cmd>Yazi cwd<CR>', { desc = '[Y]azi at working directory' })
-vim.keymap.set('n', '<c-up>', '<Cmd>Yazi toggle<CR>', { desc = 'Resume last yazi session' })
+vim.keymap.set('n', '\\', '<Cmd>Yazi<CR>', { desc = '[Y]azi at current file' })
