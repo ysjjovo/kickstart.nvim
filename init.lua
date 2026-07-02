@@ -373,6 +373,9 @@ do
       { '<leader>t', group = '[T]oggle' },
       { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } }, -- Enable gitsigns recommended keymaps first
       { 'gr', group = 'LSP Actions', mode = { 'n' } },
+      { '<leader>a', group = '[A]I Claude', mode = { 'n', 'v' } },
+      { '<leader>d', group = '[D]atabase' },
+      { '<leader>l', group = '[L]azyGit' },
     },
   }
 
@@ -499,7 +502,7 @@ do
     --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
     --   },
     -- },
-    -- pickers = {}
+    pickers = {},
     extensions = {
       ['ui-select'] = { require('telescope.themes').get_dropdown() },
     },
@@ -758,7 +761,7 @@ do
   -- You can press `g?` for help in this menu.
   local ensure_installed = vim.tbl_keys(servers or {})
   vim.list_extend(ensure_installed, {
-    'js-debug-adapter',
+    'debugpy', -- managed here because mason-nvim-dap ensure_installed is unreliable for it
     -- You can add other tools here that you want Mason to install
   })
 
@@ -912,7 +915,7 @@ do
   vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
 
   -- Ensure basic parsers are installed
-  local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+  local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'python', 'query', 'vim', 'vimdoc' }
   require('nvim-treesitter').install(parsers)
 
   ---@param buf integer
