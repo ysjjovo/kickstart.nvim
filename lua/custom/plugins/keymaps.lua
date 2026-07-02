@@ -8,22 +8,22 @@
 -- ============================================================
 
 -- Normal mode: change operations go to blackhole
-vim.keymap.set('n', 'c', '"_c', { desc = 'Change (blackhole)' })
-vim.keymap.set('n', 'C', '"_C', { desc = 'Change to EOL (blackhole)' })
-vim.keymap.set('n', 'cc', '"_cc', { desc = 'Change line (blackhole)' })
+-- vim.keymap.set('n', 'c', '"_c', { desc = 'Change (blackhole)' })
+-- vim.keymap.set('n', 'C', '"_C', { desc = 'Change to EOL (blackhole)' })
+-- vim.keymap.set('n', 'cc', '"_cc', { desc = 'Change line (blackhole)' })
 
 -- Normal mode: delete operations go to blackhole
-vim.keymap.set('n', 'd', '"_d', { desc = 'Delete (blackhole)' })
-vim.keymap.set('n', 'D', '"_D', { desc = 'Delete to EOL (blackhole)' })
-vim.keymap.set('n', 'dd', '"_dd', { desc = 'Delete line (blackhole)' })
-vim.keymap.set('n', 'x', '"_x', { desc = 'Delete char (blackhole)' })
+-- vim.keymap.set('n', 'd', '"_d', { desc = 'Delete (blackhole)' })
+-- vim.keymap.set('n', 'D', '"_D', { desc = 'Delete to EOL (blackhole)' })
+-- vim.keymap.set('n', 'dd', '"_dd', { desc = 'Delete line (blackhole)' })
+-- vim.keymap.set('n', 'x', '"_x', { desc = 'Delete char (blackhole)' })
 
 -- Visual mode: change and delete go to blackhole
-vim.keymap.set('x', 'c', '"_c', { desc = 'Change (blackhole)' })
-vim.keymap.set('x', 'd', '"_d', { desc = 'Delete (blackhole)' })
+-- vim.keymap.set('x', 'c', '"_c', { desc = 'Change (blackhole)' })
+-- vim.keymap.set('x', 'd', '"_d', { desc = 'Delete (blackhole)' })
 
 -- Visual mode: paste without overwriting register
-vim.keymap.set('x', 'p', '"_dP', { desc = 'Paste without yanking replaced text' })
+-- vim.keymap.set('x', 'p', '"_dP', { desc = 'Paste without yanking replaced text' })
 
 -- ============================================================
 -- Recording (macro) remap
@@ -31,3 +31,12 @@ vim.keymap.set('x', 'p', '"_dP', { desc = 'Paste without yanking replaced text' 
 -- ============================================================
 vim.keymap.set('n', 'q', '<Nop>', { desc = 'Disable q (use Q for recording)' })
 -- vim.keymap.set('n', 'Q', 'q', { desc = 'Record macro' })
+
+-- ============================================================
+-- Error message copy
+-- Copy the last Neovim error to system clipboard for sharing
+-- ============================================================
+vim.keymap.set('n', '<leader>ye', function()
+  vim.fn.setreg('+', vim.v.errmsg)
+  vim.notify('Error copied to clipboard')
+end, { desc = 'Copy last error to clipboard' })
