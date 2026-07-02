@@ -7,14 +7,22 @@ vim.pack.add {
   'https://github.com/nvim-neotest/neotest-python',
 }
 
+local function find_python()
+  local path = vim.fn.expand '%:p:h'
+  while path ~= '/' do
+    local venv = path .. '/.venv/bin/python'
+    if vim.fn.executable(venv) == 1 then return venv end
+    path = vim.fn.fnamemodify(path, ':h')
+  end
+  return vim.fn.exepath 'python3'
+end
+
 require('neotest').setup {
   adapters = {
     require('neotest-python') {
       dap = { justMyCode = false },
       runner = 'pytest',
-      python = function()
-        return vim.fn.getcwd() .. '/.venv/bin/python'
-      end,
+      python = find_python,
     },
   },
 }
