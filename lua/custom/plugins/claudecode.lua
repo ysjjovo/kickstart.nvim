@@ -28,6 +28,11 @@ vim.keymap.set('n', '<leader>ar', '<Cmd>ClaudeCode --resume<CR>', { desc = '[A]I
 vim.keymap.set('n', '<leader>aC', '<Cmd>ClaudeCode --continue<CR>', { desc = '[A]I [C]ontinue session' })
 vim.keymap.set('n', '<leader>am', '<Cmd>ClaudeCodeSelectModel<CR>', { desc = '[A]I select [M]odel' })
 vim.keymap.set('n', '<leader>ab', '<Cmd>ClaudeCodeAdd %<CR>', { desc = '[A]I add current [B]uffer' })
-vim.keymap.set('v', '<leader>as', '<Cmd>ClaudeCodeSend<CR>', { desc = '[A]I [S]end selection' })
+vim.keymap.set('v', '<leader>as', function()
+  vim.cmd "'<,'>ClaudeCodeSend"
+  vim.schedule(function()
+    vim.cmd 'ClaudeCodeFocus'
+  end)
+end, { desc = '[A]I [S]end selection' })
 vim.keymap.set('n', '<leader>aa', '<Cmd>ClaudeCodeDiffAccept<CR>', { desc = '[A]I [A]ccept diff' })
 vim.keymap.set('n', '<leader>ad', '<Cmd>ClaudeCodeDiffDeny<CR>', { desc = '[A]I [D]eny diff' })
