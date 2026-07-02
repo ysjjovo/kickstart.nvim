@@ -4,7 +4,6 @@ vim.pack.add {
   'https://github.com/mfussenegger/nvim-dap',
   'https://github.com/rcarriga/nvim-dap-ui',
   'https://github.com/nvim-neotest/nvim-nio',
-  'https://github.com/mason-org/mason.nvim',
   'https://github.com/jay-babu/mason-nvim-dap.nvim',
   'https://github.com/leoluz/nvim-dap-go',
 }
@@ -48,7 +47,7 @@ dapui.setup {
 -- Breakpoint icons and colors
 vim.api.nvim_set_hl(0, 'DapBreak', { fg = '#e51400' })
 vim.api.nvim_set_hl(0, 'DapStop',  { fg = '#ffcc00' })
-vim.fn.sign_define('DapBreakpoint',          { text = '●', texthl = 'DapBreak', numhl = 'DapBreak' })
+vim.fn.sign_define('DapBreakpoint',          { text = '\xef\x86\x88', texthl = 'DapBreak', numhl = 'DapBreak' })
 vim.fn.sign_define('DapBreakpointCondition', { text = '⊜', texthl = 'DapBreak', numhl = 'DapBreak' })
 vim.fn.sign_define('DapBreakpointRejected',  { text = '⊘', texthl = 'DapBreak', numhl = 'DapBreak' })
 vim.fn.sign_define('DapLogPoint',            { text = '◆', texthl = 'DapBreak', numhl = 'DapBreak' })
