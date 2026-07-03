@@ -29,6 +29,10 @@ vim.keymap.set('n', '<leader>aC', '<Cmd>ClaudeCode --continue<CR>', { desc = '[A
 vim.keymap.set('n', '<leader>am', '<Cmd>ClaudeCodeSelectModel<CR>', { desc = '[A]I select [M]odel' })
 vim.keymap.set('n', '<leader>ab', '<Cmd>ClaudeCodeAdd %<CR>', { desc = '[A]I add current [B]uffer' })
 vim.keymap.set('v', '<leader>as', function()
+  -- Exit visual mode first so that '< and '> marks get updated
+  local esc = vim.api.nvim_replace_termcodes('<Esc>', true, false, true)
+  vim.api.nvim_feedkeys(esc, 'nx', false)
+  -- Now the marks are set; send the selection
   vim.cmd "'<,'>ClaudeCodeSend"
   vim.schedule(function()
     vim.cmd 'ClaudeCodeFocus'
