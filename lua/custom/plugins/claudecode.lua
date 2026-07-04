@@ -6,15 +6,27 @@ vim.pack.add {
   'https://github.com/coder/claudecode.nvim',
 }
 
+-- 依赖顺序：custom/plugins 按文件名字母序加载，claudecode 排在 snacks 前面。
+-- 但 snacks provider 在首次加载时会 pcall(require, 'snacks') 并「永久缓存」结果，
+-- 若此刻 snacks 还没进 runtimepath 就会回退到 native。这里先强制加载 snacks
+-- （require 有缓存，loop 再次 require 时是空操作），保证 float provider 可用。
+require 'custom.plugins.snacks'
+
 require('claudecode').setup {
   auto_start = true,
   terminal_cmd = 'claude --dangerously-skip-permissions',
+  ---@diagnostic disable-next-line: missing-fields
   terminal = {
-    split_side = 'right',
-    split_width_percentage = 0.35,
-    provider = 'native',
+    provider = 'snacks', -- float 需要 snacks provider（native 只能分屏）
     auto_close = true,
+    snacks_win_opts = {
+      position = 'float',
+      width = 0.9,
+      height = 0.9,
+      border = 'rounded',
+    },
   },
+  ---@diagnostic disable-next-line: missing-fields
   diff_opts = {
     layout = 'vertical',
     auto_resize_terminal = true,
