@@ -14,6 +14,6 @@ vim.g.lazygit_use_neovim_remote = 1 -- 从 lazygit 内编辑文件时复用当�
 vim.g.lazygit_use_custom_config_file_path = 0
 
 -- 快捷键
-vim.keymap.set('n', '<leader>lg', '<Cmd>LazyGit<CR>', { desc = '[T]erminal Lazy[G]it' })
+vim.keymap.set('n', '<leader>ll', '<Cmd>LazyGit<CR>', { desc = '[T]erminal Lazygit Toogle' })
 vim.keymap.set('n', '<leader>lf', '<Cmd>LazyGitFilter<CR>', { desc = 'LazyGit [F]ilter (project commits)' })
 vim.keymap.set('n', '<leader>lc', '<Cmd>LazyGitFilterCurrentFile<CR>', { desc = 'LazyGit [C]urrent file commits' })

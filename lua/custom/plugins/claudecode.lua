@@ -22,8 +22,8 @@ require('claudecode').setup {
 }
 
 -- Keymaps: <leader>a prefix for AI / Claude operations
-vim.keymap.set('n', '<leader>ac', '<Cmd>ClaudeCode<CR>', { desc = '[A]I [C]laude toggle' })
-vim.keymap.set('n', '<leader>af', '<Cmd>ClaudeCodeFocus<CR>', { desc = '[A]I [F]ocus Claude' })
+-- vim.keymap.set('n', '<leader>ac', '<Cmd>ClaudeCode<CR>', { desc = '[A]I [C]laude toggle' })
+vim.keymap.set('n', '<leader>aa', '<Cmd>ClaudeCodeFocus<CR>', { desc = '[A]I Focus Claude' })
 vim.keymap.set('n', '<leader>ar', '<Cmd>ClaudeCode --resume<CR>', { desc = '[A]I [R]esume session' })
 vim.keymap.set('n', '<leader>aC', '<Cmd>ClaudeCode --continue<CR>', { desc = '[A]I [C]ontinue session' })
 vim.keymap.set('n', '<leader>am', '<Cmd>ClaudeCodeSelectModel<CR>', { desc = '[A]I select [M]odel' })
@@ -38,5 +38,5 @@ vim.keymap.set('v', '<leader>as', function()
     vim.cmd 'ClaudeCodeFocus'
   end)
 end, { desc = '[A]I [S]end selection' })
-vim.keymap.set('n', '<leader>aa', '<Cmd>ClaudeCodeDiffAccept<CR>', { desc = '[A]I [A]ccept diff' })
-vim.keymap.set('n', '<leader>ad', '<Cmd>ClaudeCodeDiffDeny<CR>', { desc = '[A]I [D]eny diff' })
+vim.keymap.set('n', '<leader>ay', '<Cmd>ClaudeCodeDiffAccept<CR>', { desc = '[A]I accept diff ([y]es)' })
+vim.keymap.set('n', '<leader>an', '<Cmd>ClaudeCodeDiffDeny<CR>', { desc = '[A]I deny diff ([n]o)' })

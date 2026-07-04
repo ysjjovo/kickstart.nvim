@@ -13,7 +13,23 @@ vim.g.db_ui_winwidth = 50
 vim.g.db_ui_auto_execute_table_helpers = 1
 
 -- Keymaps: <leader>d prefix for database operations
-vim.keymap.set('n', '<leader>du', '<Cmd>DBUIToggle<CR>', { desc = '[D]atabase [U]I toggle' })
-vim.keymap.set('n', '<leader>df', '<Cmd>DBUIFindBuffer<CR>', { desc = '[D]atabase [F]ind buffer' })
-vim.keymap.set('n', '<leader>da', '<Cmd>DBUIAddConnection<CR>', { desc = '[D]atabase [A]dd connection' })
-vim.keymap.set('n', '<leader>dl', '<Cmd>DBUILastQueryInfo<CR>', { desc = '[D]atabase [L]ast query info' })
+local wk = require 'which-key'
+
+-- 1. Toggle the DBUI drawer from anywhere
+wk.add {
+  { '<leader>dd', '<cmd>DBUIToggle<CR>', desc = '[D]atabase Toggle UI' },
+}
+
+-- 2. 在 SQL 缓冲区里常用的操作（只在 SQL/dbout 文件中生效，保持 which-key 干净）
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'sql', 'mysql', 'plsql', 'dbout' },
+  callback = function(ev)
+    wk.add {
+      mode = { 'n' },
+      -- 只有编辑 SQL 时才会用到的功能
+      { '<leader>de', '<cmd>DBUIEditBindParameters<CR>', desc = '[D]atabase [E]dit Bind Parameters', buffer = ev.buf },
+      { '<leader>dr', '<cmd>DBUIExecuteQuery<CR>', desc = '[D]atabase [R]un Query', buffer = ev.buf },
+      { '<leader>ds', '<cmd>DBUISaveQuery<CR>', desc = '[D]atabase [S]ave Query', buffer = ev.buf },
+    }
+  end,
+})
