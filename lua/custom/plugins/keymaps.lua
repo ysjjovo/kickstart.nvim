@@ -33,6 +33,13 @@ vim.keymap.set('n', 'q', '<Nop>', { desc = 'Disable q (use Q for recording)' })
 -- vim.keymap.set('n', 'Q', 'q', { desc = 'Record macro' })
 
 -- ============================================================
+-- Horizontal scrolling
+-- Scroll the screen sideways by half a screen (efficient wide-line navigation)
+-- ============================================================
+vim.keymap.set('n', 'L', 'zL', { desc = 'Scroll right half screen' })
+vim.keymap.set('n', 'H', 'zH', { desc = 'Scroll left half screen' })
+
+-- ============================================================
 -- Error message copy
 -- Copy the last Neovim error to system clipboard for sharing
 -- ============================================================

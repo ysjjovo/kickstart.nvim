@@ -31,10 +31,10 @@ vim.keymap.set({ 'n', 't' }, '<A-1>', '<Cmd>1ToggleTerm direction=float<CR>', { 
 vim.keymap.set({ 'n', 't' }, '<A-2>', '<Cmd>2ToggleTerm direction=float<CR>', { desc = 'Terminal [2]' })
 vim.keymap.set({ 'n', 't' }, '<A-3>', '<Cmd>3ToggleTerm direction=float<CR>', { desc = 'Terminal [3]' })
 
--- Alt+f/v/h 按方向打开 terminal
+-- Alt+f/v/s 按方向打开 terminal
 vim.keymap.set({ 'n', 't' }, '<A-f>', '<Cmd>ToggleTerm direction=float<CR>', { desc = 'Terminal [F]loat' })
 vim.keymap.set({ 'n', 't' }, '<A-v>', '<Cmd>ToggleTerm direction=vertical<CR>', { desc = 'Terminal [V]ertical' })
-vim.keymap.set({ 'n', 't' }, '<A-h>', '<Cmd>ToggleTerm direction=horizontal<CR>', { desc = 'Terminal [H]orizontal' })
+vim.keymap.set({ 'n', 't' }, '<A-s>', '<Cmd>ToggleTerm direction=horizontal<CR>', { desc = 'Terminal horizontal [S]plit' })
 
 -- Exit terminal mode and navigate windows
 vim.api.nvim_create_autocmd('TermOpen', {
