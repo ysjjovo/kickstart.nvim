@@ -370,13 +370,14 @@ do
     icons = { mappings = vim.g.have_nerd_font },
     -- Document existing key chains
     spec = {
-      { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
-      { '<leader>t', group = '[T]est' },
-      { '<leader>u', group = '[U]I / Toggle' },
-      { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } }, -- Enable gitsigns recommended keymaps first
-      { 'gr', group = 'LSP Actions', mode = { 'n' } },
-      { '<leader>a', group = '[A]I Claude', mode = { 'n', 'v' } },
-      { '<leader>l', group = '[L]azyGit' },
+      { '<leader>s', group = 'Search (s)', mode = { 'n', 'v' } },
+      { '<leader>t', group = 'Test (t)' },
+      { '<leader>u', group = 'Toggle (u)' },
+      { '<leader>h', group = 'Git Hunk (h)', mode = { 'n', 'v' } }, -- Enable gitsigns recommended keymaps first
+      { '<leader>d', group = 'Debug (d)' },
+      { 'gr', group = 'LSP (r)', mode = { 'n' } },
+      { '<leader>a', group = 'AI Claude (a)', mode = { 'n', 'v' } },
+      { '<leader>l', group = 'LazyGit (l)' },
     },
   }
 
@@ -763,6 +764,10 @@ do
   local ensure_installed = vim.tbl_keys(servers or {})
   vim.list_extend(ensure_installed, {
     'debugpy', -- managed here because mason-nvim-dap ensure_installed is unreliable for it
+    -- Linters (used by nvim-lint, see lua/kickstart/plugins/lint.lua)
+    'markdownlint',
+    'shellcheck',
+    'hadolint',
     -- You can add other tools here that you want Mason to install
   })
 
@@ -979,11 +984,11 @@ do
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   require 'kickstart.plugins.debug'
-  -- require 'kickstart.plugins.indent_line'
-  -- require 'kickstart.plugins.lint'
-  -- require 'kickstart.plugins.autopairs'
+  require 'kickstart.plugins.indent_line'
+  require 'kickstart.plugins.lint'
+  require 'kickstart.plugins.autopairs'
   -- require 'kickstart.plugins.neo-tree'
-  -- require 'kickstart.plugins.gitsigns' -- adds gitsigns recommended keymaps
+  require 'kickstart.plugins.gitsigns' -- adds gitsigns recommended keymaps
 
   -- NOTE: You can add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --

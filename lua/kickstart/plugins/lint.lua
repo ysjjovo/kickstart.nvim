@@ -4,8 +4,11 @@ vim.pack.add { 'https://github.com/mfussenegger/nvim-lint' }
 
 local lint = require 'lint'
 lint.linters_by_ft = {
-  markdown = { 'markdownlint' }, -- Make sure to install `markdownlint` via mason / npm
+  markdown = { 'markdownlint' },
+  sh = { 'shellcheck' },
+  dockerfile = { 'hadolint' },
 }
+-- 对应的命令行工具由 mason-tool-installer 安装（见 init.lua 的 ensure_installed）
 
 -- To allow other plugins to add linters to require('lint').linters_by_ft,
 -- instead set linters_by_ft like this:
