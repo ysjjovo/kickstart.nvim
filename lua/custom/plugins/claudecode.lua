@@ -25,7 +25,7 @@ require('claudecode').setup {
 -- vim.keymap.set('n', '<leader>ac', '<Cmd>ClaudeCode<CR>', { desc = '[A]I [C]laude toggle' })
 vim.keymap.set('n', '<leader>aa', '<Cmd>ClaudeCodeFocus<CR>', { desc = '[A]I Focus Claude' })
 vim.keymap.set('n', '<leader>ar', '<Cmd>ClaudeCode --resume<CR>', { desc = '[A]I [R]esume session' })
-vim.keymap.set('n', '<leader>aC', '<Cmd>ClaudeCode --continue<CR>', { desc = '[A]I [C]ontinue session' })
+vim.keymap.set('n', '<leader>ac', '<Cmd>ClaudeCode --continue<CR>', { desc = '[A]I [C]ontinue session' })
 vim.keymap.set('n', '<leader>am', '<Cmd>ClaudeCodeSelectModel<CR>', { desc = '[A]I select [M]odel' })
 vim.keymap.set('n', '<leader>ab', '<Cmd>ClaudeCodeAdd %<CR>', { desc = '[A]I add current [B]uffer' })
 vim.keymap.set('v', '<leader>as', function()

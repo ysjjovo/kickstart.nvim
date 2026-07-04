@@ -371,11 +371,11 @@ do
     -- Document existing key chains
     spec = {
       { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
-      { '<leader>t', group = '[T]oggle' },
+      { '<leader>t', group = '[T]est' },
+      { '<leader>u', group = '[U]I / Toggle' },
       { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } }, -- Enable gitsigns recommended keymaps first
       { 'gr', group = 'LSP Actions', mode = { 'n' } },
       { '<leader>a', group = '[A]I Claude', mode = { 'n', 'v' } },
-      { '<leader>d', group = '[D]atabase' },
       { '<leader>l', group = '[L]azyGit' },
     },
   }
@@ -686,7 +686,7 @@ do
       --
       -- This may be unwanted, since they displace some of your code
       if client and client:supports_method('textDocument/inlayHint', event.buf) then
-        map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[T]oggle Inlay [H]ints')
+        map('<leader>uh', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, 'Toggle Inlay [H]ints')
       end
     end,
   })
