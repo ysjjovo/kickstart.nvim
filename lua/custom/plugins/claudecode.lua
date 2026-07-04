@@ -22,7 +22,7 @@ require('claudecode').setup {
 }
 
 -- Keymaps: <leader>a prefix for AI / Claude operations
--- vim.keymap.set('n', '<leader>ac', '<Cmd>ClaudeCode<CR>', { desc = '[A]I [C]laude toggle' })
+vim.keymap.set('n', '<leader>ac', '<Cmd>ClaudeCode<CR>', { desc = '[A]I [C]laude toggle' })
 vim.keymap.set('n', '<leader>af', '<Cmd>ClaudeCodeFocus<CR>', { desc = '[A]I Focus Claude' })
 vim.keymap.set('n', '<leader>ar', '<Cmd>ClaudeCode --resume<CR>', { desc = '[A]I [R]esume session' })
 vim.keymap.set('n', '<leader>ac', '<Cmd>ClaudeCode --continue<CR>', { desc = '[A]I [C]ontinue session' })
@@ -70,11 +70,7 @@ vim.api.nvim_create_autocmd('TermOpen', {
       vim.keymap.set('n', lhs, function() claude_scroll(job, up, count) end, { buffer = ev.buf, silent = true, desc = desc })
     end
     -- After <Esc><Esc>: half-page and line scrolling, Vim-style.
-    map('<C-u>', true, 5, 'Claude scroll up (half page)')
-    map('<C-d>', false, 5, 'Claude scroll down (half page)')
-    map('<C-y>', true, 1, 'Claude scroll up (line)')
-    map('<C-e>', false, 1, 'Claude scroll down (line)')
-    map('k', true, 1, 'Claude scroll up (line)')
-    map('j', false, 1, 'Claude scroll down (line)')
+    map('<C-u>', true, 10, 'Claude scroll up (half page)')
+    map('<C-d>', false, 10, 'Claude scroll down (half page)')
   end,
 })
