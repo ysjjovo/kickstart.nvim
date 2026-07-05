@@ -24,6 +24,7 @@ require('claudecode').setup {
       width = 0.9,
       height = 0.9,
       border = 'rounded',
+      backdrop = false, -- 关掉背后暗化层：既不遮挡，也避免自动隐藏时 backdrop 残留
     },
   },
   ---@diagnostic disable-next-line: missing-fields
@@ -40,6 +41,42 @@ vim.keymap.set('n', '<leader>ar', '<Cmd>ClaudeCode --resume<CR>', { desc = '[A]I
 vim.keymap.set('n', '<leader>ac', '<Cmd>ClaudeCode --continue<CR>', { desc = '[A]I [C]ontinue session' })
 vim.keymap.set('n', '<leader>am', '<Cmd>ClaudeCodeSelectModel<CR>', { desc = '[A]I select [M]odel' })
 vim.keymap.set('n', '<leader>ab', '<Cmd>ClaudeCodeAdd %<CR>', { desc = '[A]I add current [B]uffer' })
+
+-- Float 场景专用：在「普通模式」和「终端模式」下都能用同一个键收起/唤出浮窗。
+-- <Cmd> 映射在终端模式下可直接执行，无需先退出 insert。ClaudeCode = 隐藏/显示，
+-- 正是浮窗要的语义（在 Claude 里按 → 收起回到 buffer；在 buffer 里按 → 唤出并聚焦）。
+vim.keymap.set({ 'n', 't' }, '<M-a>', '<Cmd>ClaudeCode<CR>', { desc = 'AI toggle Claude float' })
+
+-- 焦点离开 Claude 浮窗时自动收起，避免它盖住你切过去看的 buffer（如按 <C-j> 切窗口）。
+-- 关键点：
+--   * 直接对窗口设 {hide=true}，与插件内部对 float 的 cc_hide 完全一致（同一个窗口、
+--     只隐藏不销毁 buffer/进程），状态不会 desync；之后 <C-q> 能正常唤回。
+--   * {hide=true} 是幂等的，重复隐藏无害，所以和 <C-q> 的 toggle 永远不会互相触发成环。
+--   * 仅处理 float（relative ~= ''）；split 模式两边本就并排可见，自动跳过。
+vim.api.nvim_create_autocmd('WinLeave', {
+  group = vim.api.nvim_create_augroup('ClaudeFloatAutoHide', { clear = true }),
+  callback = function()
+    local ok, term = pcall(require, 'claudecode.terminal')
+    if not ok then
+      return
+    end
+    -- 只在「正离开的窗口就是 Claude 终端」时动作
+    if vim.api.nvim_get_current_buf() ~= term.get_active_terminal_bufnr() then
+      return
+    end
+    local win = vim.api.nvim_get_current_win()
+    -- 延后到窗口切换完成后再隐藏（此刻焦点还在 Claude，不能隐藏当前窗口）
+    vim.schedule(function()
+      if not vim.api.nvim_win_is_valid(win) then
+        return
+      end
+      local cfg = vim.api.nvim_win_get_config(win)
+      if cfg.relative ~= '' then -- 浮窗才隐藏；split 跳过
+        pcall(vim.api.nvim_win_set_config, win, { hide = true })
+      end
+    end)
+  end,
+})
 vim.keymap.set('v', '<leader>as', function()
   -- Exit visual mode first so that '< and '> marks get updated
   local esc = vim.api.nvim_replace_termcodes('<Esc>', true, false, true)
