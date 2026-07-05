@@ -713,6 +713,7 @@ do
     lua_ls = {
       on_init = function(client)
         client.server_capabilities.documentFormattingProvider = false -- Disable formatting (formatting is done by stylua)
+        client.server_capabilities.semanticTokensProvider = nil -- Disable semantic tokens (too slow on large workspaces)
 
         if client.workspace_folders then
           local path = client.workspace_folders[1].name
@@ -726,12 +727,16 @@ do
           },
           workspace = {
             checkThirdParty = false,
-            -- NOTE: this is a lot slower and will cause issues when working on your own configuration.
-            --  See https://github.com/neovim/nvim-lspconfig/issues/3189
-            library = vim.tbl_extend('force', vim.api.nvim_get_runtime_file('', true), {
+            -- Only load the Neovim runtime, NOT every plugin's lua files.
+            -- Using nvim_get_runtime_file('', true) here pulls thousands of files
+            -- into lua_ls and makes it freeze the editor. See nvim-lspconfig#3189.
+            library = {
+              vim.env.VIMRUNTIME,
               '${3rd}/luv/library',
               '${3rd}/busted/library',
-            }),
+            },
+            maxPreload = 2000,
+            preloadFileSize = 1000,
           },
         })
       end,
