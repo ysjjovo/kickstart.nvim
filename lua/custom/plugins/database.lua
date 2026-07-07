@@ -38,7 +38,7 @@ local function db_ui_toggle()
   end
 end
 
-vim.keymap.set('n', '<leader>ud', db_ui_toggle, { desc = 'Toggle [D]atabase UI (含结果窗口)' })
+vim.keymap.set('n', '<leader>ud', db_ui_toggle, { desc = 'Toggle [D]atabase UI' })
 
 -- SQL 缓冲区内的操作直接用 vim-dadbod-ui 的默认键（单键，无需自定义）：
 --   <leader>S  执行查询（normal=整个文件，visual=仅选中部分）

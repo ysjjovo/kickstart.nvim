@@ -38,12 +38,3 @@ vim.keymap.set('n', 'q', '<Nop>', { desc = 'Disable q (use Q for recording)' })
 -- ============================================================
 vim.keymap.set('n', 'L', 'zL', { desc = 'Scroll right half screen' })
 vim.keymap.set('n', 'H', 'zH', { desc = 'Scroll left half screen' })
-
--- ============================================================
--- Error message copy
--- Copy the last Neovim error to system clipboard for sharing
--- ============================================================
-vim.keymap.set('n', '<leader>ye', function()
-  vim.fn.setreg('+', vim.v.errmsg)
-  vim.notify('Error copied to clipboard')
-end, { desc = 'Copy last error to clipboard' })
