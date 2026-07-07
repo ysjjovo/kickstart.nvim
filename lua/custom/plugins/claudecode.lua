@@ -12,6 +12,25 @@ vim.pack.add {
 -- （require 有缓存，loop 再次 require 时是空操作），保证 float provider 可用。
 require 'custom.plugins.snacks'
 
+-- 只改这一个变量即可切换窗口形态：'float' = 居中浮窗，'split' = 右侧固定分屏。
+local claude_layout = 'split'
+
+-- 两种形态各自的 snacks 窗口配置。float 走浮窗那套（居中 + 边框 + 关暗化层）；
+-- split 走右侧固定分屏（不需要 border/backdrop，宽度占 40%）。
+local claude_win_opts = {
+  float = {
+    position = 'float',
+    width = 0.9,
+    height = 0.9,
+    border = 'rounded',
+    backdrop = false, -- 关掉背后暗化层：既不遮挡，也避免自动隐藏时 backdrop 残留
+  },
+  split = {
+    position = 'right',
+    width = 0.4,
+  },
+}
+
 require('claudecode').setup {
   auto_start = true,
   terminal_cmd = 'claude --dangerously-skip-permissions',
@@ -19,13 +38,7 @@ require('claudecode').setup {
   terminal = {
     provider = 'snacks', -- float 需要 snacks provider（native 只能分屏）
     auto_close = true,
-    snacks_win_opts = {
-      position = 'float',
-      width = 0.9,
-      height = 0.9,
-      border = 'rounded',
-      backdrop = false, -- 关掉背后暗化层：既不遮挡，也避免自动隐藏时 backdrop 残留
-    },
+    snacks_win_opts = claude_win_opts[claude_layout],
   },
   ---@diagnostic disable-next-line: missing-fields
   diff_opts = {
