@@ -754,6 +754,7 @@ do
     gh 'mason-org/mason.nvim',
     gh 'mason-org/mason-lspconfig.nvim',
     gh 'WhoIsSethDaniel/mason-tool-installer.nvim',
+    gh 'mfussenegger/nvim-jdtls', -- Java LSP launcher, driven per-project by ftplugin/java.lua
   }
 
   -- Automatically install LSPs and related tools to stdpath for Neovim
@@ -769,6 +770,10 @@ do
   local ensure_installed = vim.tbl_keys(servers or {})
   vim.list_extend(ensure_installed, {
     'debugpy', -- managed here because mason-nvim-dap ensure_installed is unreliable for it
+    -- Java: LSP + DAP debug bundle + JUnit test bundle (consumed by ftplugin/java.lua & neotest-java)
+    'jdtls',
+    'java-debug-adapter',
+    'java-test',
     -- Linters (used by nvim-lint, see lua/kickstart/plugins/lint.lua)
     'markdownlint',
     'shellcheck',
@@ -992,7 +997,7 @@ do
   require 'kickstart.plugins.indent_line'
   require 'kickstart.plugins.lint'
   require 'kickstart.plugins.autopairs'
-  -- require 'kickstart.plugins.neo-tree'
+  require 'kickstart.plugins.neo-tree'
   require 'kickstart.plugins.gitsigns' -- adds gitsigns recommended keymaps
 
   -- NOTE: You can add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
