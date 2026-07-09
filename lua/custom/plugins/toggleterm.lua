@@ -36,31 +36,10 @@ vim.keymap.set({ 'n', 't' }, '<A-f>', '<Cmd>ToggleTerm direction=float<CR>', { d
 vim.keymap.set({ 'n', 't' }, '<A-v>', '<Cmd>ToggleTerm direction=vertical<CR>', { desc = 'Terminal [V]ertical' })
 vim.keymap.set({ 'n', 't' }, '<A-s>', '<Cmd>ToggleTerm direction=horizontal<CR>', { desc = 'Terminal horizontal [S]plit' })
 
--- Exit terminal mode and navigate windows
+-- Normal 模式按 q 关闭 terminal
 vim.api.nvim_create_autocmd('TermOpen', {
+  pattern = 'term://*toggleterm#*',
   callback = function(ev)
-    local buf = ev.buf
-    local opts = { buffer = buf, nowait = true }
-    vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>',       opts)
-    vim.keymap.set('t', '<C-h>',      '<Cmd>wincmd h<CR>', opts)
-    vim.keymap.set('t', '<C-j>',      '<Cmd>wincmd j<CR>', opts)
-    vim.keymap.set('t', '<C-k>',      '<Cmd>wincmd k<CR>', opts)
-    vim.keymap.set('t', '<C-l>',      '<Cmd>wincmd l<CR>', opts)
+    vim.keymap.set('n', 'q', '<Cmd>ToggleTerm<CR>', { buffer = ev.buf, nowait = true, desc = 'Terminal [q]uit' })
   end,
 })
-
--- lazygit 已迁移到 lazygit.nvim 插件 (lazygit.lua)
--- 以下为原 toggleterm lazygit 配置，保留备用：
--- local Terminal = require('toggleterm.terminal').Terminal
--- local lazygit = Terminal:new {
---   cmd = 'lazygit',
---   dir = 'git_dir',
---   direction = 'float',
---   float_opts = {
---     border = 'rounded',
---   },
---   on_open = function(term)
---     vim.cmd 'startinsert!'
---   end,
--- }
--- vim.keymap.set('n', '<leader>tg', function() lazygit:toggle() end, { desc = '[T]erminal Lazygit' })
