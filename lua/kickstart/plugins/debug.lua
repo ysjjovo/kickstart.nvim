@@ -55,14 +55,22 @@ vim.fn.sign_define('DapBreakpointRejected',  { text = '⊘', texthl = 'DapBreak'
 vim.fn.sign_define('DapLogPoint',            { text = '◆', texthl = 'DapBreak', numhl = 'DapBreak' })
 vim.fn.sign_define('DapStopped',             { text = '▶', texthl = 'DapStop',  numhl = 'DapStop'  })
 
--- noDebug（纯 run，见下方 <leader>dr）时不弹 dapui 面板，保持轻量；调试时正常开。
-dap.listeners.after.event_initialized['dapui_config'] = function(session)
+-- 会话启动时打开 dapui（调试 <leader>dd 和纯 run <leader>dr 都开）。
+-- 说明：dapui 会把 dap 的 integratedTerminal 覆写成"只建 buffer 不开窗"，程序输出
+-- 只能通过 dapui 的 console 面板显示。只开单个 layout 时 console 不会可靠地渲染出
+-- 程序输出（时序/渲染问题），所以这里统一开完整 dapui —— run 模式下日志在底部
+-- console 面板里能稳定看到。看完用 <leader>du 关闭面板即可。
+dap.listeners.after.event_initialized['dapui_config'] = dapui.open
+-- 会话结束时关闭 dapui —— 但 noDebug（纯 run）例外：run 的程序往往瞬间跑完就退出，
+-- 若自动关会把刚显示的日志一起关掉（表现为"没反应"，其实 <leader>du 还能调出）。
+-- 所以 run 模式退出后保留面板，日志留给你看；看完手动 <leader>du 关。
+local function close_dapui_unless_run(session)
   if not (session and session.config and session.config.noDebug) then
-    dapui.open()
+    dapui.close()
   end
 end
-dap.listeners.before.event_terminated['dapui_config'] = dapui.close
-dap.listeners.before.event_exited['dapui_config'] = dapui.close
+dap.listeners.before.event_terminated['dapui_config'] = close_dapui_unless_run
+dap.listeners.before.event_exited['dapui_config'] = close_dapui_unless_run
 
 -- JavaScript / Jest
 local js_debug_path = vim.fn.stdpath 'data' .. '/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js'
@@ -132,23 +140,37 @@ end
 
 dap.configurations.java = {
   {
-    name = 'Java: 运行当前文件 main',
+    name = 'Java: Current file main',
     type = 'java',
     request = 'launch',
     -- 不要设 mainClass=''：Lua 里空串是 truthy，会让适配器 enrich_config 里的
     -- `if not config.mainClass` 判断为假，从而跳过 resolve_classname()，
     -- 导致 mainClass 一直是空串、classPaths 解析不出来 → "Missing mainClass" 报错。
     -- 省略此字段（nil）才会触发从当前 buffer 自动解析出类名。
-    console = 'integratedTerminal',
+    --
+    -- console 用 internalConsole，不要用 integratedTerminal：
+    -- integratedTerminal 模式下 java-debug 会发 runInTerminal 反向请求，要求前端在
+    -- 终端里起进程；nvim-dap + dapui 把终端重定向成"只建 buffer 不开窗"，这个握手会
+    -- 超时（报 "Failed to launch debuggee in terminal: TimeoutException"，java-debug
+    -- 官方文档也把切到 internalConsole 列为该超时的解法）。internalConsole 让程序输出
+    -- 走 DAP 的 output 事件，直接显示在 dapui 的 repl 面板，不走终端、不会超时。
+    -- 代价：internalConsole 不支持 stdin，但本地跑 main 不需要输入，无所谓。
+    console = 'internalConsole',
     -- 函数值会被 nvim-dap 在启动时求值（见 dap.lua eval_option）；
     -- 返回 nil 时该字段视为未设置。
     env = nearest_env_table,
   },
 }
 
--- <leader>dr  纯 run（noDebug=true）：不挂断点、不开 dapui，直接跑当前文件 main 到结束。
+-- <leader>dr  纯 run（noDebug=true）：不挂断点，直接跑当前文件 main 到结束。
 -- 比 <leader>dd（调试）体验更轻，也比终端 mvn exec:java 快（复用 jdtls 已编译的 class）。
 -- 注意：启动主要开销在 jdtls 解析 classpath，run/debug 都要做，所以提速有限。
+--
+-- 这里【主动】打开 dapui，不依赖 event_initialized 监听器：noDebug 模式下 java-debug
+-- 不走完整调试握手、可能不发 initialized 事件，靠事件开 UI 会失败（这正是之前
+-- <leader>dd 能弹 UI、<leader>dr 弹不出来的原因）。先开 dapui 让 console 元素就位，
+-- 程序 stdout 才有地方显示；再 run。
 vim.keymap.set('n', '<leader>dr', function()
+  require('dapui').open()
   require('dap').run(vim.tbl_extend('force', dap.configurations.java[1], { noDebug = true }))
-end, { desc = 'Debug: [R]un 当前文件 main（不调试）' })
+end, { desc = 'Debug: [R]un current file' })
