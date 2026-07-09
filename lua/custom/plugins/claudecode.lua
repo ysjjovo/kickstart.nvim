@@ -134,5 +134,7 @@ vim.api.nvim_create_autocmd('TermOpen', {
     -- After <Esc><Esc>: half-page and line scrolling, Vim-style.
     map('<C-u>', true, 10, 'Claude scroll up (half page)')
     map('<C-d>', false, 10, 'Claude scroll down (half page)')
+    -- Normal 模式按 q 收起 Claude 浮窗（等同 <M-a>，隐藏不销毁进程）
+    vim.keymap.set('n', 'q', '<Cmd>ClaudeCode<CR>', { buffer = ev.buf, nowait = true, desc = 'Claude [q]uit' })
   end,
 })
