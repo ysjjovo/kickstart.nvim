@@ -165,8 +165,8 @@ do
   vim.o.cursorline = true
 
   -- Minimal number of screen lines to keep above and below the cursor.
-  vim.o.scrolloff = 10
-  vim.o.sidescrolloff = 10
+  -- vim.o.scrolloff = 10
+  -- vim.o.sidescrolloff = 10
 
   -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
   -- instead raise a dialog asking if you wish to save the current file(s)
@@ -997,7 +997,7 @@ do
   require 'kickstart.plugins.indent_line'
   require 'kickstart.plugins.lint'
   require 'kickstart.plugins.autopairs'
-  require 'kickstart.plugins.neo-tree'
+  --require 'kickstart.plugins.neo-tree'
   require 'kickstart.plugins.gitsigns' -- adds gitsigns recommended keymaps
 
   -- NOTE: You can add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`

@@ -61,7 +61,10 @@ jdtls.start_or_attach {
     },
   },
   on_attach = function()
-    -- 注册 Java DAP 配置（main class / test），供 <F5>/neotest dap 使用
+    -- 1. 注册 Java DAP 适配器（dap.adapters.java）——运行/调试 main、test 的前提。
+    --    没有这步，即使发现了 main class，dap.continue() 也会报 "adapter java not found"。
+    pcall(function() require('jdtls').setup_dap { hotcodereplace = 'auto' } end)
+    -- 2. 发现项目里的 main class，生成对应的 dap.configurations.java 条目，供 <leader>dd 选择。
     pcall(function() require('jdtls.dap').setup_dap_main_class_configs() end)
   end,
 }
