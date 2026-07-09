@@ -12,12 +12,57 @@ local mason = vim.fn.stdpath 'data' .. '/mason'
 local jdtls_bin = mason .. '/bin/jdtls'
 if vim.fn.executable(jdtls_bin) ~= 1 then return end -- 还没装好，等下次打开
 
--- jdtls 自身需要 Java 21+ 运行（与项目用的 JDK 无关）。系统默认可能是更低版本，
--- 这里用 macOS 的 java_home 解析出一个 21+ 的 JDK，只注入给 jdtls 进程。
+-- 自动发现本机 JDK：扫描常见安装目录，读每个 JDK 自带的 release 文件解析主版本号，
+-- 登记为 JavaSE-<major>。装/删 JDK 后无需改本文件——重开 nvim 即自动生效。
+-- 想加新的安装位置只需往 jdk_globs 里加一条 glob。
+-- 注意：路径里的 * 交给下面的 vim.fn.glob 展开，这里只把 $HOME 拼进去。
+-- 不要用 vim.fn.expand('~/.../*/...')——expand 会把 * 一起展开成多行，
+-- 再喂给 glob 就匹配不到了（多个 JDK 时静默返回空）。
+local jdk_globs = {
+  vim.env.HOME .. '/Library/Java/JavaVirtualMachines/*/Contents/Home', -- 用户级（IDE 下载 / 手动解压）
+  '/Library/Java/JavaVirtualMachines/*/Contents/Home', -- 系统级（pkg/dmg 安装器）
+}
+-- 从 JDK 的 release 文件解析 Java 主版本号（8 → 8，17 → 17，1.8 老式 → 8）
+local function jdk_major(home)
+  local rel = home .. '/release'
+  if vim.fn.filereadable(rel) ~= 1 then return nil end
+  for _, line in ipairs(vim.fn.readfile(rel)) do
+    local ver = line:match '^JAVA_VERSION="([^"]+)"'
+    if ver then
+      local a, b = ver:match '^(%d+)%.(%d+)'
+      if not a then a = ver:match '^(%d+)' end
+      a, b = tonumber(a), tonumber(b)
+      if a == 1 and b then return b end -- 1.8 → 8
+      return a
+    end
+  end
+end
+
+-- 登记本机可用的 JDK：分析项目要用项目声明的目标版本的 JDK。列出来后 jdtls 按项目目标
+-- 自动选，避免用 server 运行时 JDK 误当项目 JDK（否则高版本 API 不报错，mvn 编译才炸）。
+-- 只是登记，不预加载：某版本 JDK 只在真有该目标版本的项目时才被索引。
+local runtimes, seen = {}, {}
+for _, glob in ipairs(jdk_globs) do
+  for _, home in ipairs(vim.fn.glob(glob, true, true)) do
+    if vim.fn.isdirectory(home) == 1 and vim.fn.executable(home .. '/bin/java') == 1 then
+      local m = jdk_major(home)
+      if m and not seen[m] then
+        seen[m] = true
+        table.insert(runtimes, { name = m <= 8 and ('JavaSE-1.' .. m) or ('JavaSE-' .. m), path = home })
+      end
+    end
+  end
+end
+
+-- jdtls server 自身需要 Java 21+ 运行（与项目用的 JDK 无关）：从上面发现的 JDK 里挑
+-- 最高的一个 21+，只注入给 jdtls 进程。
 local jdtls_java_home
-if vim.fn.executable '/usr/libexec/java_home' == 1 then
-  local out = vim.fn.system { '/usr/libexec/java_home', '-v', '21+' }
-  if vim.v.shell_error == 0 then jdtls_java_home = vim.trim(out) end
+do
+  local best = 0
+  for _, rt in ipairs(runtimes) do
+    local m = tonumber(rt.name:match '(%d+)$')
+    if m and m >= 21 and m > best then best, jdtls_java_home = m, rt.path end
+  end
 end
 
 -- 项目根：优先构建工具标记，退回 .git，再退回 cwd
@@ -35,17 +80,6 @@ for _, jar in ipairs(vim.split(vim.fn.glob(mason .. '/packages/java-test/extensi
   if jar ~= '' and not jar:match 'com.microsoft.java.test.runner%-jar%-with%-dependencies' then table.insert(bundles, jar) end
 end
 bundles = vim.tbl_filter(function(j) return j ~= '' end, bundles)
-
--- 登记本机可用的 JDK：jdtls server 自身跑在哪个版本无所谓（上面已指 21+），
--- 但分析项目要用项目目标版本的 JDK。列出来后 jdtls 会按项目声明的目标自动选，
--- 避免用 server 运行时 JDK 误当项目 JDK（否则高版本 API 不报错，mvn 编译才炸）。
--- 只是登记，不会预加载：某版本的 JDK 只在真有该目标版本的项目时才被索引。
-local runtimes = {}
-local function add_runtime(name, home)
-  if home and home ~= '' and vim.fn.isdirectory(home) == 1 then table.insert(runtimes, { name = name, path = home }) end
-end
-add_runtime('JavaSE-17', '/Users/lin/apps/jdk-17.0.12.jdk/Contents/Home')
-add_runtime('JavaSE-25', jdtls_java_home)
 
 jdtls.start_or_attach {
   cmd = { jdtls_bin, '-data', workspace },
