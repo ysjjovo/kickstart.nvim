@@ -30,6 +30,7 @@ require('toggleterm').setup {
 vim.keymap.set({ 'n', 't' }, '<A-1>', '<Cmd>1ToggleTerm direction=float<CR>', { desc = 'Terminal [1]' })
 vim.keymap.set({ 'n', 't' }, '<A-2>', '<Cmd>2ToggleTerm direction=float<CR>', { desc = 'Terminal [2]' })
 vim.keymap.set({ 'n', 't' }, '<A-3>', '<Cmd>3ToggleTerm direction=float<CR>', { desc = 'Terminal [3]' })
+vim.keymap.set({ 'n', 't' }, '<leader>ut', '<Cmd>ToggleTerm<CR>', { desc = 'Toogle Terminal' })
 
 -- Alt+f/v/s 按方向打开 terminal
 vim.keymap.set({ 'n', 't' }, '<A-f>', '<Cmd>ToggleTerm direction=float<CR>', { desc = 'Terminal [F]loat' })
