@@ -39,12 +39,13 @@ bundles = vim.tbl_filter(function(j) return j ~= '' end, bundles)
 -- 登记本机可用的 JDK：jdtls server 自身跑在哪个版本无所谓（上面已指 21+），
 -- 但分析项目要用项目目标版本的 JDK。列出来后 jdtls 会按项目声明的目标自动选，
 -- 避免用 server 运行时 JDK 误当项目 JDK（否则高版本 API 不报错，mvn 编译才炸）。
+-- 只是登记，不会预加载：某版本的 JDK 只在真有该目标版本的项目时才被索引。
 local runtimes = {}
 local function add_runtime(name, home)
   if home and home ~= '' and vim.fn.isdirectory(home) == 1 then table.insert(runtimes, { name = name, path = home }) end
 end
 add_runtime('JavaSE-17', '/Users/lin/apps/jdk-17.0.12.jdk/Contents/Home')
-add_runtime('JavaSE-23', jdtls_java_home)
+add_runtime('JavaSE-25', jdtls_java_home)
 
 jdtls.start_or_attach {
   cmd = { jdtls_bin, '-data', workspace },
