@@ -61,10 +61,20 @@ jdtls.start_or_attach {
     },
   },
   on_attach = function()
-    -- 1. 注册 Java DAP 适配器（dap.adapters.java）——运行/调试 main、test 的前提。
-    --    没有这步，即使发现了 main class，dap.continue() 也会报 "adapter java not found"。
+    -- Register the Java DAP adapter (dap.adapters.java). Required to run/debug
+    -- main methods and tests; without it dap.continue() errors "adapter java not found".
     pcall(function() require('jdtls').setup_dap { hotcodereplace = 'auto' } end)
-    -- 2. 发现项目里的 main class，生成对应的 dap.configurations.java 条目，供 <leader>dd 选择。
-    pcall(function() require('jdtls.dap').setup_dap_main_class_configs() end)
+    -- Suppress jdtls's auto-discovered "Launch <project>: <MainClass>" run config.
+    -- We define our own generic Java config in debug.lua that also loads .env; the
+    -- auto-discovered one lacks env vars and would fail (Missing env: BATCH_SIZE),
+    -- and having both makes <leader>dd show a needless picker.
+    -- Two sources add it: setup_dap registers a lazy provider (dap.providers.configs.jdtls)
+    -- resolved on continue(); disable it so only our config remains (picker auto-skipped).
+    pcall(function()
+      local dap = require 'dap'
+      if dap.providers and dap.providers.configs then
+        dap.providers.configs['jdtls'] = nil
+      end
+    end)
   end,
 }

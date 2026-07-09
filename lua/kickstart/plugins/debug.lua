@@ -44,7 +44,11 @@ dapui.setup {
   },
   layouts = {
     { elements = { 'scopes', 'breakpoints', 'stacks', 'watches' }, size = 60, position = 'left' },
-    { elements = { 'repl', 'console' }, size = 0.25, position = 'bottom' },
+    -- Only 'repl' here: with console='internalConsole', program output goes through
+    -- DAP output events into the repl (not the dapui 'console' element, which only
+    -- shows integratedTerminal output and stays empty in our setup). repl is also
+    -- useful in debug mode for evaluating expressions at breakpoints.
+    { elements = { 'repl' }, size = 0.25, position = 'bottom' },
   },
 }
 
