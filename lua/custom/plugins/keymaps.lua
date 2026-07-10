@@ -38,3 +38,8 @@ vim.keymap.set('n', 'q', '<Nop>', { desc = 'Disable q (use Q for recording)' })
 -- ============================================================
 vim.keymap.set('n', 'L', 'zL', { desc = 'Scroll right half screen' })
 vim.keymap.set('n', 'H', 'zH', { desc = 'Scroll left half screen' })
+
+-- ============================================================
+-- Insert mode word navigation
+-- ============================================================
+vim.keymap.set('i', '<M-f>', '<C-o>w', { desc = 'Jump forward one word' })
