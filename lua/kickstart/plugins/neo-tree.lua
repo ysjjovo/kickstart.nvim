@@ -7,7 +7,7 @@ vim.pack.add {
   'https://github.com/MunifTanjim/nui.nvim',
 }
 
-vim.keymap.set('n', '\\', '<Cmd>Neotree reveal<CR>', { desc = 'NeoTree reveal', silent = true })
+vim.keymap.set('n', 'f', '<Cmd>Neotree reveal<CR>', { desc = 'NeoTree reveal', silent = true })
 
 require('neo-tree').setup {
   filesystem = {
@@ -18,8 +18,8 @@ require('neo-tree').setup {
     },
     window = {
       mappings = {
-        ['\\'] = 'close_window',
-        ['Y'] = {
+        ['q'] = 'close_window',
+        ['ca'] = {
           function(state)
             local node = state.tree:get_node()
             local path = node:get_id()
@@ -28,16 +28,7 @@ require('neo-tree').setup {
           end,
           desc = 'Copy Absolute Path',
         },
-        ['y'] = {
-          function(state)
-            local node = state.tree:get_node()
-            local name = node.name
-            vim.fn.setreg('+', name, 'c')
-            vim.notify('Copied filename: ' .. name)
-          end,
-          desc = 'Copy Filename',
-        },
-        ['gy'] = {
+        ['cr'] = {
           function(state)
             local node = state.tree:get_node()
             local full_path = node:get_id()
