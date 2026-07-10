@@ -20,12 +20,12 @@ require('snacks').setup {
   input = {},
   -- 启动欢迎页（只在无文件参数打开 nvim 时显示）
   -- 去掉默认的 startup 段：它依赖 lazy.nvim 的 lazy.stats，而本配置用 vim.pack，会报错。
-  dashboard = {
-    sections = {
-      { section = 'header' },
-      { section = 'keys', gap = 1, padding = 1 },
-    },
-  },
+--  dashboard = {
+--    sections = {
+--      { section = 'header' },
+--      { section = 'keys', gap = 1, padding = 1 },
+--    },
+--  },
   -- 专注模式：zen 居中单窗，dim 暗化非当前作用域
   zen = {},
   dim = {},
