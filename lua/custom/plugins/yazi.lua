@@ -60,8 +60,8 @@ require('yazi').setup {
   },
 }
 
-vim.keymap.set('n', '\\', '<Cmd>Yazi<CR>', { desc = '[Y]azi at current file' })
-vim.keymap.set('n', '|', '<Cmd>Yazi cwd<CR>', { desc = '[Y]azi at current working directory' })
+vim.keymap.set('n', 'f', '<Cmd>Yazi<CR>', { desc = '[Y]azi at current file' })
+vim.keymap.set('n', 'F', '<Cmd>Yazi cwd<CR>', { desc = '[Y]azi at current working directory' })
 
 -- | (Shift+\)：在当前项目根目录打开 yazi（找 .git 等标记，找不到就退回 cwd）
 -- vim.keymap.set('n', '|', function()

@@ -142,6 +142,7 @@ do
 
   -- Decrease mapped sequence wait time
   vim.o.timeoutlen = 300
+  vim.o.ttimeoutlen = 5
 
   -- Configure how new splits should be opened
   vim.o.splitright = true

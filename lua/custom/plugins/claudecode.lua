@@ -127,6 +127,9 @@ vim.api.nvim_create_autocmd('TermOpen', {
     if not vim.api.nvim_buf_get_name(ev.buf):lower():match 'claude' then
       return
     end
+    -- 单键 ESC 直接退出终端模式，不发给 Claude TUI（它不需要 ESC），消除双击延迟
+    vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { buffer = ev.buf, nowait = true, desc = 'Exit terminal mode' })
+
     local job = vim.b[ev.buf].terminal_job_id
     local function map(lhs, up, count, desc)
       vim.keymap.set('n', lhs, function() claude_scroll(job, up, count) end, { buffer = ev.buf, silent = true, desc = desc })
