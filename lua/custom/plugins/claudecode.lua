@@ -136,11 +136,6 @@ vim.api.nvim_create_autocmd('TermOpen', {
     map('<C-d>', false, 10, 'Claude scroll down (half page)')
     -- Normal 模式按 q 收起 Claude 浮窗（等同 <M-a>，隐藏不销毁进程）
     vim.keymap.set('n', 'q', '<Cmd>ClaudeCode<CR>', { buffer = ev.buf, nowait = true, desc = 'Claude [q]uit' })
-    -- 终端模式下 <C-hjkl> 直接切窗口：先 <C-\><C-n> 跳出终端模式再 <C-w> 移动，
-    -- 无需手动 <Esc><Esc>。split 场景常用（从 Claude 跳去看隔壁 buffer）。
-    vim.keymap.set('t', '<C-h>', [[<C-\><C-n><C-w>h]], { buffer = ev.buf, silent = true, desc = 'Claude window h' })
-    vim.keymap.set('t', '<C-j>', [[<C-\><C-n><C-w>j]], { buffer = ev.buf, silent = true, desc = 'Claude window j' })
-    vim.keymap.set('t', '<C-k>', [[<C-\><C-n><C-w>k]], { buffer = ev.buf, silent = true, desc = 'Claude window k' })
-    vim.keymap.set('t', '<C-l>', [[<C-\><C-n><C-w>l]], { buffer = ev.buf, silent = true, desc = 'Claude window l' })
+    -- 窗口切换 <C-hjkl> 已在 init.lua 里全局绑定 normal + terminal 模式，这里不用再重复绑定。
   end,
 })

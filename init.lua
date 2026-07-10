@@ -227,13 +227,16 @@ do
   -- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
   -- Keybinds to make split navigation easier.
-  --  Use CTRL+<hjkl> to switch between windows
+  --  Use CTRL+<hjkl> to switch between windows, in both normal and terminal mode.
+  --  统一在这里绑定 normal + terminal 两种模式，各插件（toggleterm/claudecode 等）里的
+  --  终端窗口就不用再各自绑定一遍了。<Cmd>wincmd 在 terminal 模式下可以直接执行，
+  --  不需要先 <C-\><C-n> 退出终端模式。
   --
   --  See `:help wincmd` for a list of all window commands
-  vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-  vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-  vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-  vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+  vim.keymap.set({ 'n', 'v', 't', 'i', 'c' }, '<C-h>', '<Cmd>wincmd h<CR>', { desc = 'Move focus to the left window' })
+  vim.keymap.set({ 'n', 'v', 't', 'i', 'c' }, '<C-l>', '<Cmd>wincmd l<CR>', { desc = 'Move focus to the right window' })
+  vim.keymap.set({ 'n', 'v', 't', 'i', 'c' }, '<C-j>', '<Cmd>wincmd j<CR>', { desc = 'Move focus to the lower window' })
+  vim.keymap.set({ 'n', 'v', 't', 'i', 'c' }, '<C-k>', '<Cmd>wincmd k<CR>', { desc = 'Move focus to the upper window' })
 
   -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
   -- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
