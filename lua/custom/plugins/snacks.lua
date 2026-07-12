@@ -35,6 +35,8 @@ require('snacks').setup {
   scratch = {},
   image = {},
   terminal = {
+    -- 当有多个相同位置的 split 终端时，将它们堆叠（层叠）在一起
+    stack = true,
     win = {
       keys = {
         term_normal = { '<Esc>', '<C-\\><C-n>', mode = 't', desc = 'Exit terminal mode' },
@@ -47,26 +49,26 @@ require('snacks').setup {
 -- tt/tf/tv/ts: 底部/浮动/垂直/水平, 1tt/2tt/3tt 切换不同实例
 -- td: 在当前文件目录打开终端
 -- count 用不同偏移区分位置，使 snacks 内部 tid 唯一
-local function term(pos, offset)
-  return function()
-    Snacks.terminal.toggle(nil, {
-      win = { position = pos },
-      count = vim.v.count1 + offset,
-    })
-  end
-end
-
-vim.keymap.set({ 'n', 't' }, 'tt', term('bottom', 0), { desc = 'Terminal bottom' })
-vim.keymap.set({ 'n', 't' }, 'tf', term('float', 100), { desc = 'Terminal float' })
-vim.keymap.set({ 'n', 't' }, 'tv', term('right', 200), { desc = 'Terminal vertical' })
-vim.keymap.set({ 'n', 't' }, 'ts', term('bottom', 300), { desc = 'Terminal split' })
-vim.keymap.set({ 'n', 't' }, 'td', function()
-  Snacks.terminal.toggle(nil, {
-    win = { position = 'bottom' },
-    cwd = vim.fn.expand('%:p:h'),
-    count = 400,
-  })
-end, { desc = 'Terminal in file dir' })
+-- local function term(pos, offset)
+--   return function()
+--     Snacks.terminal.toggle(nil, {
+--       win = { position = pos },
+--       -- count = vim.v.count1,
+--     })
+--   end
+-- end
+--
+-- vim.keymap.set({ 'n', 't' }, 'tt', term('bottom', 0), { desc = 'Terminal bottom' })
+-- vim.keymap.set({ 'n', 't' }, 'tf', term('float', 100), { desc = 'Terminal float' })
+-- vim.keymap.set({ 'n', 't' }, 'tv', term('right', 200), { desc = 'Terminal vertical' })
+-- vim.keymap.set({ 'n', 't' }, 'ts', term('bottom', 300), { desc = 'Terminal split' })
+-- vim.keymap.set({ 'n', 't' }, 'td', function()
+--   Snacks.terminal.toggle(nil, {
+--     win = { position = 'bottom' },
+--     cwd = vim.fn.expand('%:p:h'),
+--     count = 400,
+--   })
+-- end, { desc = 'Terminal in file dir' })
 
 -- Keymaps —— 需要手动触发的模块给个入口；其余（dashboard/notifier/scroll/
 -- bigfile/input）是自动生效的，不需要键位。
@@ -75,4 +77,4 @@ vim.keymap.set('n', '<leader>.', function() Snacks.scratch() end, { desc = 'Togg
 vim.keymap.set({ 'n', 'v' }, '<leader>go', function() Snacks.gitbrowse() end, { desc = 'Git browse (open in browser)' })
 
 -- 通知历史：打开后是普通 buffer，直接用 yy / viwy / 可视选择 y 复制，q 关闭
-vim.keymap.set('n', '<leader>un', function() Snacks.notifier.show_history() end, { desc = 'Tootle [N]otifier history' })
+vim.keymap.set('n', '<leader>un', function() Snacks.notifier.show_history() end, { desc = 'Toogle [N]otifier history' })
