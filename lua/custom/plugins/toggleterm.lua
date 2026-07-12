@@ -35,7 +35,7 @@ vim.keymap.set({ 'n', 't' }, '<A-s>', function() switch_direction('horizontal') 
 vim.api.nvim_create_autocmd('TermOpen', {
   callback = function(ev)
     vim.cmd 'startinsert'
-    vim.keymap.set('t', '<esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+    vim.keymap.set('t', '<esc>', '<C-\\><C-n>', { buffer = ev.buf, nowait = true, desc = 'Exit terminal mode' })
     vim.keymap.set('n', 'q', '<Cmd>close<CR>', { buffer = ev.buf, nowait = true, desc = 'Terminal [q]uit' })
   end,
 })
