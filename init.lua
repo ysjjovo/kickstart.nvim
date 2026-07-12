@@ -141,8 +141,7 @@ do
   vim.o.updatetime = 250
 
   -- Decrease mapped sequence wait time
-  vim.o.timeoutlen = 300
-  vim.o.ttimeoutlen = 5
+  vim.o.timeoutlen = 1000
 
   -- Configure how new splits should be opened
   vim.o.splitright = true
@@ -1009,7 +1008,7 @@ do
   require 'kickstart.plugins.indent_line'
   require 'kickstart.plugins.lint'
   require 'kickstart.plugins.autopairs'
-  require 'kickstart.plugins.neo-tree'
+  -- require 'kickstart.plugins.neo-tree'
   require 'kickstart.plugins.gitsigns' -- adds gitsigns recommended keymaps
 
   -- NOTE: You can add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
