@@ -731,7 +731,7 @@ do
               '${3rd}/busted/library',
             },
             maxPreload = 2000,
-            preloadFileSize = 1000,
+            preloadFileSize = 300,
           },
         })
       end,

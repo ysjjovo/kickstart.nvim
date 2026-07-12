@@ -34,6 +34,10 @@ vim.keymap.set({ 'n', 't' }, '<A-s>', function() switch_direction('horizontal') 
 -- 窗口切换 <C-hjkl> 已在 init.lua 里全局绑定 normal + terminal 模式，这里不用再重复绑定。
 vim.api.nvim_create_autocmd('TermOpen', {
   callback = function(ev)
+    local bufname = vim.api.nvim_buf_get_name(ev.buf)
+    if not bufname:match 'toggleterm' then
+      return
+    end
     vim.cmd 'startinsert'
     vim.keymap.set('t', '<esc>', '<C-\\><C-n>', { buffer = ev.buf, nowait = true, desc = 'Exit terminal mode' })
     vim.keymap.set('n', 'q', '<Cmd>close<CR>', { buffer = ev.buf, nowait = true, desc = 'Terminal [q]uit' })
