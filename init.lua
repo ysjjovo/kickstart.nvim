@@ -141,7 +141,7 @@ do
   vim.o.updatetime = 250
 
   -- Decrease mapped sequence wait time
-  vim.o.timeoutlen = 1000
+  vim.o.timeoutlen = 300
 
   -- Configure how new splits should be opened
   vim.o.splitright = true
@@ -826,6 +826,7 @@ do
     },
     -- You can also specify external formatters in here.
     formatters_by_ft = {
+      json = { 'jq' },
       -- rust = { 'rustfmt' },
       -- Conform can also run multiple formatters sequentially
       -- python = { "isort", "black" },
