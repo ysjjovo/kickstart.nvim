@@ -11,10 +11,7 @@ require('toggleterm').setup {
   float_opts = {
     border = 'rounded', -- 浮动窗口使用圆角边框
   },
-  open_mapping = [[t]]
 }
-
--- vim.keymap.set({ 'n'}, 't', '<Cmd>ToggleTerm<CR>', { desc = 'Toogle Terminal' })
 
 -- Alt+f/v/s 按方向打开 terminal
 local function switch_direction(dir)
@@ -28,6 +25,7 @@ local function switch_direction(dir)
   end
 end
 
+vim.keymap.set('n', 't', '<Cmd>ToggleTerm<CR>', { desc = 'Toggle Terminal' })
 vim.keymap.set({ 'n', 't' }, '<A-f>', function() switch_direction('float') end, { desc = 'Terminal [F]loat' })
 vim.keymap.set({ 'n', 't' }, '<A-v>', function() switch_direction('vertical') end, { desc = 'Terminal [V]ertical' })
 vim.keymap.set({ 'n', 't' }, '<A-s>', function() switch_direction('horizontal') end, { desc = 'Terminal horizontal [S]plit' })
