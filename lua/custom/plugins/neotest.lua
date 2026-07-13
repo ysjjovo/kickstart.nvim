@@ -46,5 +46,8 @@ vim.keymap.set('n', '<leader>td', function() nt.run.run { strategy = 'dap' } end
 -- <leader>ts  切换测试结果面板
 vim.keymap.set('n', '<leader>ts', function() nt.summary.toggle() end, { desc = '[T]est [S]ummary toggle' })
 
--- <leader>to  打开最近一次测试输出
+-- <leader>to  打开最近一次测试输出（光标须在测试函数上）
 vim.keymap.set('n', '<leader>to', function() nt.output.open { enter = true } end, { desc = '[T]est [O]utput open' })
+
+-- <leader>tp  底部面板显示 pytest 完整输出
+vim.keymap.set('n', '<leader>tp', function() nt.output_panel.toggle() end, { desc = '[T]est [P]anel toggle' })

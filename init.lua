@@ -159,6 +159,11 @@ do
   vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣'}
 
 -- ============================================================
+-- Python3 provider: use dedicated venv so it works in any project
+-- ============================================================
+vim.g.python3_host_prog = vim.fn.expand('~/.config/nvim/.venv/bin/python3')
+
+-- ============================================================
 -- Indentation: tab = 2 spaces
 -- ============================================================
 vim.o.tabstop = 2
