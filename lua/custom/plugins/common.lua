@@ -1,4 +1,4 @@
--- Custom keymap overrides for Neovim built-in behaviors
+-- Custom common settings & Custom keymap overrides for Neovim built-in behaviors
 -- This file collects all native keybinding customizations in one place.
 
 -- ============================================================
@@ -36,10 +36,17 @@ vim.keymap.set('n', 'q', '<Nop>', { desc = 'Disable q (use Q for recording)' })
 -- Horizontal scrolling
 -- Scroll the screen sideways by half a screen (efficient wide-line navigation)
 -- ============================================================
-vim.keymap.set('n', 'L', 'zL', { desc = 'Scroll right half screen' })
-vim.keymap.set('n', 'H', 'zH', { desc = 'Scroll left half screen' })
+-- vim.keymap.set('n', 'L', 'zL', { desc = 'Scroll right half screen' })
+-- vim.keymap.set('n', 'H', 'zH', { desc = 'Scroll left half screen' })
 
 -- ============================================================
 -- Insert mode word navigation
 -- ============================================================
 vim.keymap.set('i', '<M-f>', '<C-o>w', { desc = 'Jump forward one word' })
+vim.opt.guicursor = {
+  "n-v-c:block-blinkwait700-blinkon400-blinkoff400",
+  "i-ci-ve:ver25-blinkwait700-blinkon400-blinkoff400",
+  "r-cr:hor20-blinkwait700-blinkon400-blinkoff400",
+  "o:hor50-blinkwait700-blinkon400-blinkoff400",
+  "t:ver25-blinkwait700-blinkon400-blinkoff400",
+}
