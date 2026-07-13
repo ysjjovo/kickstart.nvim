@@ -24,6 +24,11 @@ require('neotest').setup {
       dap = { justMyCode = false },
       runner = 'pytest',
       python = find_python,
+      env = {
+        all_proxy = '',
+        http_proxy = '',
+        https_proxy = '',
+      },
     },
     -- Java：默认配置即可，自动探测 Maven/Gradle。
     -- 依赖 jdtls 已附着（ftplugin/java.lua）+ java-debug/java-test bundle。
