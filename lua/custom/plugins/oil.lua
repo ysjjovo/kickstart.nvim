@@ -44,6 +44,7 @@ require('oil').setup {
 }
 
 vim.keymap.set('n', '-', '<Cmd>Oil<CR>', { desc = 'Open parent directory (Oil)' })
+vim.keymap.set('n', '_', '<Cmd>Oil .<CR>', { desc = 'Open CWD (Oil)' })
 
 local function copy_entry_path(fmt)
   local oil = require 'oil'
