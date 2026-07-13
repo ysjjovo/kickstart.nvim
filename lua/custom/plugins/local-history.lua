@@ -1,6 +1,8 @@
 -- vim-local-history: file local history on save
 -- https://github.com/dinhhuy258/vim-local-history
 
+vim.g.python3_host_prog = vim.fn.expand '~/.config/nvim/.venv/bin/python3'
+
 vim.pack.add {
   'https://github.com/dinhhuy258/vim-local-history',
 }
