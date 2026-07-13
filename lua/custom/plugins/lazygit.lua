@@ -10,6 +10,24 @@ vim.keymap.set('n', '<leader>ug', '<Cmd>LazyGit<CR>', { desc = 'Toogle [L]azygit
 --vim.keymap.set('n', '<leader>lf', '<Cmd>LazyGitFilter<CR>', { desc = 'LazyGit [F]ilter (project commits)' })
 --vim.keymap.set('n', '<leader>lc', '<Cmd>LazyGitFilterCurrentFile<CR>', { desc = 'LazyGit [C]urrent file commits' })
 
+-- 进入 lazygit 时绑定 Esc 直接发送给 lazygit，绕过 ttimeoutlen 等待
+--vim.api.nvim_create_autocmd('TermOpen', {
+--  group = vim.api.nvim_create_augroup('LazygitEscFix', { clear = true }),
+--  callback = function(ev)
+--    vim.schedule(function()
+--      if vim.bo[ev.buf].filetype ~= 'lazygit' then
+--        return
+--      end
+--      vim.keymap.set('t', '<esc>', function()
+--        local job = vim.b[ev.buf].terminal_job_id
+--        if job then
+--          vim.fn.chansend(job, '\x1b')
+--        end
+--      end, { buffer = ev.buf, nowait = true, desc = 'Send Esc to lazygit' })
+--    end)
+--  end,
+--})
+
 -- 焦点离开 lazygit 浮窗时自动退出（切窗口 / 鼠标点别处都会触发）。
 -- 为什么发 'q' 而不是直接关窗口：
 --   * lazygit buffer 是 bufhidden=hide，nvim_win_close 只藏窗口，后台进程仍在跑，
