@@ -53,11 +53,17 @@ vim.opt.guicursor = {
 
 vim.keymap.set('n', '<leader>ym', function()
   local lines = vim.split(vim.fn.execute('messages'), '\n')
-  for i = #lines, 1, -1 do
-    if lines[i] ~= '' then
-      vim.fn.setreg('+', lines[i])
-      vim.notify('Copied: ' .. lines[i], vim.log.levels.INFO)
-      return
-    end
+  local last = #lines
+  while last >= 1 and lines[last] == '' do
+    last = last - 1
   end
-end, { desc = 'Yank last message' })
+  local first = last
+  while first >= 2 and lines[first - 1] ~= '' do
+    first = first - 1
+  end
+  if first > last then return end
+  local cap = math.min(last, first + 4)
+  local block = table.concat(vim.list_slice(lines, first, cap), '\n')
+  vim.fn.setreg('+', block)
+  vim.notify('Copied ' .. (cap - first + 1) .. '/' .. (last - first + 1) .. ' lines', vim.log.levels.INFO)
+end, { desc = 'Yank last message block' })
