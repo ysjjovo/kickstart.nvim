@@ -27,8 +27,14 @@ local notes_dir = vim.fn.expand '~/notes'
 
 vim.keymap.set('n', '<leader>nw', '<Cmd>Neorg workspace notes<CR><Cmd>e ~/notes/index.norg<CR>', { desc = 'Open Neorg notes' })
 vim.keymap.set('n', '<leader>ns', function()
-  require('telescope.builtin').live_grep { cwd = notes_dir, default_text = '^\\*+ ', type_filter = 'norg' }
+  require('telescope.builtin').live_grep { cwd = notes_dir, default_text = '^\\*+ ', glob_pattern = '*.norg' }
 end, { desc = 'Neorg search headings' })
 vim.keymap.set('n', '<leader>nl', function()
-  require('telescope.builtin').live_grep { cwd = notes_dir, default_text = '{:', type_filter = 'norg' }
+  require('telescope.builtin').live_grep { cwd = notes_dir, default_text = '\\{/ ', glob_pattern = '*.norg' }
 end, { desc = 'Neorg find linkable' })
+vim.keymap.set('n', '<leader>nf', function()
+  require('telescope.builtin').find_files { cwd = notes_dir }
+end, { desc = 'Neorg find file' })
+vim.keymap.set('n', '<leader>ng', function()
+  require('telescope.builtin').live_grep { cwd = notes_dir }
+end, { desc = 'Neorg grep content' })
