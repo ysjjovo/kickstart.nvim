@@ -15,7 +15,7 @@ require('snacks').setup {
   -- 平滑滚动
   scroll = {},
   -- 通知 UI 美化（接管 vim.notify）
-  notifier = {},
+  --notifier = {},
   -- 更好看的 vim.ui.input 浮窗输入框
   input = {},
   -- 启动欢迎页（只在无文件参数打开 nvim 时显示）
