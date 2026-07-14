@@ -15,7 +15,6 @@ require('neorg').setup {
       config = {
         workspaces = {
           notes = '~/notes',
-          notion_import = "~/notion_export",
         },
         default_workspace = 'notes',
       },
