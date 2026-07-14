@@ -9,7 +9,6 @@ vim.pack.add {
 
 require('neorg').setup {
   load = {
-    ["core.integration.telescope"] = {},
     ['core.defaults'] = {},
     ['core.concealer'] = {},
     ['core.dirman'] = {
@@ -24,6 +23,12 @@ require('neorg').setup {
   },
 }
 
+local notes_dir = vim.fn.expand '~/notes'
+
 vim.keymap.set('n', '<leader>nw', '<Cmd>Neorg workspace notes<CR><Cmd>e ~/notes/index.norg<CR>', { desc = 'Open Neorg notes' })
-vim.keymap.set('n', '<leader>ns', '<Cmd>Telescope neorg search_headings<CR>', { desc = 'Neorg search headings' })
-vim.keymap.set('n', '<leader>nl', '<Cmd>Telescope neorg find_linkable<CR>', { desc = 'Neorg find linkable' })
+vim.keymap.set('n', '<leader>ns', function()
+  require('telescope.builtin').live_grep { cwd = notes_dir, default_text = '^\\*+ ', type_filter = 'norg' }
+end, { desc = 'Neorg search headings' })
+vim.keymap.set('n', '<leader>nl', function()
+  require('telescope.builtin').live_grep { cwd = notes_dir, default_text = '{:', type_filter = 'norg' }
+end, { desc = 'Neorg find linkable' })
