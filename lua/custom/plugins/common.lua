@@ -50,3 +50,14 @@ vim.opt.guicursor = {
   "o:hor50-blinkwait700-blinkon400-blinkoff400",
   "t:ver25-blinkwait700-blinkon400-blinkoff400",
 }
+
+vim.keymap.set('n', '<leader>ym', function()
+  local lines = vim.split(vim.fn.execute('messages'), '\n')
+  for i = #lines, 1, -1 do
+    if lines[i] ~= '' then
+      vim.fn.setreg('+', lines[i])
+      vim.notify('Copied: ' .. lines[i], vim.log.levels.INFO)
+      return
+    end
+  end
+end, { desc = 'Yank last message' })
