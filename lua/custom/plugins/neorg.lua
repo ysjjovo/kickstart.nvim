@@ -43,7 +43,7 @@ local ns = vim.api.nvim_create_namespace("neorg_pw")
 local function conceal_pw(buf)
     vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
     for i, line in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
-        local _, e = line:find("Password:%s+")
+        local _, e = line:find("[Pp]assword:%s+")
         if e then
             vim.api.nvim_buf_set_extmark(buf, ns, i - 1, e, { end_col = #line, conceal = "*" })
         end
@@ -60,6 +60,7 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 vim.keymap.set("n", "<leader>yp", function()
-    local pw = vim.api.nvim_get_current_line():match("Password:%s+(.*)")
+    local line = vim.api.nvim_get_current_line()
+    local pw = line:match("[Pp]assword:%s+(.*)")
     if pw then vim.fn.setreg("+", pw) end
 end, { desc = 'Yank [P]assword' })
