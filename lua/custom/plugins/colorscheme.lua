@@ -3,7 +3,7 @@ local theme = 'catppuccin' -- 'catppuccin' | 'tokyonight' | 'onedark'
 local themes = {
   catppuccin = function()
     vim.pack.add { 'https://github.com/catppuccin/nvim' }
-    require('catppuccin').setup { default_integrations = false }
+    require('catppuccin').setup {}
     vim.cmd.colorscheme 'catppuccin-mocha'
   end,
   tokyonight = function()

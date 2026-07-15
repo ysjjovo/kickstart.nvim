@@ -10,7 +10,14 @@ vim.pack.add {
 require('neorg').setup {
   load = {
     ['core.defaults'] = {},
-    ['core.concealer'] = {},
+    ['core.concealer'] = {
+      config = {
+        icon_preset = 'varied',
+        icons = {
+          code_block = { conceal = true, width = 'fullwidth' },
+        },
+      },
+    },
     ['core.dirman'] = {
       config = {
         workspaces = {
@@ -37,6 +44,8 @@ end, { desc = 'Neorg find file' })
 vim.keymap.set('n', '<leader>ng', function()
   require('telescope.builtin').live_grep { cwd = notes_dir }
 end, { desc = 'Neorg grep content' })
+
+vim.api.nvim_set_hl(0, '@neorg.tags.ranged_verbatim.code_block', { bg = '#313244' })
 
 local ns = vim.api.nvim_create_namespace("neorg_pw")
 
