@@ -25,3 +25,8 @@ statusline.section_location = function() return '%2l:%-2v' end
 require('mini.bufremove').setup()
 vim.keymap.set('n', '<leader>bd', function() MiniBufremove.delete() end, { desc = '[B]uffer [D]elete' })
 vim.keymap.set('n', '<leader>bw', function() MiniBufremove.wipeout() end, { desc = '[B]uffer [W]ipeout' })
+
+require('mini.notify').setup {
+  lsp_progress = { enable = false },
+}
+vim.keymap.set('n', '<leader>un', function() MiniNotify.show_history() end, { desc = 'Toggle [N]otify history'})
