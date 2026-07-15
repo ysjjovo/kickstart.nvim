@@ -91,11 +91,7 @@ vim.api.nvim_create_autocmd('WinLeave', {
   end,
 })
 vim.keymap.set('v', '<leader>as', function()
-  -- Exit visual mode first so that '< and '> marks get updated
-  local esc = vim.api.nvim_replace_termcodes('<Esc>', true, false, true)
-  vim.api.nvim_feedkeys(esc, 'nx', false)
-  -- Now the marks are set; send the selection
-  vim.cmd "'<,'>ClaudeCodeSend"
+  vim.cmd 'ClaudeCodeSend'
   vim.schedule(function()
     vim.cmd 'ClaudeCodeFocus'
   end)
