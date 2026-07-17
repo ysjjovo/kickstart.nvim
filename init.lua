@@ -6,6 +6,9 @@ do
   -- Enable faster startup by caching compiled Lua modules
   vim.loader.enable()
 
+  package.path = package.path .. ';' .. vim.fn.expand('~/.luarocks/share/lua/5.4/?.lua')
+  package.cpath = package.cpath .. ';' .. vim.fn.expand('~/.luarocks/lib/lua/5.4/?.so')
+
   -- Set <space> as the leader key
   -- See `:help mapleader`
   --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -258,13 +261,6 @@ end
 -- ============================================================
 do
   require 'custom.plugins'
-
-  require 'kickstart.plugins.debug'
-  require 'kickstart.plugins.indent_line'
-  require 'kickstart.plugins.lint'
-  require 'kickstart.plugins.autopairs'
-  -- require 'kickstart.plugins.neo-tree'
-  require 'kickstart.plugins.gitsigns' -- adds gitsigns recommended keymaps
 end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
