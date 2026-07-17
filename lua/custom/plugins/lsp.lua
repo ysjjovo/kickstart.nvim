@@ -51,7 +51,6 @@ local servers = {
   pyright = {},
   rust_analyzer = {},
   ts_ls = {},
-  stylua = {},
   lua_ls = {
     on_init = function(client)
       client.server_capabilities.documentFormattingProvider = false
@@ -100,6 +99,7 @@ require('mason').setup {}
 
 local ensure_installed = vim.tbl_keys(servers or {})
 vim.list_extend(ensure_installed, {
+  'stylua',
   'debugpy',
   'jdtls',
   'java-debug-adapter',

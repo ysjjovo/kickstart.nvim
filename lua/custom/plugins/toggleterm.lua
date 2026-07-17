@@ -43,3 +43,10 @@ vim.api.nvim_create_autocmd('TermOpen', {
     vim.keymap.set('n', 'q', '<Cmd>close<CR>', { buffer = ev.buf, nowait = true, desc = 'Terminal [q]uit' })
   end,
 })
+
+vim.api.nvim_create_autocmd('BufEnter', {
+  pattern = 'term://*toggleterm#*',
+  callback = function()
+    vim.cmd 'startinsert'
+  end,
+})
