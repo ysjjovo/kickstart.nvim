@@ -4,6 +4,7 @@
 vim.pack.add {
   'https://github.com/nvim-neotest/neotest',
   'https://github.com/nvim-neotest/nvim-nio', -- neotest 依赖（debug.lua 已装，幂等）
+  'https://github.com/nvim-lua/plenary.nvim', -- neotest-python 依赖
   'https://github.com/nvim-neotest/neotest-python',
   'https://github.com/rcasia/neotest-java', -- Java 适配器，依赖 jdtls（见 ftplugin/java.lua）
 }
