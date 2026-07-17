@@ -5,6 +5,9 @@ vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } 
 local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'python', 'query', 'vim', 'vimdoc' }
 require('nvim-treesitter').install(parsers)
 
+-- markdown 代码块 ```shell 需要映射到 bash parser
+vim.treesitter.language.register('bash', 'shell')
+
 ---@param buf integer
 ---@param language string
 local function treesitter_try_attach(buf, language)
