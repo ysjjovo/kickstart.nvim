@@ -11,6 +11,8 @@ local pw_ns = vim.api.nvim_create_namespace('markdown_pw')
 
 local function conceal_pw(buf)
   vim.api.nvim_buf_clear_namespace(buf, pw_ns, 0, -1)
+  -- 插入模式下显示明文，方便编辑
+  if vim.fn.mode():find('^i') then return end
   for i, line in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
     local _, e = line:find('[Pp]assword:%s+')
     if e then
@@ -24,7 +26,17 @@ local function conceal_pw(buf)
   end
 end
 
-vim.api.nvim_create_autocmd({ 'BufEnter', 'TextChanged', 'TextChangedI' }, {
+vim.api.nvim_create_autocmd({ 'BufEnter', 'TextChanged' }, {
+  pattern = '*.md',
+  callback = function(ev) conceal_pw(ev.buf) end,
+})
+
+vim.api.nvim_create_autocmd('InsertEnter', {
+  pattern = '*.md',
+  callback = function(ev) vim.api.nvim_buf_clear_namespace(ev.buf, pw_ns, 0, -1) end,
+})
+
+vim.api.nvim_create_autocmd('InsertLeave', {
   pattern = '*.md',
   callback = function(ev) conceal_pw(ev.buf) end,
 })
