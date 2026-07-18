@@ -6,8 +6,8 @@ vim.pack.add {
 }
 
 require('toggleterm').setup {
-  start_in_insert = true,
   direction = 'float', -- 默认改为浮动窗口
+  persist_mode = false, -- 每次打开都进入 insert 模式，不记住上次的模式
   float_opts = {
     border = 'rounded', -- 浮动窗口使用圆角边框
   },
@@ -25,7 +25,9 @@ local function switch_direction(dir)
   end
 end
 
-vim.keymap.set('n', 't', '<Cmd>ToggleTerm<CR>', { desc = 'Toggle Terminal' })
+vim.keymap.set('n', 't', function()
+  vim.cmd(vim.v.count1 .. 'ToggleTerm')
+end, { desc = 'Toggle Terminal' })
 vim.keymap.set({ 'n', 't' }, '<A-f>', function() switch_direction('float') end, { desc = 'Terminal [F]loat' })
 vim.keymap.set({ 'n', 't' }, '<A-v>', function() switch_direction('vertical') end, { desc = 'Terminal [V]ertical' })
 vim.keymap.set({ 'n', 't' }, '<A-s>', function() switch_direction('horizontal') end, { desc = 'Terminal horizontal [S]plit' })
@@ -44,9 +46,3 @@ vim.api.nvim_create_autocmd('TermOpen', {
   end,
 })
 
-vim.api.nvim_create_autocmd('BufEnter', {
-  pattern = 'term://*toggleterm#*',
-  callback = function()
-    vim.cmd 'startinsert'
-  end,
-})
