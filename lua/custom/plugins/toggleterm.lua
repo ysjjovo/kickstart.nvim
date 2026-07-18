@@ -6,8 +6,9 @@ vim.pack.add {
 }
 
 require('toggleterm').setup {
+  open_mapping = [[<C-\>]],
   direction = 'float', -- 默认改为浮动窗口
-  persist_mode = false, -- 每次打开都进入 insert 模式，不记住上次的模式
+  -- persist_mode = false, -- 每次打开都进入 insert 模式，不记住上次的模式
   float_opts = {
     border = 'rounded', -- 浮动窗口使用圆角边框
   },
@@ -25,9 +26,9 @@ local function switch_direction(dir)
   end
 end
 
-vim.keymap.set('n', 't', function()
-  vim.cmd(vim.v.count1 .. 'ToggleTerm')
-end, { desc = 'Toggle Terminal' })
+-- vim.keymap.set('n', 't', function()
+--   vim.cmd(vim.v.count1 .. 'ToggleTerm')
+-- end, { desc = 'Toggle Terminal' })
 vim.keymap.set({ 'n', 't' }, '<A-f>', function() switch_direction('float') end, { desc = 'Terminal [F]loat' })
 vim.keymap.set({ 'n', 't' }, '<A-v>', function() switch_direction('vertical') end, { desc = 'Terminal [V]ertical' })
 vim.keymap.set({ 'n', 't' }, '<A-s>', function() switch_direction('horizontal') end, { desc = 'Terminal horizontal [S]plit' })
@@ -40,7 +41,7 @@ vim.api.nvim_create_autocmd('TermOpen', {
     if not bufname:match 'toggleterm' then
       return
     end
-    vim.cmd 'startinsert'
+    -- vim.cmd 'startinsert'
     vim.keymap.set('t', '<esc>', '<C-\\><C-n>', { buffer = ev.buf, nowait = true, desc = 'Exit terminal mode' })
     vim.keymap.set('n', 'q', '<Cmd>close<CR>', { buffer = ev.buf, nowait = true, desc = 'Terminal [q]uit' })
   end,
