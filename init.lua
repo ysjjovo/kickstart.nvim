@@ -7,7 +7,6 @@ do
   vim.loader.enable()
 
   -- 浮动消息窗口替代底部 cmdline
-  vim.o.cmdheight = 0
   require('vim._core.ui2').enable()
 
   package.path = package.path .. ';' .. vim.fn.expand('~/.luarocks/share/lua/5.4/?.lua')
