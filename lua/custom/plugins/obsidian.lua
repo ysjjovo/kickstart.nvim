@@ -12,7 +12,7 @@ require('obsidian').setup {
   note_id_func = function(title)
     return title
   end,
---  ui = { enable = false },
+  ui = { enable = false },
 }
 
 -- password concealing in obsidian vault

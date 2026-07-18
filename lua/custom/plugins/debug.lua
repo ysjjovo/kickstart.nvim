@@ -1,6 +1,7 @@
 vim.pack.add {
   'https://github.com/mfussenegger/nvim-dap',
   'https://github.com/rcarriga/nvim-dap-ui',
+  'https://github.com/theHamsta/nvim-dap-virtual-text',
   'https://github.com/nvim-neotest/nvim-nio',
   'https://github.com/mason-org/mason.nvim',
   'https://github.com/jay-babu/mason-nvim-dap.nvim',
@@ -48,6 +49,8 @@ dapui.setup {
     { elements = { 'repl' }, size = 0.25, position = 'bottom' },
   },
 }
+
+require('nvim-dap-virtual-text').setup {}
 
 -- Breakpoint icons and colors
 vim.api.nvim_set_hl(0, 'DapBreak', { fg = '#e51400' })

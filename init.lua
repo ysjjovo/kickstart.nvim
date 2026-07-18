@@ -81,6 +81,10 @@ do
 -- ============================================================
 vim.g.python3_host_prog = vim.fn.expand('~/.config/nvim/.venv/bin/python3')
 
+-- 禁用不需要的 provider，消除 checkhealth 警告
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+
 -- ============================================================
 -- Indentation: tab = 2 spaces
 -- ============================================================
