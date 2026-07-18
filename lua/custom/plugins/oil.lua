@@ -1,6 +1,16 @@
 -- oil.nvim: edit your filesystem like a buffer
 vim.pack.add { 'https://github.com/stevearc/oil.nvim' }
 
+-- 无法在 Neovim 中编辑的文件，按回车时用系统默认程序打开
+local external_exts = {
+  'pdf', 'xlsx', 'xls', 'docx', 'doc', 'pptx', 'ppt',
+  'zip', 'rar', '7z', 'tar', 'gz',
+  'png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg', 'webp',
+  'mp4', 'mkv', 'avi', 'mov', 'mp3', 'flac', 'wav',
+}
+local external_set = {}
+for _, ext in ipairs(external_exts) do external_set[ext] = true end
+
 require('oil').setup {
   default_file_explorer = true,
   columns = { 'icon' },
@@ -8,6 +18,19 @@ require('oil').setup {
     show_hidden = true,
   },
   keymaps = {
+    ['<CR>'] = function()
+      local oil = require('oil')
+      local entry = oil.get_cursor_entry()
+      if entry and entry.type == 'file' then
+        local ext = entry.name:match('%.([^%.]+)$')
+        if ext and external_set[ext:lower()] then
+          local path = oil.get_current_dir() .. entry.name
+          vim.ui.open(path)
+          return
+        end
+      end
+      oil.select()
+    end,
     ['q'] = 'actions.close',
     ['<C-h>'] = false,
     ['<C-l>'] = false,
