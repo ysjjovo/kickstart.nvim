@@ -2,7 +2,9 @@ vim.pack.add {
   'https://github.com/MeanderingProgrammer/render-markdown.nvim',
 }
 
-require('render-markdown').setup {}
+require('render-markdown').setup {
+  latex = { enabled = false },
+}
 
 -- 用 virt_text overlay 遮盖密码，不依赖 conceallevel
 local pw_ns = vim.api.nvim_create_namespace('markdown_pw')
