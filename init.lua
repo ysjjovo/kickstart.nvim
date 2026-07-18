@@ -5,8 +5,6 @@
 do
   -- Enable faster startup by caching compiled Lua modules
   vim.loader.enable()
-
-  -- 浮动消息窗口替代底部 cmdline
   require('vim._core.ui2').enable()
 
   package.path = package.path .. ';' .. vim.fn.expand('~/.luarocks/share/lua/5.4/?.lua')
