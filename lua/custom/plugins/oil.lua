@@ -3,7 +3,7 @@ vim.pack.add { 'https://github.com/stevearc/oil.nvim' }
 
 -- 无法在 Neovim 中编辑的文件，按回车时用系统默认程序打开
 local external_exts = {
-  'pdf', 'xlsx', 'xls', 'docx', 'doc', 'pptx', 'ppt',
+  'pdf', 'csv', 'xlsx', 'xls', 'docx', 'doc', 'pptx', 'ppt',
   'zip', 'rar', '7z', 'tar', 'gz',
   'png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg', 'webp',
   'mp4', 'mkv', 'avi', 'mov', 'mp3', 'flac', 'wav',
