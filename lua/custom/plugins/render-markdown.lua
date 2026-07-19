@@ -6,6 +6,22 @@ require('render-markdown').setup {
   latex = { enabled = false },
 }
 
+-- render-markdown 在 buffer 编辑后可能用过期的 treesitter 节点调用 get_node_text，
+-- 触发 "Index out of bounds"。直接重写 View:nodes，pcall 保护 Node 构造。
+local Node = require('render-markdown.lib.node')
+local View = require('render-markdown.request.view')
+function View:nodes(root, query, callback)
+  self:query(root, query, function(id, ts_node)
+    if not ts_node:has_error() then
+      local capture = query.captures[id]
+      local ok, node = pcall(Node.new, self.buf, ts_node)
+      if ok and node then
+        callback(capture, node)
+      end
+    end
+  end)
+end
+
 -- 用 virt_text overlay 遮盖密码，不依赖 conceallevel
 local pw_ns = vim.api.nvim_create_namespace('markdown_pw')
 
