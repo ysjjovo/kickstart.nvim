@@ -212,6 +212,19 @@ do
     group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
     callback = function() vim.hl.on_yank() end,
   })
+
+  -- 终端缓冲区 yank 的换行符存为 NUL，复制出来变成 ^@，这里自动还原
+  vim.api.nvim_create_autocmd('TextYankPost', {
+    callback = function()
+      if vim.bo.buftype == 'terminal' then
+        local reg = vim.v.event.regname == '' and '"' or vim.v.event.regname
+        local content = vim.fn.getreg(reg)
+        if content:find('\0') then
+          vim.fn.setreg(reg, content:gsub('\0', '\n'))
+        end
+      end
+    end,
+  })
 end
 
 -- ============================================================
