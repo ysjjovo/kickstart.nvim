@@ -6,7 +6,7 @@ vim.pack.add {
 }
 
 require('toggleterm').setup {
-  open_mapping = [[<C-\>]],
+  -- open_mapping = [[<C-\>]],
   direction = 'float', -- 默认改为浮动窗口
   -- persist_mode = false, -- 每次打开都进入 insert 模式，不记住上次的模式
   float_opts = {
@@ -26,9 +26,9 @@ local function switch_direction(dir)
   end
 end
 
--- vim.keymap.set('n', 't', function()
---   vim.cmd(vim.v.count1 .. 'ToggleTerm')
--- end, { desc = 'Toggle Terminal' })
+vim.keymap.set('n', '<C-`>', function()
+  vim.cmd(vim.v.count1 .. 'ToggleTerm')
+end, { desc = 'Toggle Terminal' })
 vim.keymap.set({ 'n', 't' }, '<A-f>', function() switch_direction('float') end, { desc = 'Terminal [F]loat' })
 vim.keymap.set({ 'n', 't' }, '<A-v>', function() switch_direction('vertical') end, { desc = 'Terminal [V]ertical' })
 vim.keymap.set({ 'n', 't' }, '<A-s>', function() switch_direction('horizontal') end, { desc = 'Terminal horizontal [S]plit' })
