@@ -26,4 +26,4 @@ require('noice').setup {
 }
 
 vim.keymap.set('n', '<leader>un', '<cmd>Noice history<cr>', { desc = 'Notification history' })
-vim.keymap.set('n', '<leader>ud', '<cmd>Noice dismiss<cr>', { desc = 'Dismiss notifications' })
+-- vim.keymap.set('n', '<leader>ud', '<cmd>Noice dismiss<cr>', { desc = 'Dismiss notifications' })

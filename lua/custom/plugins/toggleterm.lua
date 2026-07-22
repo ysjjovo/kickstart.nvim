@@ -26,7 +26,7 @@ local function switch_direction(dir)
   end
 end
 
-vim.keymap.set('n', '<C-`>', function()
+vim.keymap.set('n', 't', function()
   vim.cmd(vim.v.count1 .. 'ToggleTerm')
 end, { desc = 'Toggle Terminal' })
 vim.keymap.set({ 'n', 't' }, '<A-f>', function() switch_direction('float') end, { desc = 'Terminal [F]loat' })
