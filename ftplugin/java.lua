@@ -81,8 +81,11 @@ for _, jar in ipairs(vim.split(vim.fn.glob(mason .. '/packages/java-test/extensi
 end
 bundles = vim.tbl_filter(function(j) return j ~= '' end, bundles)
 
+-- Lombok agent: 让 jdtls 识别 @Data/@Getter 等注解生成的方法，否则字段全报 unused
+local lombok_jar = mason .. '/packages/jdtls/lombok.jar'
+
 jdtls.start_or_attach {
-  cmd = { jdtls_bin, '-data', workspace },
+  cmd = { jdtls_bin, '-data', workspace, '--jvm-arg=-javaagent:' .. lombok_jar },
   cmd_env = jdtls_java_home and { JAVA_HOME = jdtls_java_home } or nil,
   root_dir = root,
   init_options = { bundles = bundles },
