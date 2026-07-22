@@ -11,6 +11,11 @@ require('overseer').setup {
   task_list = {
     direction = 'bottom',
     default_detail = 1,
+    bindings = {
+      -- 禁用默认的滚动输出绑定，让全局 C-j/k 窗口切换生效
+      ['<C-j>'] = false,
+      ['<C-k>'] = false,
+    },
   },
 }
 
