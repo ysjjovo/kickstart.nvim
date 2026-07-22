@@ -31,12 +31,12 @@ pcall(require('telescope').load_extension, 'ui-select')
 local builtin = require 'telescope.builtin'
 vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = '[S]earch [ ]files' })
+vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = '[S]earch []files' })
 vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
 vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
-vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch Resume ("." for resume)' })
+vim.keymap.set('n', '<leader>sR', builtin.resume, { desc = '[S]earch Resume ("." for resume)' })
 vim.keymap.set('n', '<leader>sr', builtin.oldfiles, { desc = '[S]earch [R]ecent Files' })
 vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
 vim.keymap.set('n', '<leader>se', builtin.buffers, { desc = '[S]earch [E]xisting buffers' })
@@ -54,20 +54,20 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-vim.keymap.set('n', '<leader>/', function()
+vim.keymap.set('n', '<leader>s/', function()
   builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
     winblend = 10,
     previewer = false,
   })
-end, { desc = '[/] Fuzzily search in current buffer' })
+end, { desc = '[S]earch in [C]urrent buffer' })
 
 vim.keymap.set(
   'n',
-  '<leader>s/',
+  '<leader>so',
   function()
     builtin.live_grep {
       grep_open_files = true,
-      prompt_title = 'Live Grep in Open Files',
+      prompt_title = 'Live Grep in [O]pen Files',
     }
   end,
   { desc = '[S]earch [/] in Open Files' }
