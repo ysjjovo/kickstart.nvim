@@ -33,7 +33,13 @@ vim.api.nvim_create_autocmd('TermOpen', {
   end,
 })
 
-vim.keymap.set('n', '<leader>or', '<cmd>OverseerRun<cr>', { desc = 'Overseer: Run task' })
+vim.keymap.set('n', '<leader>or', function()
+  require('overseer').run_template({}, function(task)
+    if task then
+      require('overseer').open { enter = false, direction = 'bottom' }
+    end
+  end)
+end, { desc = 'Overseer: Run task' })
 vim.keymap.set('n', '<leader>ot', '<cmd>OverseerToggle<cr>', { desc = 'Overseer: Toggle task list' })
 vim.keymap.set('n', '<leader>oa', '<cmd>OverseerTaskAction<cr>', { desc = 'Overseer: Task action' })
 vim.keymap.set('n', '<leader>ol', '<cmd>OverseerRestartLast<cr>', { desc = 'Overseer: Restart last task' })
