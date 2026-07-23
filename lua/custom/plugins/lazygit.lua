@@ -6,6 +6,8 @@ vim.pack.add {
 }
 
 vim.keymap.set('n', '<leader>ug', '<Cmd>LazyGit<CR>', { desc = 'Toogle [L]azygit' })
+vim.keymap.set('n', '<leader>ulf', '<Cmd>LazyGitFilter<CR>', { desc = 'LazyGit [F]ilter (project commits)' })
+vim.keymap.set('n', '<leader>ulc', '<Cmd>LazyGitFilterCurrentFile<CR>', { desc = 'LazyGit [C]urrent file commits' })
 
 -- 焦点离开 lazygit 浮窗时自动退出
 vim.api.nvim_create_autocmd('WinLeave', {
