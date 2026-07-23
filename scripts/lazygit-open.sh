@@ -1,9 +1,8 @@
 #!/bin/bash
-# lazygit openCommand: 二进制/媒体文件走系统 open，其余用 nvim-remote 在当前实例打开
-
+# lazygit openCommand: 在父 Neovim 主窗口打开文件，二进制/媒体走系统 open
 file="$1"
 ext="${file##*.}"
-ext="${ext,,}" # lowercase
+ext="${ext,,}"
 
 case "$ext" in
   pdf|csv|xlsx|xls|docx|doc|pptx|ppt|\
@@ -14,9 +13,9 @@ case "$ext" in
     ;;
   *)
     if [ -n "$NVIM" ]; then
-      nvim --server "$NVIM" --remote "$file"
+      nvim --server "$NVIM" --remote-expr "v:lua.require('lazygit_edit').open('$file')"
     else
-      open "$file"
+      nvim "$file"
     fi
     ;;
 esac
