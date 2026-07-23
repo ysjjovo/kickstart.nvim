@@ -66,6 +66,10 @@ do
   vim.o.splitright = true
   vim.o.splitbelow = true
 
+  -- 终端 tab 标题跟随 cwd
+  vim.o.title = true
+  vim.o.titlestring = "%{fnamemodify(getcwd(), ':~')}"
+
   -- Sets how neovim will display certain whitespace characters in the editor.
   --  See `:help 'list'`
   --  and `:help 'listchars'`
@@ -155,7 +159,6 @@ do
     },
   }
 
-  vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
   -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
   -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
