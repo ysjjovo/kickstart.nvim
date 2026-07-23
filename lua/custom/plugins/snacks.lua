@@ -73,8 +73,7 @@ require('snacks').setup {
 -- Keymaps —— 需要手动触发的模块给个入口；其余（dashboard/notifier/scroll/
 -- bigfile/input）是自动生效的，不需要键位。
 vim.keymap.set('n', '<leader>uz', function() Snacks.zen() end, { desc = 'Toggle Zen mode' })
-vim.keymap.set('n', '<leader>.', function() Snacks.scratch() end, { desc = 'Toggle Scratch buffer' })
-vim.keymap.set({ 'n', 'v' }, '<leader>go', function() Snacks.gitbrowse() end, { desc = 'Git browse (open in browser)' })
+-- vim.keymap.set({ 'n', 'v' }, '<leader>go', function() Snacks.gitbrowse() end, { desc = 'Git browse (open in browser)' })
 
 -- 通知历史：打开后是普通 buffer，直接用 yy / viwy / 可视选择 y 复制，q 关闭
 --vim.keymap.set('n', '<leader>un', function() Snacks.notifier.show_history() end, { desc = 'Toogle [N]otifier history' })
