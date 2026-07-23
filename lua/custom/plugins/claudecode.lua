@@ -28,6 +28,7 @@ local claude_win_opts = {
   split = {
     position = 'right',
     width = 0.4,
+    -- relative = 'win',
   },
 }
 
@@ -139,3 +140,40 @@ vim.api.nvim_create_autocmd('TermOpen', {
     -- 窗口切换 <C-hjkl> 已在 init.lua 里全局绑定 normal + terminal 模式，这里不用再重复绑定。
   end,
 })
+
+-- Claude 右侧 split 出现时，保护底部已有的水平 split 不被覆盖。
+-- 原理：botright vsplit 会占满整个编辑器高度，把底部窗口挤到左下角。
+-- 这里在窗口布局变化后，把底部水平 split 用 wincmd J 移回全宽底部。
+-- vim.api.nvim_create_autocmd('WinNew', {
+--   group = vim.api.nvim_create_augroup('ClaudeSplitProtectBottom', { clear = true }),
+--   callback = function()
+--     vim.schedule(function()
+--       local ok, term = pcall(require, 'claudecode.terminal')
+--       if not ok then
+--         return
+--       end
+--       local claude_buf = term.get_active_terminal_bufnr()
+--       if not claude_buf then
+--         return
+--       end
+--       -- 找到所有底部水平 split（非 Claude、非浮窗）
+--       for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+--         if vim.api.nvim_win_is_valid(win) then
+--           local cfg = vim.api.nvim_win_get_config(win)
+--           if cfg.relative == '' then -- 非浮窗
+--             local buf = vim.api.nvim_win_get_buf(win)
+--             if buf ~= claude_buf then
+--               local ft = vim.bo[buf].filetype
+--               -- overseer、toggleterm 等底部窗口的 filetype
+--               if ft == 'OverseerList' or ft == 'toggleterm' or ft == 'terminal' then
+--                 vim.api.nvim_win_call(win, function()
+--                   vim.cmd 'wincmd J'
+--                 end)
+--               end
+--             end
+--           end
+--         end
+--       end
+--     end)
+--   end,
+-- })
