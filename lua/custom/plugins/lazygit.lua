@@ -36,15 +36,16 @@ vim.api.nvim_create_autocmd('TermClose', {
   end,
 })
 
--- nvim-remote 编辑支持：lazygit 按 e 时隐藏浮窗，编辑完恢复
+-- nvim-remote 编辑支持：lazygit 按 e 时隐藏浮窗，聚焦到文件，编辑完恢复
 vim.api.nvim_create_autocmd('BufEnter', {
   group = lazygit_augroup,
   callback = function(ev)
     if not lazygit_win or not vim.api.nvim_win_is_valid(lazygit_win) then return end
     if ev.buf == lazygit_buf then return end
     if vim.bo[ev.buf].buftype ~= '' then return end
-    -- 普通文件进入，说明 nvim-remote 打开了文件，隐藏 lazygit 浮窗
+    -- 普通文件进入，说明 nvim-remote 打开了文件，隐藏 lazygit 浮窗并聚焦文件
     vim.api.nvim_win_hide(lazygit_win)
+    vim.api.nvim_set_current_buf(ev.buf)
     -- 关闭该 buffer 时恢复 lazygit
     vim.api.nvim_create_autocmd('BufDelete', {
       buffer = ev.buf,
