@@ -8,7 +8,13 @@ vim.pack.add {
 require('toggleterm').setup {
   -- open_mapping = [[<C-\>]],
   direction = 'float', -- 默认改为浮动窗口
-  -- persist_mode = false, -- 每次打开都进入 insert 模式，不记住上次的模式
+  size = function(term)
+    if term.direction == 'horizontal' then
+      return vim.o.lines * 0.3
+    elseif term.direction == 'vertical' then
+      return vim.o.columns * 0.4
+    end
+  end,
   float_opts = {
     border = 'rounded', -- 浮动窗口使用圆角边框
   },
@@ -29,9 +35,9 @@ end
 vim.keymap.set('n', 't', function()
   vim.cmd(vim.v.count1 .. 'ToggleTerm')
 end, { desc = 'Toggle Terminal' })
-vim.keymap.set({ 'n', 't' }, '<A-f>', function() switch_direction('float') end, { desc = 'Terminal [F]loat' })
-vim.keymap.set({ 'n', 't' }, '<A-v>', function() switch_direction('vertical') end, { desc = 'Terminal [V]ertical' })
-vim.keymap.set({ 'n', 't' }, '<A-s>', function() switch_direction('horizontal') end, { desc = 'Terminal horizontal [S]plit' })
+vim.keymap.set({ 'n', 't' }, '<leader>utf', function() switch_direction('float') end, { desc = '[T]erminal [F]loat' })
+vim.keymap.set({ 'n', 't' }, '<leader>utv', function() switch_direction('vertical') end, { desc = '[T]erminal [V]ertical' })
+vim.keymap.set({ 'n', 't' }, '<leader>uts', function() switch_direction('horizontal') end, { desc = '[T]erminal horizontal [S]plit' })
 
 -- Normal 模式按 q 关闭 terminal
 -- 窗口切换 <C-hjkl> 已在 init.lua 里全局绑定 normal + terminal 模式，这里不用再重复绑定。
