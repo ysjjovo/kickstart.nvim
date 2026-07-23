@@ -52,7 +52,17 @@ require('oil').setup {
         vim.notify("copy filename: " .. entry.name, vim.log.levels.INFO)
       end
     end,
-    -- 复制当前选中文件的绝对路径
+    -- tcd 到光标所在目录（文件则用其父目录）
+    ["gd"] = function()
+      local oil = require("oil")
+      local entry = oil.get_cursor_entry()
+      local dir = oil.get_current_dir()
+      if entry and entry.type == "directory" then
+        dir = dir .. entry.name
+      end
+      vim.cmd.tcd(dir)
+      vim.notify("cwd: " .. dir, vim.log.levels.INFO)
+    end,
     ["ya"] = function()
       local oil = require("oil")
       local entry = oil.get_cursor_entry()
