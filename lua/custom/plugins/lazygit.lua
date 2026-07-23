@@ -48,8 +48,12 @@ vim.api.nvim_create_autocmd('WinLeave', {
       return
     end
     local job = vim.b[buf].terminal_job_id
-    if job then
+    if not job then return end
+    -- 延迟检查：nvim-remote 编辑会导致焦点移到普通 buffer，此时不应退出
+    vim.schedule(function()
+      local new_buf = vim.api.nvim_get_current_buf()
+      if vim.bo[new_buf].buftype == '' then return end
       pcall(vim.fn.chansend, job, 'q')
-    end
+    end)
   end,
 })
