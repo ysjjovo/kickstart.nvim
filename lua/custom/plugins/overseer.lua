@@ -19,9 +19,15 @@ require('overseer').setup {
   },
 }
 
--- 禁止 task list 日志自动换行，方便复制长行内容
+-- 禁止输出窗口自动换行，方便复制长行内容
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'OverseerList',
+  pattern = { 'OverseerList', 'OverseerOutput' },
+  callback = function()
+    vim.wo.wrap = false
+  end,
+})
+
+vim.api.nvim_create_autocmd('TermOpen', {
   callback = function()
     vim.wo.wrap = false
   end,
