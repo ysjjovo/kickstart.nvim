@@ -104,12 +104,31 @@ require('dap-go').setup {
 -- setup_dap_main_class_configs() 扫描项目 main class 生成 launch 配置。
 
 -- <leader>dr  纯 run（noDebug=true）
+-- 主动请求 jdtls 发现 main class，而非读 dap.configurations.java（lazy provider 未触发时为空）
 vim.keymap.set('n', '<leader>dr', function()
-  local cfg = (dap.configurations.java or {})[1]
-  if not cfg then
-    vim.notify('No Java run config yet — wait for jdtls to attach/discover, then retry', vim.log.levels.WARN)
+  local ok_jdtls, jdtls_dap = pcall(require, 'jdtls.dap')
+  if not ok_jdtls then
+    vim.notify('jdtls not attached — open a Java file and wait for LSP ready', vim.log.levels.WARN)
     return
   end
-  require('dapui').open()
-  require('dap').run(vim.tbl_extend('force', cfg, { noDebug = true }))
+  jdtls_dap.fetch_main_configs(function(configs)
+    if not configs or #configs == 0 then
+      vim.notify('No main class found — ensure jdtls has finished indexing', vim.log.levels.WARN)
+      return
+    end
+    local function run_cfg(cfg)
+      require('dapui').open()
+      dap.run(vim.tbl_extend('force', cfg, { noDebug = true }))
+    end
+    if #configs == 1 then
+      run_cfg(configs[1])
+    else
+      vim.ui.select(configs, {
+        prompt = 'Select main class to run:',
+        format_item = function(c) return c.name or c.mainClass end,
+      }, function(choice)
+        if choice then run_cfg(choice) end
+      end)
+    end
+  end)
 end, { desc = 'Debug: [R]un current file' })
