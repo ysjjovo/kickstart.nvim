@@ -1,7 +1,15 @@
 local gh = require('custom.plugins._util').gh
 
 vim.pack.add { gh 'j-hui/fidget.nvim' }
-require('fidget').setup {}
+require('fidget').setup {
+  notification = {
+    window = {
+      relative = 'editor',
+      winblend = 0,
+      align = 'top',
+    },
+  },
+}
 
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
