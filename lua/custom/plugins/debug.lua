@@ -99,36 +99,44 @@ require('dap-go').setup {
 }
 
 -- Java (jdtls + java-debug-adapter)
--- 不在这里手写 dap.configurations.java。配置完全由 jdtls 自动发现：
--- ftplugin/java.lua 的 on_attach 里 setup_dap{...} 注册适配器，
--- setup_dap_main_class_configs() 扫描项目 main class 生成 launch 配置。
+-- ftplugin/java.lua 的 on_attach 里 setup_dap{...} 注册 DAP 适配器。
+-- <leader>dd 调试时通过 lazy provider 自动发现 main class；
+-- <leader>dr 直接从当前文件解析 FQCN 启动运行。
 
--- <leader>dr  纯 run（noDebug=true）
--- 主动请求 jdtls 发现 main class，而非读 dap.configurations.java（lazy provider 未触发时为空）
+-- <leader>dr  运行当前 Java 文件的 main class（noDebug=true）
 vim.keymap.set('n', '<leader>dr', function()
-  local ok_jdtls, jdtls_dap = pcall(require, 'jdtls.dap')
-  if not ok_jdtls then
-    vim.notify('jdtls not attached — open a Java file and wait for LSP ready', vim.log.levels.WARN)
+  local bufnr = vim.api.nvim_get_current_buf()
+  local filepath = vim.api.nvim_buf_get_name(bufnr)
+  local classname = vim.fn.fnamemodify(filepath, ':t:r')
+
+  -- 从 buffer 中解析 package 声明，拼出 FQCN
+  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 30, false)
+  local fqcn = classname
+  for _, line in ipairs(lines) do
+    local pkg = line:match '^%s*package%s+([%w%.]+)%s*;'
+    if pkg then
+      fqcn = pkg .. '.' .. classname
+      break
+    end
+  end
+
+  local clients = vim.lsp.get_clients { bufnr = bufnr, name = 'jdtls' }
+  if #clients == 0 then
+    vim.notify('jdtls not attached — wait for LSP ready', vim.log.levels.WARN)
     return
   end
-  jdtls_dap.fetch_main_configs(function(configs)
-    if not configs or #configs == 0 then
-      vim.notify('No main class found — ensure jdtls has finished indexing', vim.log.levels.WARN)
-      return
-    end
-    local function run_cfg(cfg)
-      require('dapui').open()
-      dap.run(vim.tbl_extend('force', cfg, { noDebug = true }))
-    end
-    if #configs == 1 then
-      run_cfg(configs[1])
-    else
-      vim.ui.select(configs, {
-        prompt = 'Select main class to run:',
-        format_item = function(c) return c.name or c.mainClass end,
-      }, function(choice)
-        if choice then run_cfg(choice) end
-      end)
-    end
-  end)
+  local root_dir = clients[1].config.root_dir
+  local project_name = vim.fn.fnamemodify(root_dir, ':t')
+
+  require('dapui').open()
+  dap.run {
+    type = 'java',
+    request = 'launch',
+    name = 'Run ' .. fqcn,
+    mainClass = fqcn,
+    projectName = project_name,
+    cwd = root_dir,
+    console = 'integratedTerminal',
+    noDebug = true,
+  }
 end, { desc = 'Debug: [R]un current file' })
