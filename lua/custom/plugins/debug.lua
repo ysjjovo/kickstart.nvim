@@ -99,9 +99,9 @@ require('dap-go').setup {
 }
 
 -- Java (jdtls + java-debug-adapter)
--- 不在这里手写 dap.configurations.java。配置完全由 jdtls 自动发现：
--- ftplugin/java.lua 的 on_attach 里 setup_dap{...} 注册适配器，
--- setup_dap_main_class_configs() 扫描项目 main class 生成 launch 配置。
+-- ftplugin/java.lua 的 on_attach 里 setup_dap{...} 注册 DAP 适配器。
+-- <leader>dd 调试时通过 lazy provider 自动发现 main class；
+-- <leader>dr 直接从当前文件解析 FQCN 启动运行。
 
 -- <leader>dr  运行当前 Java 文件的 main class（noDebug=true）
 vim.keymap.set('n', '<leader>dr', function()
@@ -120,7 +120,6 @@ vim.keymap.set('n', '<leader>dr', function()
     end
   end
 
-  -- 从 jdtls 获取项目名（DAP adapter 需要）
   local clients = vim.lsp.get_clients { bufnr = bufnr, name = 'jdtls' }
   if #clients == 0 then
     vim.notify('jdtls not attached — wait for LSP ready', vim.log.levels.WARN)
@@ -136,6 +135,8 @@ vim.keymap.set('n', '<leader>dr', function()
     name = 'Run ' .. fqcn,
     mainClass = fqcn,
     projectName = project_name,
+    cwd = root_dir,
+    console = 'integratedTerminal',
     noDebug = true,
   }
 end, { desc = 'Debug: [R]un current file' })
