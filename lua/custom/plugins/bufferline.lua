@@ -21,3 +21,5 @@ vim.keymap.set('n', '<leader>bo', '<Cmd>BufferLineCloseOthers<CR>', { desc = '[B
 vim.keymap.set('n', '<leader>bq', vim.diagnostic.setloclist, { desc = '[B]uffer diagnostic [Q]uickfix list' })
 vim.keymap.set({ 'n', 'v' }, '<leader>bf', function() require('conform').format { async = true } end, { desc = '[B]uffer [F]ormat' })
 vim.keymap.set('n', '<leader>bs', function() Snacks.scratch() end, { desc = 'Toggle Scratch buffer' })
+vim.keymap.set('n', 'q', function() MiniBufremove.delete() end, { desc = '[B]uffer [D]elete' })
+vim.keymap.set('n', '<leader>bw', function() MiniBufremove.wipeout() end, { desc = '[B]uffer [W]ipeout' })
