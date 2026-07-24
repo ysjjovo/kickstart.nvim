@@ -8,9 +8,9 @@ require('noice').setup {
   lsp = {
     -- 接管 LSP hover/signature 的渲染，用 treesitter 高亮替代 vim 内置 markdown
     override = {
-      ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-      ['vim.lsp.util.stylize_markdown'] = true,
-      ['cmp.entry.get_documentation'] = true,
+      -- ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+      -- ['vim.lsp.util.stylize_markdown'] = true,
+      -- ['cmp.entry.get_documentation'] = true,
     },
   },
   presets = {
