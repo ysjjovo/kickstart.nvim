@@ -194,22 +194,22 @@ do
   vim.keymap.set('i', '<M-f>', '<C-o>w', { desc = 'Jump forward one word' })
 
   -- Yank last message block to clipboard
-  vim.keymap.set('n', '<leader>ym', function()
-    local lines = vim.split(vim.fn.execute('messages'), '\n')
-    local last = #lines
-    while last >= 1 and lines[last] == '' do
-      last = last - 1
-    end
-    local first = last
-    while first >= 2 and lines[first - 1] ~= '' do
-      first = first - 1
-    end
-    if first > last then return end
-    local cap = math.min(last, first + 4)
-    local block = table.concat(vim.list_slice(lines, first, cap), '\n')
-    vim.fn.setreg('+', block)
-    vim.notify('Copied ' .. (cap - first + 1) .. '/' .. (last - first + 1) .. ' lines', vim.log.levels.INFO)
-  end, { desc = 'Yank last message block' })
+  -- vim.keymap.set('n', '<leader>ym', function()
+  --   local lines = vim.split(vim.fn.execute('messages'), '\n')
+  --   local last = #lines
+  --   while last >= 1 and lines[last] == '' do
+  --     last = last - 1
+  --   end
+  --   local first = last
+  --   while first >= 2 and lines[first - 1] ~= '' do
+  --     first = first - 1
+  --   end
+  --   if first > last then return end
+  --   local cap = math.min(last, first + 4)
+  --   local block = table.concat(vim.list_slice(lines, first, cap), '\n')
+  --   vim.fn.setreg('+', block)
+  --   vim.notify('Copied ' .. (cap - first + 1) .. '/' .. (last - first + 1) .. ' lines', vim.log.levels.INFO)
+  -- end, { desc = 'Yank last message block' })
 
   -- [[ Basic Autocommands ]]
   --  See `:help lua-guide-autocommands`
