@@ -229,13 +229,6 @@ do
     end,
   })
 
-  -- quickfix/loclist 窗口按 q 关闭
-  vim.api.nvim_create_autocmd('FileType', {
-    pattern = 'qf',
-    callback = function(ev)
-      vim.keymap.set('n', 'q', '<Cmd>close<CR>', { buffer = ev.buf })
-    end,
-  })
 end
 
 vim.keymap.set('n', '<Leader>wr', function()
