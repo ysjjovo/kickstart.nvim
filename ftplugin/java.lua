@@ -99,38 +99,14 @@ jdtls.start_or_attach {
     },
   },
   on_attach = function()
-    -- Register the Java DAP adapter (dap.adapters.java). Required to run/debug
-    -- main methods and tests; without it dap.continue() errors "adapter java not found".
-    --
-    -- config_overrides applies to every discovered config (becomes default_config_overrides):
-    --   console = 'internalConsole' — jdtls defaults discovered configs to
-    --   integratedTerminal, whose runInTerminal handshake times out under nvim-dap +
-    --   dapui terminal redirection ("Failed to launch debuggee in terminal: Timeout").
-    --   internalConsole routes program output via DAP output events into the repl instead.
-    -- Env vars are NOT set here: they're inherited from nvim's process environment, which
-    -- the dotenv plugin loads from the project's .env on entering the dir. So the
-    -- auto-discovered run config just works, no per-config env needed.
     pcall(function()
       require('jdtls').setup_dap {
         hotcodereplace = 'auto',
         config_overrides = { console = 'internalConsole' },
       }
     end)
-    -- Eagerly discover main-class run configs, so <leader>dd runs directly (no picker
-    -- when there's a single main) and <leader>dr can reference dap.configurations.java[1].
-    -- This also disables the lazy provider that setup_dap registered (nvim-jdtls does it
-    -- internally), so the config list won't be duplicated.
-    --
-    -- Pass config_overrides HERE directly (not only on setup_dap): setup_dap has an early
-    -- `if dap.adapters.java then return end`, so once the adapter is registered its
-    -- config_overrides is never refreshed. Discovered configs default to integratedTerminal,
-    -- whose runInTerminal handshake times out under dapui; force internalConsole so program
-    -- output flows via DAP output events into the repl instead. fetch_main_configs uses
-    -- opts.config_overrides directly, so passing it here always takes effect.
-    pcall(function()
-      require('jdtls.dap').setup_dap_main_class_configs {
-        config_overrides = { console = 'internalConsole' },
-      }
-    end)
+    -- 不再在 on_attach 时 eager 发现 main class——此时 jdtls 尚未索引完项目，
+    -- 会报 "Could not resolve java executable"。setup_dap 已注册 lazy provider，
+    -- 用户按 <leader>dd 调试时自动发现（此时项目必然已就绪）。
   end,
 }
