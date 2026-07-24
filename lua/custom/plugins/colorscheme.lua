@@ -4,9 +4,9 @@ local themes = {
   catppuccin = function()
     vim.pack.add { 'https://github.com/catppuccin/nvim' }
     require('catppuccin').setup {
-      styles = {
-        comments = {},
-      },
+      -- styles = {
+      --   comments = {},
+      -- },
     }
     vim.cmd.colorscheme 'catppuccin-mocha'
   end,
