@@ -1,4 +1,4 @@
-local theme = 'tokyonight' -- 'catppuccin' | 'tokyonight' | 'onedark'
+local theme = 'catppuccin' -- 'catppuccin' | 'tokyonight' | 'onedark'
 
 local themes = {
   catppuccin = function()
