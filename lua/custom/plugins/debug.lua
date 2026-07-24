@@ -112,23 +112,25 @@ vim.keymap.set('n', '<leader>dr', function()
     return
   end
   jdtls_dap.fetch_main_configs(function(configs)
-    if not configs or #configs == 0 then
-      vim.notify('No main class found — ensure jdtls has finished indexing', vim.log.levels.WARN)
-      return
-    end
-    local function run_cfg(cfg)
-      require('dapui').open()
-      dap.run(vim.tbl_extend('force', cfg, { noDebug = true }))
-    end
-    if #configs == 1 then
-      run_cfg(configs[1])
-    else
-      vim.ui.select(configs, {
-        prompt = 'Select main class to run:',
-        format_item = function(c) return c.name or c.mainClass end,
-      }, function(choice)
-        if choice then run_cfg(choice) end
-      end)
-    end
+    vim.schedule(function()
+      if not configs or #configs == 0 then
+        vim.notify('No main class found — ensure jdtls has finished indexing', vim.log.levels.WARN)
+        return
+      end
+      local function run_cfg(cfg)
+        require('dapui').open()
+        dap.run(vim.tbl_extend('force', cfg, { noDebug = true }))
+      end
+      if #configs == 1 then
+        run_cfg(configs[1])
+      else
+        vim.ui.select(configs, {
+          prompt = 'Select main class to run:',
+          format_item = function(c) return c.name or c.mainClass end,
+        }, function(choice)
+          if choice then run_cfg(choice) end
+        end)
+      end
+    end)
   end)
 end, { desc = 'Debug: [R]un current file' })
