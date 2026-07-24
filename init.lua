@@ -158,7 +158,14 @@ do
       end,
     },
   }
-
+  vim.keymap.set('n', '<leader>bq', vim.diagnostic.setloclist, { desc = '[B]uffer diagnostic [Q]uickfix list' })
+  -- quickfix/loclist 窗口按 q 关闭
+  vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'qf',
+    callback = function(ev)
+      vim.keymap.set('n', 'q', '<Cmd>close<CR>', { buffer = ev.buf })
+    end,
+  })
 
   -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
   -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which

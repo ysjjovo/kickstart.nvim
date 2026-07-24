@@ -45,6 +45,9 @@ require('snacks').setup {
   },
 }
 
+vim.keymap.set('n', '<leader>uz', function() Snacks.zen() end, { desc = 'Toggle Zen mode' })
+vim.keymap.set('n', '<leader>bs', function() Snacks.scratch() end, { desc = 'Toggle Scratch buffer' })
+
 -- Terminal keymaps
 -- tt/tf/tv/ts: 底部/浮动/垂直/水平, 1tt/2tt/3tt 切换不同实例
 -- td: 在当前文件目录打开终端
@@ -72,7 +75,6 @@ require('snacks').setup {
 
 -- Keymaps —— 需要手动触发的模块给个入口；其余（dashboard/notifier/scroll/
 -- bigfile/input）是自动生效的，不需要键位。
-vim.keymap.set('n', '<leader>uz', function() Snacks.zen() end, { desc = 'Toggle Zen mode' })
 -- vim.keymap.set({ 'n', 'v' }, '<leader>go', function() Snacks.gitbrowse() end, { desc = 'Git browse (open in browser)' })
 
 -- 通知历史：打开后是普通 buffer，直接用 yy / viwy / 可视选择 y 复制，q 关闭
