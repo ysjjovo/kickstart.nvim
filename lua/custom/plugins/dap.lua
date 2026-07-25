@@ -5,7 +5,6 @@ vim.pack.add {
   'https://github.com/nvim-neotest/nvim-nio',
   'https://github.com/mason-org/mason.nvim',
   'https://github.com/jay-babu/mason-nvim-dap.nvim',
-  'https://github.com/leoluz/nvim-dap-go',
 }
 
 vim.keymap.set('n', '<F9>', function() require('dap').step_into() end, { desc = 'Debug: Step Into' })
@@ -25,9 +24,6 @@ vim.keymap.set('n', '<leader>dr', function()
     dap_mod.continue()
   end
 end, { desc = 'Debug: [S]tart/Resume' })
--- vim.keymap.set('n', '<leader>dR', function()
---   require('custom.java-dap').launch(true)
--- end, { desc = 'Debug: [R]un current file (no debug)' })
 vim.keymap.set('n', '<leader>dt', function() require('dap').terminate() end, { desc = 'Debug: [T]erminate session' })
 vim.keymap.set('n', '<leader>du', function() require('dapui').toggle() end, { desc = 'Debug: Toggle [U]I' })
 
@@ -39,13 +35,6 @@ require('mason').setup {}
 require('mason-nvim-dap').setup {
   automatic_installation = true,
   handlers = {},
-  ensure_installed = {
-    'delve',
-    'js-debug-adapter',
-    'debugpy',
-    'java-debug-adapter',
-    'java-test',
-  },
 }
 
 ---@diagnostic disable-next-line: missing-fields
@@ -66,7 +55,6 @@ dapui.setup {
 
 require('nvim-dap-virtual-text').setup {}
 
--- Breakpoint icons and colors
 vim.api.nvim_set_hl(0, 'DapBreak', { fg = '#e51400' })
 vim.api.nvim_set_hl(0, 'DapStop', { fg = '#ffcc00' })
 vim.fn.sign_define('DapBreakpoint', { text = '\xef\x86\x88', texthl = 'DapBreak', numhl = 'DapBreak' })
@@ -75,9 +63,8 @@ vim.fn.sign_define('DapBreakpointRejected', { text = '⊘', texthl = 'DapBreak',
 vim.fn.sign_define('DapLogPoint', { text = '◆', texthl = 'DapBreak', numhl = 'DapBreak' })
 vim.fn.sign_define('DapStopped', { text = '▶', texthl = 'DapStop', numhl = 'DapStop' })
 
--- 会话启动时打开 dapui
 dap.listeners.after.event_initialized['dapui_config'] = dapui.open
--- 会话结束时关闭 dapui（noDebug 模式保留面板方便查看输出）
+-- noDebug 模式保留面板方便查看输出
 local function close_dapui_unless_run(session)
   if not (session and session.config and session.config.noDebug) then
     dapui.close()
@@ -86,32 +73,14 @@ end
 dap.listeners.before.event_terminated['dapui_config'] = close_dapui_unless_run
 dap.listeners.before.event_exited['dapui_config'] = close_dapui_unless_run
 
--- JavaScript / Jest
-local js_debug_path = vim.fn.stdpath 'data' .. '/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js'
-dap.adapters['pwa-node'] = {
-  type = 'server',
-  host = 'localhost',
-  port = '${port}',
-  executable = { command = 'node', args = { js_debug_path, '${port}' } },
-}
-dap.configurations.javascript = {
-  {
-    type = 'pwa-node',
-    request = 'launch',
-    name = 'Jest: current file',
-    runtimeExecutable = 'npx',
-    runtimeArgs = { 'jest', '--testPathPattern', '${fileBasenameNoExtension}', '--no-coverage', '--runInBand' },
-    cwd = '${workspaceFolder}',
-    console = 'integratedTerminal',
-    internalConsoleOptions = 'neverOpen',
-  },
-}
-
--- Go
-require('dap-go').setup {
-  delve = { detached = vim.fn.has 'win32' == 0 },
-}
-
--- Java (jdtls + java-debug-adapter)
--- ftplugin/java.lua 的 on_attach 里 setup_dap{...} 注册 DAP 适配器。
--- <leader>ds 调试，<leader>dr 运行（noDebug），逻辑在 lua/custom/java-dap.lua。
+-- 加载语言配置（dap/*.lua），删除文件即移除该语言支持
+local dap_dir = vim.fs.joinpath(vim.fn.stdpath 'config', 'lua', 'custom', 'plugins', 'dap')
+for name, type in vim.fs.dir(dap_dir) do
+  if type == 'file' and name:match '%.lua$' then
+    local mod = name:gsub('%.lua$', '')
+    local ok, err = pcall(require, 'custom.plugins.dap.' .. mod)
+    if not ok then
+      vim.notify('[dap] Failed to load dap/' .. name .. ':\n' .. err, vim.log.levels.WARN)
+    end
+  end
+end
