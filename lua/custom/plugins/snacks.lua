@@ -29,8 +29,6 @@ require('snacks').setup {
   -- 专注模式：zen 居中单窗，dim 暗化非当前作用域
   zen = {},
   dim = {},
-  -- 在浏览器打开当前行对应的 git 远端 URL
-  gitbrowse = {},
   -- 临时草稿 buffer
   scratch = {},
   image = {},
