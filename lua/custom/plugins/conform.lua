@@ -18,6 +18,7 @@ require('conform').setup {
     lsp_format = 'fallback',
   },
   formatters_by_ft = {
+    lua = { 'stylua' },
     json = { 'jq' },
   },
 }
