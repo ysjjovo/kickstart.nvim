@@ -102,7 +102,11 @@ jdtls.start_or_attach {
     pcall(function()
       require('jdtls').setup_dap {
         hotcodereplace = 'auto',
-        config_overrides = { console = 'internalConsole' },
+        config_overrides = {
+          console = 'internalConsole',
+          -- Spring Boot 等大项目 classpath 过长会导致启动超时，写入 argfile 规避
+          shortenCommandLine = 'argfile',
+        },
       }
     end)
     -- 不再在 on_attach 时 eager 发现 main class——此时 jdtls 尚未索引完项目，
