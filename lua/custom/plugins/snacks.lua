@@ -29,6 +29,8 @@ require('snacks').setup {
   -- 专注模式：zen 居中单窗，dim 暗化非当前作用域
   zen = {},
   dim = {},
+  -- 在浏览器打开当前行对应的 git 远端 URL
+  gitbrowse = {},
   -- 临时草稿 buffer
   scratch = {},
   image = {},
@@ -42,15 +44,22 @@ require('snacks').setup {
     },
   },
 }
+
 vim.api.nvim_create_autocmd("LspProgress", {
-  ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
   callback = function(ev)
-    local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-    vim.notify(vim.lsp.status(), "info", {
+    local spinner = { "\226\160\139", "\226\160\153", "\226\160\185", "\226\160\184", "\226\160\188", "\226\160\180", "\226\160\166", "\226\160\167", "\226\160\135", "\226\160\143" }
+    local value = ev.data and ev.data.params and ev.data.params.value
+    if not value then return end
+    local msg = value.message or value.title or ""
+    if msg == "" then return end
+    if value.percentage then
+      msg = string.format("%d%%: %s", value.percentage, msg)
+    end
+    vim.notify(msg, "info", {
       id = "lsp_progress",
       title = "LSP Progress",
       opts = function(notif)
-        notif.icon = ev.data.params.value.kind == "end" and " "
+        notif.icon = value.kind == "end" and " "
           or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
       end,
     })
