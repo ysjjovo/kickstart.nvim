@@ -10,7 +10,7 @@ vim.o.showtabline = 0
 
 require('lualine').setup {
   sections = {
-    lualine_c = { { 'filename', path = 3 } },
+    lualine_c = { { 'filename', path = 3, symbols = { modified = ' ●' } } },
     -- 多 tab 时在右下角显示页码
     lualine_z = { { 'tabs', mode = 0, show_modified_status = false } },
   },
