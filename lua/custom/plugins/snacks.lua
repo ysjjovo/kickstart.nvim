@@ -1,13 +1,12 @@
 -- snacks.nvim: folke 的 QoL 小工具合集。
 -- 模块化设计：只有在 setup 里「写出来」的模块才启用，没写的保持关闭。
--- 这里刻意只开「现有配置没有替代品」的模块，重叠的（picker→telescope、
--- explorer→yazi、lazygit→toggleterm、terminal→toggleterm）一律不列。
 
 vim.pack.add {
   'https://github.com/folke/snacks.nvim',
 }
 
 require('snacks').setup {
+  animate = {},
   -- 大文件打开时自动关掉重特性，防卡
   bigfile = {},
   -- 更快的文件打开路径（延后语法等，配合 bigfile）
@@ -24,14 +23,16 @@ require('snacks').setup {
   -- 临时草稿 buffer
   scratch = {},
   image = {},
-  terminal = {
-    -- 当有多个相同位置的 split 终端时，将它们堆叠（层叠）在一起
-    stack = true,
-    win = {
-      keys = {
-        term_normal = { '<Esc>', '<C-\\><C-n>', mode = 't', desc = 'Exit terminal mode' },
-      },
-    },
+  -- 缩进参考线，替代 indent-blankline
+  indent = {},
+  -- 行号栏美化（折叠标记、git signs 等整合）
+  statuscolumn = {},
+  -- 树形文件浏览器，替代 oil
+  explorer = {},
+  -- 替代 telescope，原生支持图片预览
+  picker = {
+    -- 接管 vim.ui.select（替代 telescope-ui-select）
+    ui_select = true,
   },
 }
 
@@ -82,3 +83,36 @@ require('snacks').setup {
 vim.keymap.set('n', '<leader>uz', function() Snacks.zen() end, { desc = 'Toggle [Z]en mode' })
 vim.keymap.set('n', '<leader>bs', function() Snacks.scratch() end, { desc = 'Toggle [S]cratch buffer' })
 vim.keymap.set('n', '<leader>un', function() Snacks.notifier.show_history() end, { desc = 'Toogle [N]otifier history' })
+
+-- Explorer keymaps (替代 oil)
+vim.keymap.set('n', '-', function() Snacks.explorer() end, { desc = 'Open file explorer' })
+
+-- Picker keymaps (替代 telescope)
+vim.keymap.set('n', '<leader>sh', function() Snacks.picker.help() end, { desc = 'Search [H]elp' })
+vim.keymap.set('n', '<leader>sk', function() Snacks.picker.keymaps() end, { desc = 'Search [K]eymaps' })
+vim.keymap.set('n', '<leader>sf', function() Snacks.picker.files() end, { desc = 'Search [F]iles' })
+vim.keymap.set('n', '<leader>ss', function() Snacks.picker.pickers() end, { desc = 'Search [S]elect picker' })
+vim.keymap.set({ 'n', 'v' }, '<leader>sw', function() Snacks.picker.grep_word() end, { desc = 'Search current [W]ord' })
+vim.keymap.set('n', '<leader>sg', function() Snacks.picker.grep() end, { desc = 'Search by [G]rep' })
+vim.keymap.set('n', '<leader>sd', function() Snacks.picker.diagnostics() end, { desc = 'Search [D]iagnostics' })
+vim.keymap.set('n', '<leader>sR', function() Snacks.picker.resume() end, { desc = 'Search Resume' })
+vim.keymap.set('n', '<leader>sr', function() Snacks.picker.recent() end, { desc = 'Search [R]ecent Files' })
+vim.keymap.set('n', '<leader>sc', function() Snacks.picker.commands() end, { desc = 'Search [C]ommands' })
+vim.keymap.set('n', '<leader><leader>', function() Snacks.picker.buffers() end, { desc = 'Search existing buffers' })
+vim.keymap.set('n', '<leader>/', function() Snacks.picker.lines() end, { desc = '[/] Fuzzily search in current buffer' })
+vim.keymap.set('n', '<leader>s/', function() Snacks.picker.grep_buffers() end, { desc = 'Search [/] in Open Files' })
+vim.keymap.set('n', '<leader>sn', function() Snacks.picker.files { cwd = vim.fn.stdpath 'config' } end, { desc = 'Search [N]eovim files' })
+
+-- LSP picker keymaps
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('snacks-picker-lsp-attach', { clear = true }),
+  callback = function(event)
+    local buf = event.buf
+    vim.keymap.set('n', 'grr', function() Snacks.picker.lsp_references() end, { buffer = buf, desc = 'Goto [R]eferences' })
+    vim.keymap.set('n', 'gri', function() Snacks.picker.lsp_implementations() end, { buffer = buf, desc = 'Goto [I]mplementation' })
+    vim.keymap.set('n', 'grd', function() Snacks.picker.lsp_definitions() end, { buffer = buf, desc = 'Goto [D]efinition' })
+    vim.keymap.set('n', 'gO', function() Snacks.picker.lsp_symbols() end, { buffer = buf, desc = 'Open Document Symbols' })
+    vim.keymap.set('n', 'gW', function() Snacks.picker.lsp_workspace_symbols() end, { buffer = buf, desc = 'Open Workspace Symbols' })
+    vim.keymap.set('n', 'grt', function() Snacks.picker.lsp_type_definitions() end, { buffer = buf, desc = 'Goto [T]ype Definition' })
+  end,
+})
