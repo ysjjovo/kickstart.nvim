@@ -35,9 +35,9 @@ end
 vim.keymap.set('n', 't', function()
   vim.cmd(vim.v.count1 .. 'ToggleTerm')
 end, { desc = 'Toggle Terminal' })
-vim.keymap.set({ 'n', 't' }, '<leader>utf', function() switch_direction('float') end, { desc = '[T]erminal [F]loat' })
-vim.keymap.set({ 'n', 't' }, '<leader>utv', function() switch_direction('vertical') end, { desc = '[T]erminal [V]ertical' })
-vim.keymap.set({ 'n', 't' }, '<leader>uts', function() switch_direction('horizontal') end, { desc = '[T]erminal horizontal [S]plit' })
+vim.keymap.set({ 'n', 't' }, '<leader>utf', function() switch_direction('float') end, { desc = 'Terminal [F]loat' })
+vim.keymap.set({ 'n', 't' }, '<leader>utv', function() switch_direction('vertical') end, { desc = 'Terminal [V]ertical' })
+vim.keymap.set({ 'n', 't' }, '<leader>uts', function() switch_direction('horizontal') end, { desc = 'Terminal horizontal [S]plit' })
 
 -- Normal 模式按 q 关闭 terminal
 -- 窗口切换 <C-hjkl> 已在 init.lua 里全局绑定 normal + terminal 模式，这里不用再重复绑定。
