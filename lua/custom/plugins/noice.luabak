@@ -5,6 +5,8 @@ vim.pack.add { 'https://github.com/MunifTanjim/nui.nvim' }
 vim.pack.add { 'https://github.com/folke/noice.nvim' }
 
 require('noice').setup {
+  -- vim.notify 由 snacks.notifier 处理，noice 不拦截
+  notify = { enabled = false },
   lsp = {
     -- LSP 进度由 snacks notifier 处理
     progress = { enabled = false },
