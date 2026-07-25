@@ -5,9 +5,7 @@
 do
   -- Enable faster startup by caching compiled Lua modules
   vim.loader.enable()
-  require('vim._core.ui2').enable()
-  -- ui2 message buffer
-  vim.keymap.set('n', '<leader>um', '<cmd>messages<cr>', { desc = 'Toggle [M]essage buffer' })
+  -- require('vim._core.ui2').enable()
 
   package.path = package.path .. ';' .. vim.fn.expand('~/.luarocks/share/lua/5.4/?.lua')
   package.cpath = package.cpath .. ';' .. vim.fn.expand('~/.luarocks/lib/lua/5.4/?.so')
@@ -17,6 +15,8 @@ do
   --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
   vim.g.mapleader = ' '
   vim.g.maplocalleader = ' '
+
+  vim.keymap.set('n', '<leader>um', '<cmd>messages<cr>', { desc = 'Toggle [M]essage buffer' })
 
   -- Set to true if you have a Nerd Font installed and selected in the terminal
   vim.g.have_nerd_font = true
@@ -312,6 +312,15 @@ end
 -- ============================================================
 do
   require 'custom.plugins'
+end
+
+-- 禁用内置 LSP 进度渲染，只保留 LspProgress 事件给 snacks notifier
+vim.lsp.handlers['$/progress'] = function(_, params, ctx)
+  local client = vim.lsp.get_client_by_id(ctx.client_id)
+  if not client then return end
+  vim.api.nvim_exec_autocmds('LspProgress', {
+    data = { client_id = ctx.client_id, params = params },
+  })
 end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
