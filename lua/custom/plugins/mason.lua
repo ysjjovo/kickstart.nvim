@@ -20,6 +20,8 @@ end
 local ensure_installed = vim.list_extend(vim.deepcopy(servers), {
   'stylua',
   'jdtls',
+  'java-debug-adapter',
+  'java-test',
   'markdownlint',
   'shellcheck',
   'hadolint',
