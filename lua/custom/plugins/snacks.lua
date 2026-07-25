@@ -59,7 +59,6 @@ vim.api.nvim_create_autocmd("LspProgress", {
   end,
 })
 
-vim.keymap.set('n', '<leader>uz', function() Snacks.zen() end, { desc = 'Toggle Zen mode' })
-vim.keymap.set('n', '<leader>bs', function() Snacks.scratch() end, { desc = 'Toggle Scratch buffer' })
--- 通知历史：打开后是普通 buffer，直接用 yy / viwy / 可视选择 y 复制，q 关闭
+vim.keymap.set('n', '<leader>uz', function() Snacks.zen() end, { desc = 'Toggle [Z]en mode' })
+vim.keymap.set('n', '<leader>bs', function() Snacks.scratch() end, { desc = 'Toggle [S]cratch buffer' })
 vim.keymap.set('n', '<leader>un', function() Snacks.notifier.show_history() end, { desc = 'Toogle [N]otifier history' })

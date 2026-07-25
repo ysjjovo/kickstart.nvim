@@ -7,7 +7,7 @@ do
   vim.loader.enable()
   require('vim._core.ui2').enable()
   -- ui2 suuport message buffer
-  vim.keymap.set('n', '<leader>um', '<cmd>messages<cr>', { desc = '[M]essage buffer' })
+  vim.keymap.set('n', '<leader>um', '<cmd>messages<cr>', { desc = 'Toogle [M]essage buffer' })
 
   package.path = package.path .. ';' .. vim.fn.expand('~/.luarocks/share/lua/5.4/?.lua')
   package.cpath = package.cpath .. ';' .. vim.fn.expand('~/.luarocks/lib/lua/5.4/?.so')
@@ -160,7 +160,7 @@ do
       end,
     },
   }
-  vim.keymap.set('n', '<leader>bq', vim.diagnostic.setloclist, { desc = '[B]uffer diagnostic [Q]uickfix list' })
+  vim.keymap.set('n', '<leader>bq', vim.diagnostic.setloclist, { desc = 'Buffer diagnostic [Q]uickfix list' })
   -- quickfix/loclist 窗口按 q 关闭
   vim.api.nvim_create_autocmd('FileType', {
     pattern = 'qf',
@@ -244,7 +244,7 @@ vim.keymap.set('n', '<Leader>wr', function()
   vim.cmd('wincmd =')
   vim.cmd('redraw!')
   print("Windows resized equally")
-end, { desc = "Reset window proportions" })
+end, { desc = "[R]eset window proportions" })
 
 -- 插拔显示器时自动重置窗口比例
 vim.api.nvim_create_autocmd({ "FocusGained", "VimEnter" }, {

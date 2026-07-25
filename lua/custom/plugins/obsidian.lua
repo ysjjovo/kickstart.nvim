@@ -48,9 +48,10 @@ map('n', '<leader>yp', function()
   local pw = line:match('[Pp]assword:%s+(.*)')
   if pw then vim.fn.setreg('+', pw) end
 end, { desc = 'Yank [P]assword' })
+
 map('n', '<leader>nn', '<cmd>ObsidianNew<cr>', { desc = '[N]ew note' })
 map('n', '<leader>nf', '<cmd>ObsidianQuickSwitch<cr>', { desc = '[F]ind note' })
-map('n', '<leader>ng', '<cmd>ObsidianSearch<cr>', { desc = '[Grep] in notes' })
+map('n', '<leader>ng', '<cmd>ObsidianSearch<cr>', { desc = '[G]rep in notes' })
 map('n', '<leader>nb', '<cmd>ObsidianBacklinks<cr>', { desc = '[B]acklinks' })
 map('n', '<leader>nd', '<cmd>ObsidianToday<cr>', { desc = '[D]aily note' })
 map('n', '<leader>nl', '<cmd>ObsidianFollowLink<cr>', { desc = '[F]ollow link' })

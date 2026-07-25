@@ -52,8 +52,9 @@ require('gitsigns').setup {
     map('n', '<leader>hQ', function() gitsigns.setqflist 'all' end, { desc = 'git hunk [Q]uickfix list (all files in repo)' })
     map('n', '<leader>hq', gitsigns.setqflist, { desc = 'git hunk [q]uickfix list (all changes in this file)' })
     -- Toggles
-    map('n', '<leader>ub', gitsigns.toggle_current_line_blame, { desc = 'Toggle git blame line' })
-    map('n', '<leader>uw', gitsigns.toggle_word_diff, { desc = 'Toggle git word diff' })
+    map('n', '<leader>ub', gitsigns.toggle_current_line_blame, { desc = 'Toggle [G]it blame line' })
+    map('n', '<leader>uw', gitsigns.toggle_word_diff, { desc = 'Toggle [G]it word diff' })
+
 
     -- Text object
     map({ 'o', 'x' }, 'ih', gitsigns.select_hunk)

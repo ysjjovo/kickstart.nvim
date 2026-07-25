@@ -20,9 +20,9 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
-vim.keymap.set('n', '<leader>rr', '<Cmd>Rest run<CR>', { desc = '[R]est [R]un request' })
-vim.keymap.set('n', '<leader>rl', '<Cmd>Rest last<CR>', { desc = '[R]est [L]ast request' })
-vim.keymap.set('n', '<leader>ro', '<Cmd>Rest open<CR>', { desc = '[R]est [O]pen result pane' })
-vim.keymap.set('n', '<leader>re', '<Cmd>Rest env select<CR>', { desc = '[R]est [E]nv select' })
-vim.keymap.set('n', '<leader>rs', '<Cmd>Rest env show<CR>', { desc = '[R]est env [S]how' })
-vim.keymap.set('n', '<leader>rc', '<Cmd>Rest cookies<CR>', { desc = '[R]est [C]ookies' })
+vim.keymap.set('n', '<leader>rr', '<Cmd>Rest run<CR>', { desc = 'Rest [R]un request' })
+vim.keymap.set('n', '<leader>rl', '<Cmd>Rest last<CR>', { desc = 'Rest [L]ast request' })
+vim.keymap.set('n', '<leader>ro', '<Cmd>Rest open<CR>', { desc = 'Rest [O]pen result pane' })
+vim.keymap.set('n', '<leader>re', '<Cmd>Rest env select<CR>', { desc = 'Rest [E]nv select' })
+vim.keymap.set('n', '<leader>rs', '<Cmd>Rest env show<CR>', { desc = 'Rest env [S]how' })
+vim.keymap.set('n', '<leader>rc', '<Cmd>Rest cookies<CR>', { desc = 'Rest [C]ookies' })

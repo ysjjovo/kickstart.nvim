@@ -23,8 +23,8 @@ statusline.setup { use_icons = vim.g.have_nerd_font }
 statusline.section_location = function() return '%2l:%-2v' end
 
 require('mini.bufremove').setup()
-vim.keymap.set('n', 'q', function() MiniBufremove.delete() end, { desc = '[B]uffer [D]elete' })
-vim.keymap.set('n', '<leader>bw', function() MiniBufremove.wipeout() end, { desc = '[B]uffer [W]ipeout' })
+vim.keymap.set('n', 'q', function() MiniBufremove.delete() end, { desc = 'Buffer [D]elete' })
+vim.keymap.set('n', '<leader>bw', function() MiniBufremove.wipeout() end, { desc = 'Buffer [W]ipeout' })
 
 -- require('mini.notify').setup {
 --   lsp_progress = { enable = false },

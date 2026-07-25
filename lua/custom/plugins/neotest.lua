@@ -42,19 +42,19 @@ require('neotest').setup {
 local nt = require 'neotest'
 
 -- <leader>tr  光标处的方法（最常用）
-vim.keymap.set('n', '<leader>tr', function() nt.run.run() end, { desc = '[T]est [R]un nearest' })
+vim.keymap.set('n', '<leader>tr', function() nt.run.run() end, { desc = 'Test [R]un nearest' })
 
 -- <leader>tf  当前文件 / 光标在类名上时跑整个类
-vim.keymap.set('n', '<leader>tf', function() nt.run.run(vim.fn.expand '%') end, { desc = '[T]est run [F]ile' })
+vim.keymap.set('n', '<leader>tf', function() nt.run.run(vim.fn.expand '%') end, { desc = 'Test run [F]ile' })
 
 -- <leader>td  以 dap 模式调试光标处的方法（需要 venv 装了 debugpy）
-vim.keymap.set('n', '<leader>td', function() nt.run.run { strategy = 'dap' } end, { desc = '[T]est [D]ebug nearest' })
+vim.keymap.set('n', '<leader>td', function() nt.run.run { strategy = 'dap' } end, { desc = 'Test [D]ebug nearest' })
 
 -- <leader>ts  切换测试结果面板
-vim.keymap.set('n', '<leader>ts', function() nt.summary.toggle() end, { desc = '[T]est [S]ummary toggle' })
+vim.keymap.set('n', '<leader>ts', function() nt.summary.toggle() end, { desc = 'Test [S]ummary toggle' })
 
 -- <leader>to  打开最近一次测试输出（光标须在测试函数上）
-vim.keymap.set('n', '<leader>to', function() nt.output.open { enter = true } end, { desc = '[T]est [O]utput open' })
+vim.keymap.set('n', '<leader>to', function() nt.output.open { enter = true } end, { desc = 'Test [O]utput open' })
 
 -- <leader>tp  底部面板显示 pytest 完整输出
-vim.keymap.set('n', '<leader>tp', function() nt.output_panel.toggle() end, { desc = '[T]est [P]anel toggle' })
+vim.keymap.set('n', '<leader>tp', function() nt.output_panel.toggle() end, { desc = 'Test [P]anel toggle' })
