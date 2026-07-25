@@ -247,18 +247,18 @@ vim.keymap.set('n', '<Leader>wr', function()
 end, { desc = "[R]eset window proportions" })
 
 -- 插拔显示器时自动重置窗口比例
-vim.api.nvim_create_autocmd({ "FocusGained", "VimEnter" }, {
-  callback = function()
-    local cols, rows = vim.o.columns, vim.o.lines
-    if vim.g.last_cols and (cols ~= vim.g.last_cols or rows ~= vim.g.last_rows) then
-      vim.cmd('wincmd =')
-      vim.cmd('redraw!')
-      vim.notify("Display changed, windows reset", vim.log.levels.INFO)
-    end
-    vim.g.last_cols = cols
-    vim.g.last_rows = rows
-  end,
-})
+-- vim.api.nvim_create_autocmd({ "FocusGained", "VimEnter" }, {
+--   callback = function()
+--     local cols, rows = vim.o.columns, vim.o.lines
+--     if vim.g.last_cols and (cols ~= vim.g.last_cols or rows ~= vim.g.last_rows) then
+--       vim.cmd('wincmd =')
+--       vim.cmd('redraw!')
+--       vim.notify("Display changed, windows reset", vim.log.levels.INFO)
+--     end
+--     vim.g.last_cols = cols
+--     vim.g.last_rows = rows
+--   end,
+-- })
 
 -- ============================================================
 -- SECTION 3: PLUGIN MANAGER INTRO
