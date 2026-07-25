@@ -15,7 +15,7 @@ require('snacks').setup {
   -- 平滑滚动
   scroll = {},
   -- 通知 UI 美化（接管 vim.notify）
-  --notifier = {},
+  notifier = {},
   -- 更好看的 vim.ui.input 浮窗输入框
   input = {},
   -- 启动欢迎页（只在无文件参数打开 nvim 时显示）
@@ -44,38 +44,22 @@ require('snacks').setup {
     },
   },
 }
+vim.api.nvim_create_autocmd("LspProgress", {
+  ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
+  callback = function(ev)
+    local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+    vim.notify(vim.lsp.status(), "info", {
+      id = "lsp_progress",
+      title = "LSP Progress",
+      opts = function(notif)
+        notif.icon = ev.data.params.value.kind == "end" and " "
+          or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+      end,
+    })
+  end,
+})
 
 vim.keymap.set('n', '<leader>uz', function() Snacks.zen() end, { desc = 'Toggle Zen mode' })
 vim.keymap.set('n', '<leader>bs', function() Snacks.scratch() end, { desc = 'Toggle Scratch buffer' })
-
--- Terminal keymaps
--- tt/tf/tv/ts: 底部/浮动/垂直/水平, 1tt/2tt/3tt 切换不同实例
--- td: 在当前文件目录打开终端
--- count 用不同偏移区分位置，使 snacks 内部 tid 唯一
--- local function term(pos, offset)
---   return function()
---     Snacks.terminal.toggle(nil, {
---       win = { position = pos },
---       -- count = vim.v.count1,
---     })
---   end
--- end
---
--- vim.keymap.set({ 'n', 't' }, 'tt', term('bottom', 0), { desc = 'Terminal bottom' })
--- vim.keymap.set({ 'n', 't' }, 'tf', term('float', 100), { desc = 'Terminal float' })
--- vim.keymap.set({ 'n', 't' }, 'tv', term('right', 200), { desc = 'Terminal vertical' })
--- vim.keymap.set({ 'n', 't' }, 'ts', term('bottom', 300), { desc = 'Terminal split' })
--- vim.keymap.set({ 'n', 't' }, 'td', function()
---   Snacks.terminal.toggle(nil, {
---     win = { position = 'bottom' },
---     cwd = vim.fn.expand('%:p:h'),
---     count = 400,
---   })
--- end, { desc = 'Terminal in file dir' })
-
--- Keymaps —— 需要手动触发的模块给个入口；其余（dashboard/notifier/scroll/
--- bigfile/input）是自动生效的，不需要键位。
--- vim.keymap.set({ 'n', 'v' }, '<leader>go', function() Snacks.gitbrowse() end, { desc = 'Git browse (open in browser)' })
-
 -- 通知历史：打开后是普通 buffer，直接用 yy / viwy / 可视选择 y 复制，q 关闭
---vim.keymap.set('n', '<leader>un', function() Snacks.notifier.show_history() end, { desc = 'Toogle [N]otifier history' })
+vim.keymap.set('n', '<leader>un', function() Snacks.notifier.show_history() end, { desc = 'Toogle [N]otifier history' })
