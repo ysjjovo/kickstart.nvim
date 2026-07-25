@@ -8,6 +8,8 @@ vim.pack.add {
 require('overseer').setup {
   strategy = 'toggleterm',
   templates = { 'builtin' },
+  -- 屏蔽 builtin 模板检测不到对应项目文件时的无害警告
+  log_level = vim.log.levels.ERROR,
   task_list = {
     direction = 'bottom',
     default_detail = 1,

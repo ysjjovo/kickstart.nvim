@@ -33,8 +33,8 @@ require('snacks').setup {
   lazygit = {},
   -- 关闭 buffer 时保持窗口布局，替代 mini.bufremove
   bufdelete = {},
-  -- 启动/插件性能分析
-  profiler = {},
+  -- 按需性能分析，不自动启动（:lua Snacks.profiler.toggle()）
+  profiler = { enabled = false },
   -- LSP rename 时自动更新引用文件路径
   rename = {},
   -- 光标下单词高亮 + 跳转，替代手写 document_highlight
