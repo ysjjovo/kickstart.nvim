@@ -18,19 +18,9 @@ require('snacks').setup {
   notifier = {},
   -- 更好看的 vim.ui.input 浮窗输入框
   input = {},
-  -- 启动欢迎页（只在无文件参数打开 nvim 时显示）
-  -- 去掉默认的 startup 段：它依赖 lazy.nvim 的 lazy.stats，而本配置用 vim.pack，会报错。
---  dashboard = {
---    sections = {
---      { section = 'header' },
---      { section = 'keys', gap = 1, padding = 1 },
---    },
---  },
   -- 专注模式：zen 居中单窗，dim 暗化非当前作用域
   zen = {},
   dim = {},
-  -- 在浏览器打开当前行对应的 git 远端 URL
-  gitbrowse = {},
   -- 临时草稿 buffer
   scratch = {},
   image = {},
@@ -45,21 +35,44 @@ require('snacks').setup {
   },
 }
 
+---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
+local progress = vim.defaulttable()
 vim.api.nvim_create_autocmd("LspProgress", {
+  ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
   callback = function(ev)
-    local spinner = { "\226\160\139", "\226\160\153", "\226\160\185", "\226\160\184", "\226\160\188", "\226\160\180", "\226\160\166", "\226\160\167", "\226\160\135", "\226\160\143" }
-    local value = ev.data and ev.data.params and ev.data.params.value
-    if not value then return end
-    local msg = value.message or value.title or ""
-    if msg == "" then return end
-    if value.percentage then
-      msg = string.format("%d%%: %s", value.percentage, msg)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    local value = ev.data.params.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
+    if not client or type(value) ~= "table" then
+      return
     end
-    vim.notify(msg, "info", {
+    local p = progress[client.id]
+
+    for i = 1, #p + 1 do
+      if i == #p + 1 or p[i].token == ev.data.params.token then
+        p[i] = {
+          token = ev.data.params.token,
+          msg = ("[%3d%%] %s%s"):format(
+            value.kind == "end" and 100 or value.percentage or 100,
+            value.title or "",
+            value.message and (" **%s**"):format(value.message) or ""
+          ),
+          done = value.kind == "end",
+        }
+        break
+      end
+    end
+
+    local msg = {} ---@type string[]
+    progress[client.id] = vim.tbl_filter(function(v)
+      return table.insert(msg, v.msg) or not v.done
+    end, p)
+
+    local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+    vim.notify(table.concat(msg, "\n"), "info", {
       id = "lsp_progress",
-      title = "LSP Progress",
+      title = client.name,
       opts = function(notif)
-        notif.icon = value.kind == "end" and " "
+        notif.icon = #progress[client.id] == 0 and " "
           or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
       end,
     })
