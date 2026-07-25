@@ -315,13 +315,13 @@ do
 end
 
 -- 禁用内置 LSP 进度渲染，只保留 LspProgress 事件给 snacks notifier
-vim.lsp.handlers['$/progress'] = function(_, params, ctx)
-  local client = vim.lsp.get_client_by_id(ctx.client_id)
-  if not client then return end
-  vim.api.nvim_exec_autocmds('LspProgress', {
-    data = { client_id = ctx.client_id, params = params },
-  })
-end
+-- vim.lsp.handlers['$/progress'] = function(_, params, ctx)
+--   local client = vim.lsp.get_client_by_id(ctx.client_id)
+--   if not client then return end
+--   vim.api.nvim_exec_autocmds('LspProgress', {
+--     data = { client_id = ctx.client_id, params = params },
+--   })
+-- end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
