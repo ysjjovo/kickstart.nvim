@@ -91,13 +91,13 @@ vim.api.nvim_create_autocmd('WinLeave', {
     end)
   end,
 })
---vim.keymap.set('v', '<leader>as', "<cmd>ClaudeCodeSend<cr>", { desc = '[A]I [S]end selection' })
-vim.keymap.set('v', '<leader>as', function()
-  vim.cmd 'ClaudeCodeSend'
-  vim.schedule(function()
-    vim.cmd 'ClaudeCodeFocus'
-  end)
-end, { desc = '[A]I [S]end selection' })
+-- Send 成功后自动 focus Claude 终端（通过插件的 autocmd 触发，避免连接断开时误入 terminal mode）
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'ClaudeCodeSendComplete',
+  group = vim.api.nvim_create_augroup('ClaudeCodeSendFocus', { clear = true }),
+  callback = function() vim.cmd 'ClaudeCodeFocus' end,
+})
+vim.keymap.set('v', '<leader>as', '<Cmd>ClaudeCodeSend<CR>', { desc = '[A]I [S]end selection' })
 vim.keymap.set('n', '<leader>ay', '<Cmd>ClaudeCodeDiffAccept<CR>', { desc = '[A]I accept diff ([y]es)' })
 vim.keymap.set('n', '<leader>an', '<Cmd>ClaudeCodeDiffDeny<CR>', { desc = '[A]I deny diff ([n]o)' })
 
