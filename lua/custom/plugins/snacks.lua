@@ -29,6 +29,16 @@ require('snacks').setup {
   statuscolumn = {},
   -- 树形文件浏览器，替代 oil
   explorer = {},
+  -- lazygit 集成，替代 lazygit.nvim
+  lazygit = {},
+  -- 关闭 buffer 时保持窗口布局，替代 mini.bufremove
+  bufdelete = {},
+  -- 启动/插件性能分析
+  profiler = {},
+  -- LSP rename 时自动更新引用文件路径
+  rename = {},
+  -- 光标下单词高亮 + 跳转，替代手写 document_highlight
+  words = {},
   -- 替代 telescope，原生支持图片预览
   picker = {
     -- 接管 vim.ui.select（替代 telescope-ui-select）
@@ -86,6 +96,19 @@ vim.keymap.set('n', '<leader>un', function() Snacks.notifier.show_history() end,
 
 -- Explorer keymaps (替代 oil)
 vim.keymap.set('n', '-', function() Snacks.explorer() end, { desc = 'Open file explorer' })
+
+-- Lazygit keymaps
+vim.keymap.set('n', '<leader>ug', function() Snacks.lazygit() end, { desc = 'Toggle Lazygit' })
+vim.keymap.set('n', '<leader>ulf', function() Snacks.lazygit.log() end, { desc = 'Lazygit [F]ilter (project commits)' })
+vim.keymap.set('n', '<leader>ulc', function() Snacks.lazygit.log { current_file = true } end, { desc = 'Lazygit [C]urrent file commits' })
+
+-- Buffer delete keymaps (替代 mini.bufremove)
+vim.keymap.set('n', 'q', function() Snacks.bufdelete() end, { desc = 'Buffer [D]elete' })
+vim.keymap.set('n', '<leader>bw', function() Snacks.bufdelete.all() end, { desc = 'Buffer [W]ipeout all' })
+
+-- Words: ]w / [w 跳转到下一个/上一个高亮单词
+vim.keymap.set({ 'n', 't' }, ']]', function() Snacks.words.jump(1) end, { desc = 'Next word reference' })
+vim.keymap.set({ 'n', 't' }, '[[', function() Snacks.words.jump(-1) end, { desc = 'Prev word reference' })
 
 -- Picker keymaps (替代 telescope)
 vim.keymap.set('n', '<leader>sh', function() Snacks.picker.help() end, { desc = 'Search [H]elp' })

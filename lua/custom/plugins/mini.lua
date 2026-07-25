@@ -21,12 +21,3 @@ local statusline = require 'mini.statusline'
 statusline.setup { use_icons = vim.g.have_nerd_font }
 ---@diagnostic disable-next-line: duplicate-set-field
 statusline.section_location = function() return '%2l:%-2v' end
-
-require('mini.bufremove').setup()
-vim.keymap.set('n', 'q', function() MiniBufremove.delete() end, { desc = 'Buffer [D]elete' })
-vim.keymap.set('n', '<leader>bw', function() MiniBufremove.wipeout() end, { desc = 'Buffer [W]ipeout' })
-
--- require('mini.notify').setup {
---   lsp_progress = { enable = false },
--- }
--- vim.keymap.set('n', '<leader>un', function() MiniNotify.show_history() end, { desc = 'Toggle [N]otify history'})
