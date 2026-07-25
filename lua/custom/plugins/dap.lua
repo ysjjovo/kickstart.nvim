@@ -63,6 +63,11 @@ vim.fn.sign_define('DapBreakpointRejected', { text = '⊘', texthl = 'DapBreak',
 vim.fn.sign_define('DapLogPoint', { text = '◆', texthl = 'DapBreak', numhl = 'DapBreak' })
 vim.fn.sign_define('DapStopped', { text = '▶', texthl = 'DapStop', numhl = 'DapStop' })
 
+-- 跳转前重新加载 buffer，防止行号超出范围导致光标不跟随
+dap.listeners.before.event_stopped['cursor_follow'] = function()
+  vim.cmd 'checktime'
+end
+
 dap.listeners.after.event_initialized['dapui_config'] = dapui.open
 -- noDebug 模式保留面板方便查看输出
 local function close_dapui_unless_run(session)
