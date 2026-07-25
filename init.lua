@@ -42,6 +42,9 @@ do
   -- 隐藏命令行，避免最后一条消息一直显示
   vim.o.cmdheight = 0
 
+  -- 切换 buffer/窗口时自动保存修改过的文件
+  vim.o.autowriteall = true
+
   -- Sync clipboard between OS and Neovim.
   --  Schedule the setting after `UiEnter` because it can increase startup-time.
   --  Remove this option if you want your OS clipboard to remain independent.
