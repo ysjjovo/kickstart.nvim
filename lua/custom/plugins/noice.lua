@@ -6,6 +6,8 @@ vim.pack.add { 'https://github.com/folke/noice.nvim' }
 
 require('noice').setup {
   lsp = {
+    -- LSP 进度由 snacks notifier 处理
+    progress = { enabled = false },
     -- 接管 LSP hover/signature 的渲染，用 treesitter 高亮替代 vim 内置 markdown
     override = {
       -- ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
