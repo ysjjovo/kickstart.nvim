@@ -1,7 +1,7 @@
 -- ftplugin/java.lua
 -- 每次打开 Java buffer 时被 source，为当前项目启动 / 附着一个 jdtls 客户端。
 -- 这是 nvim-jdtls 的标准用法（jdtls 按项目根启动，不走 vim.lsp.enable）。
--- 依赖 mason 安装的 jdtls / java-debug-adapter / java-test（见 init.lua ensure_installed）。
+-- 依赖 mason 安装的 jdtls / java-debug-adapter / java-test。
 
 local ok, jdtls = pcall(require, 'jdtls')
 if not ok then return end -- nvim-jdtls 尚未安装（首次启动 mason 还在拉取），静默跳过
@@ -111,6 +111,6 @@ jdtls.start_or_attach {
     end)
     -- 不再在 on_attach 时 eager 发现 main class——此时 jdtls 尚未索引完项目，
     -- 会报 "Could not resolve java executable"。setup_dap 已注册 lazy provider，
-    -- 用户按 <leader>dd 调试时自动发现（此时项目必然已就绪）。
+    -- 用户按 <leader>dr 调试时自动发现（此时项目必然已就绪）。
   end,
 }
