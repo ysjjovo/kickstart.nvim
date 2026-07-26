@@ -30,6 +30,7 @@ require('snacks').setup {
   -- 缩进参考线，替代 indent-blankline
   indent = {},
   -- 行号栏美化（折叠标记、git signs 等整合）
+  -- scope = {},
   statuscolumn = {},
   -- 树形文件浏览器，替代 oil
   explorer = {},
