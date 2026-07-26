@@ -6,7 +6,11 @@ vim.pack.add {
 }
 
 require('snacks').setup {
-  animate = {},
+  -- 全局动画引擎参数，影响 scroll/indent/dim 等所有动画模块
+  animate = {
+    duration = 20,
+    easing = 'outQuad',
+  },
   -- 大文件打开时自动关掉重特性，防卡
   bigfile = {},
   -- 更快的文件打开路径（延后语法等，配合 bigfile）
