@@ -162,6 +162,10 @@ local function switch_position(pos)
 end
 
 vim.keymap.set('n', 't', toggle_term, { desc = 'Toggle Terminal' })
+vim.keymap.set('n', 'T', function()
+  local buf_dir = vim.fn.expand('%:p:h')
+  Snacks.terminal.toggle(nil, { win = term_win_opts(term_position), cwd = buf_dir })
+end, { desc = 'Toggle Terminal (buffer dir)' })
 vim.keymap.set('n', '<leader>utf', function() switch_position('float') end, { desc = 'Terminal [F]loat' })
 vim.keymap.set('n', '<leader>utv', function() switch_position('right') end, { desc = 'Terminal [V]ertical' })
 vim.keymap.set('n', '<leader>uts', function() switch_position('bottom') end, { desc = 'Terminal horizontal [S]plit' })
