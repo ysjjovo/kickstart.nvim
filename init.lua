@@ -42,8 +42,16 @@ do
   -- 隐藏命令行，避免最后一条消息一直显示
   vim.o.cmdheight = 0
 
-  -- 切换 buffer/窗口时自动保存修改过的文件
+  -- 切换 buffer/窗口或失去焦点时自动保存
   vim.o.autowriteall = true
+  vim.api.nvim_create_autocmd({ 'BufLeave', 'WinLeave', 'FocusLost' }, {
+    callback = function(ev)
+      local buf = ev.buf
+      if vim.bo[buf].modified and vim.bo[buf].buftype == '' and vim.api.nvim_buf_get_name(buf) ~= '' then
+        vim.api.nvim_buf_call(buf, function() vim.cmd('silent! write') end)
+      end
+    end,
+  })
 
   -- Sync clipboard between OS and Neovim.
   --  Schedule the setting after `UiEnter` because it can increase startup-time.
