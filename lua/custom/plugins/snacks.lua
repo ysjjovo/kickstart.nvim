@@ -39,6 +39,20 @@ require('snacks').setup {
   rename = {},
   -- 光标下单词高亮 + 跳转，替代手写 document_highlight
   words = {},
+  -- 终端管理，替代 toggleterm
+  terminal = {
+    win = {
+      position = 'float',
+      border = 'rounded',
+      height = 0.8,
+      width = 0.8,
+      -- split 模式显示编号和进程名
+      wo = { winbar = '%{b:snacks_terminal.id}: %{b:term_title}' },
+      keys = {
+        term_normal = { '<esc>', '<C-\\><C-n>', mode = 't', desc = 'Exit terminal mode' },
+      },
+    },
+  },
   -- 替代 telescope，原生支持图片预览
   picker = {
     -- 接管 vim.ui.select（替代 telescope-ui-select）
@@ -101,6 +115,56 @@ vim.keymap.set('n', '-', function() Snacks.explorer() end, { desc = 'Open file e
 vim.keymap.set('n', '<leader>ug', function() Snacks.lazygit() end, { desc = 'Toggle Lazygit' })
 vim.keymap.set('n', '<leader>ulf', function() Snacks.lazygit.log() end, { desc = 'Lazygit [F]ilter (project commits)' })
 vim.keymap.set('n', '<leader>ulc', function() Snacks.lazygit.log { current_file = true } end, { desc = 'Lazygit [C]urrent file commits' })
+
+-- Terminal keymaps (替代 toggleterm)
+-- 共享终端实例，切换展示形式时关闭旧窗口用新位置重开
+local term_position = 'float'
+
+local function term_win_opts(pos)
+  if pos == 'float' then
+    return { position = 'float', height = 0.8, width = 0.8 }
+  elseif pos == 'right' then
+    return { position = 'right', width = 0.4 }
+  else
+    return { position = 'bottom', height = 0.3 }
+  end
+end
+
+local function toggle_term()
+  Snacks.terminal.toggle(nil, { win = term_win_opts(term_position) })
+end
+
+local function switch_position(pos)
+  if pos == term_position then
+    toggle_term()
+    return
+  end
+  term_position = pos
+  -- 找到已有终端实例并切换位置
+  local terms = Snacks.terminal.list()
+  for _, term in pairs(terms) do
+    if term:win_valid() then
+      term:hide()
+      term.opts.position = pos
+      if pos == 'float' then
+        term.opts.height = 0.8
+        term.opts.width = 0.8
+      elseif pos == 'right' then
+        term.opts.width = 0.4
+        term.opts.height = nil
+      else
+        term.opts.height = 0.3
+        term.opts.width = nil
+      end
+      vim.schedule(function() term:show() end)
+    end
+  end
+end
+
+vim.keymap.set('n', 't', toggle_term, { desc = 'Toggle Terminal' })
+vim.keymap.set('n', '<leader>utf', function() switch_position('float') end, { desc = 'Terminal [F]loat' })
+vim.keymap.set('n', '<leader>utv', function() switch_position('right') end, { desc = 'Terminal [V]ertical' })
+vim.keymap.set('n', '<leader>uts', function() switch_position('bottom') end, { desc = 'Terminal horizontal [S]plit' })
 
 -- Buffer delete keymaps (替代 mini.bufremove)
 vim.keymap.set('n', 'q', function() Snacks.bufdelete() end, { desc = 'Buffer [D]elete' })
