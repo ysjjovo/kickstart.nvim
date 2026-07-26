@@ -57,6 +57,9 @@ do
   -- Enable undo/redo changes even after closing and reopening a file
   vim.o.undofile = true
 
+  -- 禁用 swap 文件——有 undofile + git 做恢复，swap 反而会在 picker 等场景触发 E325
+  vim.o.swapfile = false
+
   -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
   vim.o.ignorecase = true
   vim.o.smartcase = true
