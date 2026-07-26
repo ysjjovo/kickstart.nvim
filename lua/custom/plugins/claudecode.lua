@@ -36,7 +36,7 @@ require('claudecode').setup {
   auto_start = true,
   terminal_cmd = 'claude --dangerously-skip-permissions',
   -- 禁用 agent view：它会导致 IDE 的 at_mentioned 通知被静默丢弃 (coder/claudecode.nvim#249)
-  env = { CLAUDE_CODE_DISABLE_AGENT_VIEW = '1' },
+  -- env = { CLAUDE_CODE_DISABLE_AGENT_VIEW = '1' },
   ---@diagnostic disable-next-line: missing-fields
   terminal = {
     provider = 'snacks', -- float 需要 snacks provider（native 只能分屏）
