@@ -30,7 +30,14 @@ require('snacks').setup {
   -- 树形文件浏览器，替代 oil
   explorer = {},
   -- lazygit 集成，替代 lazygit.nvim
-  lazygit = {},
+  lazygit = {
+    win = {
+      keys = {
+        -- 让 esc 透传给 lazygit，避免 commit message 时误退出终端模式
+        term_normal = { '<esc>', '<esc>', mode = 't' },
+      },
+    },
+  },
   -- 关闭 buffer 时保持窗口布局，替代 mini.bufremove
   bufdelete = {},
   -- 按需性能分析，不自动启动（:lua Snacks.profiler.toggle()）
