@@ -210,7 +210,9 @@ vim.keymap.set('n', '<leader>sR', function() Snacks.picker.resume() end, { desc 
 vim.keymap.set('n', '<leader>sr', function() Snacks.picker.recent() end, { desc = 'Search [R]ecent Files' })
 vim.keymap.set('n', '<leader>sc', function() Snacks.picker.commands() end, { desc = 'Search [C]ommands' })
 vim.keymap.set('n', '<leader><leader>', function() Snacks.picker.buffers() end, { desc = 'Search existing buffers' })
-vim.keymap.set('n', '<leader>/', function() Snacks.picker.lines() end, { desc = '[/] Fuzzily search in current buffer' })
+vim.keymap.set('n', '<leader>/', function()
+  Snacks.picker.grep { dirs = { vim.fn.expand '%:p:h' }, glob = vim.fn.expand '%:t' }
+end, { desc = '[/] Search in current buffer' })
 vim.keymap.set('n', '<leader>s/', function() Snacks.picker.grep_buffers() end, { desc = 'Search [/] in Open Files' })
 vim.keymap.set('n', '<leader>sn', function() Snacks.picker.files { cwd = vim.fn.stdpath 'config' } end, { desc = 'Search [N]eovim files' })
 
