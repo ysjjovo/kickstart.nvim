@@ -64,6 +64,14 @@ require('snacks').setup {
   picker = {
     -- 接管 vim.ui.select（替代 telescope-ui-select）
     ui_select = true,
+    -- 单 Esc 直接关闭，不经过 normal mode
+    win = {
+      input = {
+        keys = {
+          ["<Esc>"] = { "close", mode = { "n", "i" } },
+        },
+      },
+    },
   },
 }
 
