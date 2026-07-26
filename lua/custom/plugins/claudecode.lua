@@ -35,6 +35,8 @@ local claude_win_opts = {
 require('claudecode').setup {
   auto_start = true,
   terminal_cmd = 'claude --dangerously-skip-permissions',
+  -- 禁用 agent view：它会导致 IDE 的 at_mentioned 通知被静默丢弃 (coder/claudecode.nvim#249)
+  env = { CLAUDE_CODE_DISABLE_AGENT_VIEW = '1' },
   ---@diagnostic disable-next-line: missing-fields
   terminal = {
     provider = 'snacks', -- float 需要 snacks provider（native 只能分屏）
@@ -91,7 +93,7 @@ vim.api.nvim_create_autocmd('WinLeave', {
     end)
   end,
 })
--- Send 成功后自动 focus Claude 终端（通过插件的 autocmd 触发，避免连接断开时误入 terminal mode）
+-- Send 成功后自动 focus Claude 终端
 vim.api.nvim_create_autocmd('User', {
   pattern = 'ClaudeCodeSendComplete',
   group = vim.api.nvim_create_augroup('ClaudeCodeSendFocus', { clear = true }),
