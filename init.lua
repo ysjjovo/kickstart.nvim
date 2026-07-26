@@ -219,6 +219,15 @@ do
   --   vim.notify('Copied ' .. (cap - first + 1) .. '/' .. (last - first + 1) .. ' lines', vim.log.levels.INFO)
   -- end, { desc = 'Yank last message block' })
 
+  -- Yank path/filename to clipboard
+  local function yank_notify(val)
+    vim.fn.setreg('+', val)
+    vim.notify(val, vim.log.levels.INFO)
+  end
+  vim.keymap.set('n', '<leader>ya', function() yank_notify(vim.fn.expand '%:p') end, { desc = 'Yank absolute path' })
+  vim.keymap.set('n', '<leader>yr', function() yank_notify(vim.fn.expand '%:.') end, { desc = 'Yank relative path' })
+  vim.keymap.set('n', '<leader>yf', function() yank_notify(vim.fn.expand '%:t') end, { desc = 'Yank filename' })
+
   -- [[ Basic Autocommands ]]
   --  See `:help lua-guide-autocommands`
 
