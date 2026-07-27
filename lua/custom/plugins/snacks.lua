@@ -129,7 +129,16 @@ vim.keymap.set('n', '<leader>bs', function() Snacks.scratch() end, { desc = 'Tog
 vim.keymap.set('n', '<leader>un', function() Snacks.notifier.show_history() end, { desc = 'Toogle [N]otifier history' })
 
 -- Explorer keymaps (替代 oil)
-vim.keymap.set('n', '-', function() Snacks.explorer() end, { desc = 'Open file explorer' })
+vim.keymap.set('n', '-', function()
+  local explorer = Snacks.picker.get({ source = 'explorer' })[1]
+  if explorer then
+    -- 已打开则返回上一级
+    explorer:set_cwd(vim.fs.dirname(explorer:cwd()))
+    explorer:find()
+  else
+    Snacks.explorer()
+  end
+end, { desc = 'Open file explorer / go up' })
 
 -- Lazygit keymaps
 vim.keymap.set('n', '<leader>ug', function() Snacks.lazygit() end, { desc = 'Toggle Lazygit' })
