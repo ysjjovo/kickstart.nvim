@@ -77,6 +77,40 @@ require('snacks').setup {
         },
       },
     },
+    sources = {
+      explorer = {
+        win = {
+          list = {
+            keys = {
+              ["gd"] = {
+                function()
+                  local picker = Snacks.picker.get({ source = 'explorer' })[1]
+                  if not picker then return end
+                  local dir = picker:dir()
+                  vim.fn.chdir(dir)
+                  vim.notify('cwd: ' .. dir)
+                end,
+                desc = 'Set cwd to cursor directory',
+              },
+              ["-"] = {
+                function()
+                  local picker = Snacks.picker.get({ source = 'explorer' })[1]
+                  if not picker then return end
+                  local item = picker:current()
+                  if not item or not item.file then
+                    picker:set_cwd(vim.fs.dirname(picker:cwd()))
+                  else
+                    picker:set_cwd(vim.fs.dirname(tostring(item.file)))
+                  end
+                  picker:find()
+                end,
+                desc = 'Go to parent directory',
+              },
+            },
+          },
+        },
+      },
+    },
   },
 }
 
@@ -132,13 +166,12 @@ vim.keymap.set('n', '<leader>un', function() Snacks.notifier.show_history() end,
 vim.keymap.set('n', '-', function()
   local explorer = Snacks.picker.get({ source = 'explorer' })[1]
   if explorer then
-    -- 已打开则返回上一级
-    explorer:set_cwd(vim.fs.dirname(explorer:cwd()))
-    explorer:find()
+    explorer:focus()
   else
-    Snacks.explorer()
+    Snacks.explorer.reveal()
   end
-end, { desc = 'Open file explorer / go up' })
+end, { desc = 'Open file explorer / focus' })
+vim.keymap.set('n', '_', function() Snacks.explorer() end, { desc = 'Open file explorer (cwd)' })
 
 -- Lazygit keymaps
 vim.keymap.set('n', '<leader>ug', function() Snacks.lazygit() end, { desc = 'Toggle Lazygit' })
