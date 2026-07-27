@@ -97,12 +97,22 @@ require('snacks').setup {
                   local picker = Snacks.picker.get({ source = 'explorer' })[1]
                   if not picker then return end
                   local item = picker:current()
-                  if not item or not item.file then
-                    picker:set_cwd(vim.fs.dirname(picker:cwd()))
+                  local cwd = picker:cwd()
+                  if not item or not item.file or tostring(item.file) == cwd then
+                    -- 光标在 cwd 上，cwd 和光标一起上跳
+                    local parent = vim.fs.dirname(cwd)
+                    picker:set_cwd(parent)
+                    picker:find()
                   else
-                    picker:set_cwd(vim.fs.dirname(tostring(item.file)))
+                    -- 光标不在 cwd 上，只移动光标到父目录
+                    local parent = vim.fs.dirname(tostring(item.file))
+                    for target, idx in picker:iter() do
+                      if target.file and tostring(target.file) == parent then
+                        picker.list:view(idx)
+                        return
+                      end
+                    end
                   end
-                  picker:find()
                 end,
                 desc = 'Go to parent directory',
               },
