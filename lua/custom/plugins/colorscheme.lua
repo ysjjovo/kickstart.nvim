@@ -1,4 +1,4 @@
-local theme = 'catppuccin' -- 'catppuccin' | 'tokyonight' | 'onedark'
+local theme = 'catppuccin' -- 'catppuccin' | 'tokyonight' | 'onedark' | 'onedarkpro'
 
 local themes = {
   catppuccin = function()
@@ -17,8 +17,12 @@ local themes = {
     }
     vim.cmd.colorscheme 'tokyonight-night'
   end,
-  onedark = function()
+  onedarkpro = function()
     vim.pack.add { 'https://github.com/olimorris/onedarkpro.nvim' }
+    vim.cmd.colorscheme 'onedark'
+  end,
+  ['onedark'] = function()
+    vim.pack.add { 'https://github.com/joshdick/onedark.vim' }
     vim.cmd.colorscheme 'onedark'
   end,
 }
