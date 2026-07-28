@@ -42,6 +42,6 @@ vim.keymap.set('n', '<leader>or', function()
     end
   end)
 end, { desc = 'Overseer: Run task' })
-vim.keymap.set('n', '<leader>ol', '<cmd>OverseerToggle<cr>', { desc = 'Overseer: Toggle Task [L]ist' })
+vim.keymap.set('n', '<leader>ou', '<cmd>OverseerToggle<cr>', { desc = 'Overseer: Toggle Task List [U]I' })
 vim.keymap.set('n', '<leader>oa', '<cmd>OverseerTaskAction<cr>', { desc = 'Overseer: Task [A]ction' })
-vim.keymap.set('n', '<leader>or', '<cmd>OverseerRestartLast<cr>', { desc = 'Overseer: [R]estart Last task' })
+vim.keymap.set('n', '<leader>ol', '<cmd>OverseerRestartLast<cr>', { desc = 'Overseer: Restart [L]ast task' })
