@@ -78,7 +78,17 @@ require('snacks').setup {
       },
     },
     sources = {
+      files = {
+        -- 显示 dotfiles（.env、.github 等），但仍然尊重 .gitignore（ignored 保持默认 false，
+        -- 否则等于 --no-ignore，node_modules/dist 全被搜出来）。
+        -- .gitignore 里的 .env 靠 ~/.ignore 的 `!.env` 白名单捞回来。
+        hidden = true,
+      },
       explorer = {
+        -- explorer 不读 .ignore/.fdignore，它用 git status --ignored 判定 ignored，
+        -- 所以白名单要在这里用 include 表达：include 的优先级高于 hidden 和 ignored。
+        hidden = true,
+        include = { '.env', '.env.*' },
         win = {
           list = {
             keys = {
@@ -91,6 +101,14 @@ require('snacks').setup {
                   vim.notify('cwd: ' .. dir)
                 end,
                 desc = 'Set cwd to cursor directory',
+              },
+              ["/"] = {
+                function()
+                  local picker = Snacks.picker.get({ source = 'explorer' })[1]
+                  if not picker then return end
+                  Snacks.picker.files({ cwd = picker:dir() })
+                end,
+                desc = 'Search files in current directory',
               },
               ["-"] = {
                 function()
@@ -182,6 +200,9 @@ vim.keymap.set('n', '-', function()
   end
 end, { desc = 'Open file explorer / focus' })
 vim.keymap.set('n', '_', function() Snacks.explorer() end, { desc = 'Open file explorer (cwd)' })
+
+-- Search keymaps
+
 
 -- Lazygit keymaps
 vim.keymap.set('n', '<leader>ug', function() Snacks.lazygit() end, { desc = 'Toggle Lazygit' })
@@ -281,3 +302,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'grt', function() Snacks.picker.lsp_type_definitions() end, { buffer = buf, desc = 'Goto [T]ype Definition' })
   end,
 })
+
+-- zoxide
+vim.keymap.set('n', '<leader>sz', function() Snacks.picker.zoxide() end, { desc = '[S]earch [Z]oxide directories' })
