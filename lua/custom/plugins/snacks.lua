@@ -85,10 +85,6 @@ require('snacks').setup {
         hidden = true,
       },
       explorer = {
-        -- explorer 不读 .ignore/.fdignore，它用 git status --ignored 判定 ignored，
-        -- 所以白名单要在这里用 include 表达：include 的优先级高于 hidden 和 ignored。
-        hidden = true,
-        include = { '.env', '.env.*' },
         win = {
           list = {
             keys = {
