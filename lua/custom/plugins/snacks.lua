@@ -85,6 +85,12 @@ require('snacks').setup {
         hidden = true,
       },
       explorer = {
+        -- 默认显示 dotfiles，同样保持 ignored = false 尊重 .gitignore
+        hidden = true,
+        -- explorer 的 ignored 标记来自 git status --ignored，不走 fd，
+        -- 所以 ~/.ignore 的 `!.env` 白名单对它无效。include 优先级压过
+        -- hidden/ignored/exclude，在这里补回同一份白名单。
+        include = { '**/.env', '**/.env.*' },
         win = {
           list = {
             keys = {
