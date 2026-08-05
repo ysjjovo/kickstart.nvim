@@ -1,5 +1,12 @@
 -- ftplugin/java.lua
 -- 每次打开 Java buffer 时被 source，为当前项目启动 / 附着一个 jdtls 客户端。
+
+-- Java 标准缩进：4 空格，续行缩进一个 shiftwidth（而非对齐到括号后）
+vim.bo.shiftwidth = 4
+vim.bo.tabstop = 4
+vim.bo.softtabstop = 4
+-- (s = 括号内续行缩进一个 sw；j1 = Java 匿名类正确缩进
+vim.bo.cinoptions = 'j1,(s'
 -- 这是 nvim-jdtls 的标准用法（jdtls 按项目根启动，不走 vim.lsp.enable）。
 -- 依赖 mason 安装的 jdtls / java-debug-adapter / java-test。
 
