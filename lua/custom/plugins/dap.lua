@@ -69,14 +69,6 @@ dap.listeners.before.event_stopped['cursor_follow'] = function()
 end
 
 dap.listeners.after.event_initialized['dapui_config'] = dapui.open
--- noDebug 模式保留面板方便查看输出
-local function close_dapui_unless_run(session)
-  if not (session and session.config and session.config.noDebug) then
-    dapui.close()
-  end
-end
-dap.listeners.before.event_terminated['dapui_config'] = close_dapui_unless_run
-dap.listeners.before.event_exited['dapui_config'] = close_dapui_unless_run
 
 -- 加载语言配置（dap/*.lua），删除文件即移除该语言支持
 local dap_dir = vim.fs.joinpath(vim.fn.stdpath 'config', 'lua', 'custom', 'plugins', 'dap')
