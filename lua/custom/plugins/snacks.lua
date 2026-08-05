@@ -104,15 +104,15 @@ require('snacks').setup {
                 end,
                 desc = 'Set cwd to cursor directory',
               },
-              ["/"] = {
-                function()
-                  local picker = Snacks.picker.get({ source = 'explorer' })[1]
-                  if not picker then return end
-                  Snacks.picker.files({ cwd = picker:dir() })
-                end,
-                desc = 'Search files in current directory',
-              },
-              ["-"] = {
+              -- ["/"] = {
+              --   function()
+              --     local picker = Snacks.picker.get({ source = 'explorer' })[1]
+              --     if not picker then return end
+              --     Snacks.picker.files({ cwd = picker:dir() })
+              --   end,
+              --   desc = 'Search files in current directory',
+              -- },
+              ["_"] = {
                 function()
                   local picker = Snacks.picker.get({ source = 'explorer' })[1]
                   if not picker then return end
@@ -193,7 +193,7 @@ vim.keymap.set('n', '<leader>bs', function() Snacks.scratch() end, { desc = 'Tog
 vim.keymap.set('n', '<leader>un', function() Snacks.notifier.show_history() end, { desc = 'Toogle [N]otifier history' })
 
 -- Explorer keymaps (替代 oil)
-vim.keymap.set('n', '-', function()
+vim.keymap.set('n', '_', function()
   local explorer = Snacks.picker.get({ source = 'explorer' })[1]
   if explorer then
     explorer:focus()
@@ -201,7 +201,7 @@ vim.keymap.set('n', '-', function()
     Snacks.explorer.reveal()
   end
 end, { desc = 'Open file explorer / focus' })
-vim.keymap.set('n', '_', function() Snacks.explorer() end, { desc = 'Open file explorer (cwd)' })
+vim.keymap.set('n', '-', function() Snacks.explorer() end, { desc = 'Open file explorer (cwd)' })
 
 -- Search keymaps
 
