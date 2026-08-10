@@ -51,7 +51,7 @@ require('claudecode').setup {
 }
 
 -- Keymaps: <leader>a prefix for AI / Claude operations
-vim.keymap.set('n', '<leader>ac', '<Cmd>ClaudeCode<CR>', { desc = '[A]I [C]laude toggle' })
+vim.keymap.set('n', '<leader>au', '<Cmd>ClaudeCode<CR>', { desc = '[A]I Toggle [U]I' })
 vim.keymap.set('n', '<leader>af', '<Cmd>ClaudeCodeFocus<CR>', { desc = '[A]I Focus Claude' })
 vim.keymap.set('n', '<leader>ar', '<Cmd>ClaudeCode --resume<CR>', { desc = '[A]I [R]esume session' })
 vim.keymap.set('n', '<leader>ac', '<Cmd>ClaudeCode --continue<CR>', { desc = '[A]I [C]ontinue session' })
