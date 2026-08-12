@@ -1,0 +1,4 @@
+-- colorful-winsep: 高亮当前活动窗口的分隔线
+vim.pack.add { 'https://github.com/nvim-zh/colorful-winsep.nvim' }
+
+require('colorful-winsep').setup()
