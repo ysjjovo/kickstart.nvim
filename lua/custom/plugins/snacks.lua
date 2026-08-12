@@ -223,6 +223,13 @@ vim.keymap.set('n', '<leader>ug', function() Snacks.lazygit() end, { desc = 'Tog
 vim.keymap.set('n', '<leader>ulf', function() Snacks.lazygit.log() end, { desc = 'Lazygit [F]ilter (project commits)' })
 vim.keymap.set('n', '<leader>ulc', function() Snacks.lazygit.log { current_file = true } end, { desc = 'Lazygit [C]urrent file commits' })
 
+-- 终端模式下空格立即透传，避免 leader 等待超时
+vim.api.nvim_create_autocmd('TermOpen', {
+  callback = function(ev)
+    vim.keymap.set('t', '<Space>', '<Space>', { buffer = ev.buf, nowait = true })
+  end,
+})
+
 -- Terminal keymaps (替代 toggleterm)
 -- 共享终端实例，切换展示形式时关闭旧窗口用新位置重开
 local term_position = 'float'
