@@ -276,6 +276,9 @@ vim.keymap.set('n', '<Leader>wr', function()
   print("Windows resized equally")
 end, { desc = "[R]eset window proportions" })
 
+vim.keymap.set('n', '<leader>wn', '<Cmd>tabnew<CR>', { desc = 'New tab' })
+vim.keymap.set('n', '<leader>wc', '<Cmd>tabclose<CR>', { desc = 'Close tab' })
+
 -- 插拔显示器时自动重置窗口比例
 -- vim.api.nvim_create_autocmd({ "FocusGained", "VimEnter" }, {
 --   callback = function()
