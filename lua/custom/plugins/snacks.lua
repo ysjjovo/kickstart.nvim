@@ -277,19 +277,7 @@ end, { desc = '[/] Search in current buffer' })
 vim.keymap.set('n', '<leader>s/', function() Snacks.picker.grep_buffers() end, { desc = 'Search [/] in Open Files' })
 vim.keymap.set('n', '<leader>sn', function() Snacks.picker.files { cwd = vim.fn.stdpath 'config' } end, { desc = 'Search [N]eovim files' })
 
--- LSP picker keymaps
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('snacks-picker-lsp-attach', { clear = true }),
-  callback = function(event)
-    local buf = event.buf
-    vim.keymap.set('n', 'grr', function() Snacks.picker.lsp_references() end, { buffer = buf, desc = 'Goto [R]eferences' })
-    vim.keymap.set('n', 'gri', function() Snacks.picker.lsp_implementations() end, { buffer = buf, desc = 'Goto [I]mplementation' })
-    vim.keymap.set('n', 'grd', function() Snacks.picker.lsp_definitions() end, { buffer = buf, desc = 'Goto [D]efinition' })
-    vim.keymap.set('n', 'gO', function() Snacks.picker.lsp_symbols() end, { buffer = buf, desc = 'Open Document Symbols' })
-    vim.keymap.set('n', 'gW', function() Snacks.picker.lsp_workspace_symbols() end, { buffer = buf, desc = 'Open Workspace Symbols' })
-    vim.keymap.set('n', 'grt', function() Snacks.picker.lsp_type_definitions() end, { buffer = buf, desc = 'Goto [T]ype Definition' })
-  end,
-})
+-- LSP picker keymaps 已合并到 lua/custom/plugins/lsp.lua 的 LspAttach
 
 -- zoxide
 vim.keymap.set('n', '<leader>sz', function() Snacks.picker.zoxide() end, { desc = '[S]earch [Z]oxide directories' })
