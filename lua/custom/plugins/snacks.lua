@@ -51,15 +51,13 @@ require('snacks').setup {
   rename = {},
   -- 光标下单词高亮 + 跳转，替代手写 document_highlight
   words = {},
-  -- 终端管理，替代 toggleterm
+  -- 终端管理,替代 toggleterm
+  -- 注意:全局这里绝不能写 position。它会通过 Snacks.config.get("terminal")
+  -- 渗进 lazygit 等「带 cmd」终端的 opts,把它们本该 float 的默认位置覆盖成 bottom。
+  -- 位置一律在各自的 keymap 里传,保持全局配置只放通用项。
   terminal = {
     win = {
-      position = 'float',
-      border = 'rounded',
-      height = 0.8,
-      width = 0.8,
-      -- split 模式显示编号和进程名
-      wo = { winbar = '%{b:snacks_terminal.id}: %{b:term_title}' },
+      -- winbar 交给 snacks 智能默认:split 自动显示「编号: 进程名」,float 不显示。
       keys = {
         term_normal = { '<esc>', '<C-\\><C-n>', mode = 't', desc = 'Exit terminal mode' },
       },
@@ -231,58 +229,27 @@ vim.api.nvim_create_autocmd('TermOpen', {
 })
 
 -- Terminal keymaps (替代 toggleterm)
--- 共享终端实例，切换展示形式时关闭旧窗口用新位置重开
-local term_position = 'float'
+-- 位置一律在 keymap 里传，不放全局配置（否则会渗进 lazygit 把它的 float 冲掉）。
+-- 不同 count/cwd → 不同 tid → 各自稳定的独立实例，互不干扰。
 
-local function term_win_opts(pos)
-  if pos == 'float' then
-    return { position = 'float', height = 0.8, width = 0.8 }
-  elseif pos == 'right' then
-    return { position = 'right', width = 0.4 }
-  else
-    return { position = 'bottom', height = 0.3 }
-  end
-end
+-- t: cwd 底部终端（VSCode 风格）。count=1（默认）。
+vim.keymap.set('n', 't', function()
+  Snacks.terminal.toggle(nil, { win = { position = 'bottom', height = 0.3 } })
+end, { desc = 'Toggle Terminal' })
 
-local function toggle_term()
-  Snacks.terminal.toggle(nil, { win = term_win_opts(term_position) })
-end
-
-local function switch_position(pos)
-  if pos == term_position then
-    toggle_term()
-    return
-  end
-  term_position = pos
-  -- 找到已有终端实例并切换位置
-  local terms = Snacks.terminal.list()
-  for _, term in pairs(terms) do
-    if term:win_valid() then
-      term:hide()
-      term.opts.position = pos
-      if pos == 'float' then
-        term.opts.height = 0.8
-        term.opts.width = 0.8
-      elseif pos == 'right' then
-        term.opts.width = 0.4
-        term.opts.height = nil
-      else
-        term.opts.height = 0.3
-        term.opts.width = nil
-      end
-      vim.schedule(function() term:show() end)
-    end
-  end
-end
-
-vim.keymap.set('n', 't', toggle_term, { desc = 'Toggle Terminal' })
+-- T: 当前文件所在目录的底部终端。cwd 不同 → 独立实例。
 vim.keymap.set('n', 'T', function()
-  local buf_dir = vim.fn.expand('%:p:h')
-  Snacks.terminal.toggle(nil, { win = term_win_opts(term_position), cwd = buf_dir })
+  Snacks.terminal.toggle(nil, { cwd = vim.fn.expand('%:p:h'), win = { position = 'bottom', height = 0.3 } })
 end, { desc = 'Toggle Terminal (buffer dir)' })
-vim.keymap.set('n', '<leader>utf', function() switch_position('float') end, { desc = 'Terminal [F]loat' })
-vim.keymap.set('n', '<leader>utv', function() switch_position('right') end, { desc = 'Terminal [V]ertical' })
-vim.keymap.set('n', '<leader>uts', function() switch_position('bottom') end, { desc = 'Terminal horizontal [S]plit' })
+
+-- 额外的独立终端：靠不同 count 区分身份（tid 含 count），各自稳定互不干扰。
+-- <leader>utf 浮动、<leader>utv 右侧竖排；均独立于底部的 t/T。
+vim.keymap.set('n', '<leader>utf', function()
+  Snacks.terminal.toggle(nil, { count = 2, win = { position = 'float', height = 0.8, width = 0.8 } })
+end, { desc = 'Terminal [F]loat' })
+vim.keymap.set('n', '<leader>utv', function()
+  Snacks.terminal.toggle(nil, { count = 3, win = { position = 'right', width = 0.4 } })
+end, { desc = 'Terminal [V]ertical' })
 
 -- Buffer delete keymaps (替代 mini.bufremove)
 vim.keymap.set('n', 'q', function() Snacks.bufdelete() end, { desc = 'Buffer [D]elete' })
