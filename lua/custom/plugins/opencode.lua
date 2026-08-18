@@ -19,6 +19,28 @@ local snacks_terminal_opts = {
     position = 'right',
     width = 0.4,
     enter = false,
+    keys = {
+      -- 覆盖全局 snacks 终端的「单 Esc 即退出」映射：
+      -- 单 Esc 透传给 opencode（响应其内部操作，如取消补全/清空输入）；
+      -- 200ms 内连按两次 Esc 才 stopinsert 进入 normal，用于滚动查看会话。
+      -- 用定时器判断双击，而非 <esc><esc> 映射，避免单 Esc 被 timeoutlen 卡住延迟送达。
+      term_normal = {
+        '<esc>',
+        function(self)
+          self.esc_timer = self.esc_timer or (vim.uv or vim.loop).new_timer()
+          if self.esc_timer:is_active() then
+            self.esc_timer:stop()
+            vim.cmd 'stopinsert'
+          else
+            self.esc_timer:start(200, 0, function() end)
+            return '<esc>'
+          end
+        end,
+        mode = 't',
+        expr = true,
+        desc = 'Double escape to normal mode',
+      },
+    },
   },
 }
 
