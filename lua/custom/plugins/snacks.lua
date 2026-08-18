@@ -102,7 +102,7 @@ require('snacks').setup {
         -- explorer 的 ignored 标记来自 git status --ignored，不走 fd，
         -- 所以 ~/.ignore 的 `!.env` 白名单对它无效。include 优先级压过
         -- hidden/ignored/exclude，在这里补回同一份白名单。
-        include = { '**/.env', 'tmp', },
+        include = { '**/.env', 'tmp', '.claude' },
         win = {
           list = {
             keys = {
