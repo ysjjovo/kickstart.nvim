@@ -40,6 +40,12 @@ end
 
 vim.keymap.set('n', '<leader>ud', db_ui_toggle, { desc = 'Toggle [D]atabase UI' })
 
+-- dbui 默认给 H 绑定了 ToggleDetails，和全局的 H(切换上一个 tab) 冲突，这里移除
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'dbui',
+  callback = function(ev) pcall(vim.keymap.del, 'n', 'H', { buffer = ev.buf }) end,
+})
+
 -- SQL 缓冲区内的操作直接用 vim-dadbod-ui 的默认键（单键，无需自定义）：
 --   <leader>S  执行查询（normal=整个文件，visual=仅选中部分）
 --   <leader>W  保存查询到 g:db_ui_save_location
