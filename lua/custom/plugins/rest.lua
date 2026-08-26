@@ -1,6 +1,13 @@
 vim.pack.add { 'https://github.com/rest-nvim/rest.nvim' }
 
 require('rest-nvim').setup {
+  -- 默认用 H/L 切换结果面板（Body/Headers/Statistics），和 nvim 切换 tab 冲突，改用 [ ]
+  ui = {
+    keybinds = {
+      prev = '[',
+      next = ']',
+    },
+  },
   clients = {
     curl = {
       statistics = {

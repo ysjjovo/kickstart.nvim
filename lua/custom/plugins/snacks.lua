@@ -232,21 +232,24 @@ vim.api.nvim_create_autocmd('TermOpen', {
 -- 位置一律在 keymap 里传，不放全局配置（否则会渗进 lazygit 把它的 float 冲掉）。
 -- 不同 count/cwd → 不同 tid → 各自稳定的独立实例，互不干扰。
 
--- t: cwd 底部终端（VSCode 风格）。count=1（默认）。
+-- t: 浮动终端。count=1（默认）。
 vim.keymap.set('n', 't', function()
-  Snacks.terminal.toggle(nil, { win = { position = 'bottom', height = 0.3 } })
+  Snacks.terminal.toggle(nil, { win = { position = 'float', height = 0.8, width = 0.8 } })
 end, { desc = 'Toggle Terminal' })
 
--- T: 当前文件所在目录的底部终端。cwd 不同 → 独立实例。
+-- T: 当前文件所在目录的浮动终端。cwd 不同 → 独立实例。
 vim.keymap.set('n', 'T', function()
-  Snacks.terminal.toggle(nil, { cwd = vim.fn.expand('%:p:h'), win = { position = 'bottom', height = 0.3 } })
+  Snacks.terminal.toggle(nil, { cwd = vim.fn.expand('%:p:h'), win = { position = 'float', height = 0.8, width = 0.8 } })
 end, { desc = 'Toggle Terminal (buffer dir)' })
 
 -- 额外的独立终端：靠不同 count 区分身份（tid 含 count），各自稳定互不干扰。
--- <leader>utf 浮动、<leader>utv 右侧竖排；均独立于底部的 t/T。
+-- <leader>utf 浮动、<leader>uth 底部水平、<leader>utv 右侧竖排；均独立于 t/T。
 vim.keymap.set('n', '<leader>utf', function()
-  Snacks.terminal.toggle(nil, { count = 2, win = { position = 'float', height = 0.8, width = 0.8 } })
+  Snacks.terminal.toggle(nil, { count = 1, win = { position = 'float', height = 0.8, width = 0.8 } })
 end, { desc = 'Terminal [F]loat' })
+vim.keymap.set('n', '<leader>uth', function()
+  Snacks.terminal.toggle(nil, { count = 4, win = { position = 'bottom', height = 0.3 } })
+end, { desc = 'Terminal [H]orizontal' })
 vim.keymap.set('n', '<leader>utv', function()
   Snacks.terminal.toggle(nil, { count = 3, win = { position = 'right', width = 0.4 } })
 end, { desc = 'Terminal [V]ertical' })

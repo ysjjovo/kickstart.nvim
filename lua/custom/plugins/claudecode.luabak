@@ -41,6 +41,7 @@ require('claudecode').setup {
   terminal = {
     provider = 'snacks', -- float 需要 snacks provider（native 只能分屏）
     auto_close = true,
+    auto_insert = true,
     snacks_win_opts = claude_win_opts[claude_layout],
   },
   ---@diagnostic disable-next-line: missing-fields
@@ -51,8 +52,10 @@ require('claudecode').setup {
 }
 
 -- Keymaps: <leader>a prefix for AI / Claude operations
-vim.keymap.set('n', '<leader>au', '<Cmd>ClaudeCode<CR>', { desc = '[A]I Toggle [U]I' })
-vim.keymap.set('n', '<leader>af', '<Cmd>ClaudeCodeFocus<CR>', { desc = '[A]I Focus Claude' })
+-- auto_insert=false 后聚焦不再自动进插入模式；主动聚焦时补一下 startinsert，
+-- 保留「切过去就能打字」的手感（切窗 <C-hjkl> 不走这里，仍停在 normal）。
+vim.keymap.set('n', '<leader>au', '<Cmd>ClaudeCode<CR><Cmd>startinsert<CR>', { desc = '[A]I Toggle [U]I' })
+vim.keymap.set('n', '<leader>af', '<Cmd>ClaudeCodeFocus<CR><Cmd>startinsert<CR>', { desc = '[A]I Focus Claude' })
 vim.keymap.set('n', '<leader>ar', '<Cmd>ClaudeCode --resume<CR>', { desc = '[A]I [R]esume session' })
 vim.keymap.set('n', '<leader>ac', '<Cmd>ClaudeCode --continue<CR>', { desc = '[A]I [C]ontinue session' })
 vim.keymap.set('n', '<leader>am', '<Cmd>ClaudeCodeSelectModel<CR>', { desc = '[A]I select [M]odel' })
@@ -122,8 +125,7 @@ vim.api.nvim_create_autocmd('TermOpen', {
     if not vim.api.nvim_buf_get_name(ev.buf):lower():match 'claude' then
       return
     end
-    -- 单键 ESC 直接退出终端模式，不发给 Claude TUI（它不需要 ESC），消除双击延迟
-    vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { buffer = ev.buf, nowait = true, desc = 'Exit terminal mode' })
+    vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { buffer = ev.buf, desc = 'Exit terminal mode' })
 
     local job = vim.b[ev.buf].terminal_job_id
     local function map(lhs, up, count, desc)
