@@ -140,6 +140,14 @@ vim.o.expandtab = true
     "o:hor50-blinkwait700-blinkon400-blinkoff400",
     "t:ver25-blinkwait700-blinkon400-blinkoff400",
   }
+
+  -- 透明背景：不画 bg，让终端的透明度（如 Ghostty background-opacity）生效
+  vim.api.nvim_create_autocmd('ColorScheme', {
+    callback = function()
+      vim.api.nvim_set_hl(0, 'Normal', { bg = 'NONE' })
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
+    end,
+  })
 end
 
 -- ============================================================
@@ -207,8 +215,8 @@ do
   vim.keymap.set({ 'n', 'v', 't', 'i', 'c' }, '<C-k>', '<Cmd>wincmd k<CR>', { desc = 'Move focus to the upper window' })
 
   -- H/L 快速切换 tab 页，比 gt/gT 更符合直觉（覆盖了 H/L 默认的屏幕跳转，用 gg/G 替代）
-  vim.keymap.set('n', 'H', '<Cmd>tabprevious<CR>', { desc = 'Previous tab' })
-  vim.keymap.set('n', 'L', '<Cmd>tabnext<CR>', { desc = 'Next tab' })
+  vim.keymap.set({ 'n', 't' }, '<M-h>', '<Cmd>tabprevious<CR>', { desc = 'Previous tab' })
+  vim.keymap.set({ 'n', 't' }, '<M-l>', '<Cmd>tabnext<CR>', { desc = 'Next tab' })
 
   -- Disable q to prevent accidental macro recording (use Q instead)
   vim.keymap.set('n', 'q', '<Nop>', { desc = 'Disable q (use Q for recording)' })
