@@ -218,6 +218,10 @@ do
   vim.keymap.set({ 'n', 't' }, '<M-h>', '<Cmd>tabprevious<CR>', { desc = 'Previous tab' })
   vim.keymap.set({ 'n', 't' }, '<M-l>', '<Cmd>tabnext<CR>', { desc = 'Next tab' })
 
+  -- H/L 快速水平滚动（覆盖默认的屏幕顶/底跳转，用 gg/G 替代）
+  vim.keymap.set('n', 'H', 'zH', { desc = 'Scroll half screen left' })
+  vim.keymap.set('n', 'L', 'zL', { desc = 'Scroll half screen right' })
+
   -- Disable q to prevent accidental macro recording (use Q instead)
   vim.keymap.set('n', 'q', '<Nop>', { desc = 'Disable q (use Q for recording)' })
 

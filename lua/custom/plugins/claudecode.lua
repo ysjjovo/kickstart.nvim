@@ -54,7 +54,7 @@ require('claudecode').setup {
 -- Keymaps: <leader>a prefix for AI / Claude operations
 -- auto_insert=false 后聚焦不再自动进插入模式；主动聚焦时补一下 startinsert，
 -- 保留「切过去就能打字」的手感（切窗 <C-hjkl> 不走这里，仍停在 normal）。
-vim.keymap.set('n', '<leader>au', '<Cmd>ClaudeCode<CR><Cmd>startinsert<CR>', { desc = '[A]I Toggle [U]I' })
+vim.keymap.set('n', '<leader>au', '<Cmd>ClaudeCode<CR>', { desc = '[A]I Toggle [U]I' })
 vim.keymap.set('n', '<leader>af', '<Cmd>ClaudeCodeFocus<CR><Cmd>startinsert<CR>', { desc = '[A]I Focus Claude' })
 vim.keymap.set('n', '<leader>ar', '<Cmd>ClaudeCode --resume<CR>', { desc = '[A]I [R]esume session' })
 vim.keymap.set('n', '<leader>ac', '<Cmd>ClaudeCode --continue<CR>', { desc = '[A]I [C]ontinue session' })
