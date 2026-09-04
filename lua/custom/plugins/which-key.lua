@@ -9,6 +9,8 @@ require('which-key').setup {
     { '<leader>s', group = 'Search', mode = { 'n', 'v' } },
     { '<leader>t', group = 'Test' },
     { '<leader>u', group = 'UI' },
+    { '<leader>ug', group = 'Git' },
+    { '<leader>ut', group = 'Terminal' },
     { '<leader>h', group = 'Git Hunk', mode = { 'n', 'v' } },
     { '<leader>d', group = 'Debug' },
     { 'gr', group = 'LSP', mode = { 'n' } },

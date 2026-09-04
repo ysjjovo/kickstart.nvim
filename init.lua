@@ -251,9 +251,9 @@ do
     vim.fn.setreg('+', val)
     vim.notify(val, vim.log.levels.INFO)
   end
-  vim.keymap.set('n', '<leader>ya', function() yank_notify(vim.fn.expand '%:p') end, { desc = 'Yank absolute path' })
-  vim.keymap.set('n', '<leader>yr', function() yank_notify(vim.fn.expand '%:.') end, { desc = 'Yank relative path' })
-  vim.keymap.set('n', '<leader>yf', function() yank_notify(vim.fn.expand '%:t') end, { desc = 'Yank filename' })
+  vim.keymap.set('n', '<leader>ya', function() yank_notify(vim.fn.expand '%:p') end, { desc = 'Yank [A]bsolute path' })
+  vim.keymap.set('n', '<leader>yr', function() yank_notify(vim.fn.expand '%:.') end, { desc = 'Yank [R]elative path' })
+  vim.keymap.set('n', '<leader>yf', function() yank_notify(vim.fn.expand '%:t') end, { desc = 'Yank [F]ilename' })
 
   -- [[ Basic Autocommands ]]
   --  See `:help lua-guide-autocommands`
@@ -288,8 +288,8 @@ vim.keymap.set('n', '<Leader>wr', function()
   print("Windows resized equally")
 end, { desc = "[R]eset window proportions" })
 
-vim.keymap.set('n', '<leader>wn', '<Cmd>tabnew<CR>', { desc = 'New tab' })
-vim.keymap.set('n', '<leader>wc', '<Cmd>tabclose<CR>', { desc = 'Close tab' })
+vim.keymap.set('n', '<leader>wn', '<Cmd>tabnew<CR>', { desc = '[N]ew tab' })
+vim.keymap.set('n', '<leader>wc', '<Cmd>tabclose<CR>', { desc = '[C]lose tab' })
 
 -- 插拔显示器时自动重置窗口比例
 -- vim.api.nvim_create_autocmd({ "FocusGained", "VimEnter" }, {

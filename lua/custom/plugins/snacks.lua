@@ -217,8 +217,8 @@ vim.keymap.set('n', '-', function() Snacks.explorer() end, { desc = 'Open file e
 
 
 -- Lazygit keymaps
-vim.keymap.set('n', '<leader>ugg', function() Snacks.lazygit() end, { desc = 'Toggle Lazygit' })
-vim.keymap.set('n', '<leader>ugc', function() Snacks.lazygit.log_file() end, { desc = 'Lazygit [C]urrent file commits' })
+vim.keymap.set('n', '<leader>ugg', function() Snacks.lazygit() end, { desc = 'Toggle Lazy[G]it' })
+vim.keymap.set('n', '<leader>ugc', function() Snacks.lazygit.log_file() end, { desc = 'LazyGit [C]urrent file commits' })
 
 -- 终端模式下空格立即透传，避免 leader 等待超时
 vim.api.nvim_create_autocmd('TermOpen', {
@@ -269,7 +269,7 @@ vim.keymap.set('n', '<leader>ss', function() Snacks.picker.pickers() end, { desc
 vim.keymap.set({ 'n', 'v' }, '<leader>sw', function() Snacks.picker.grep_word() end, { desc = 'Search current [W]ord' })
 vim.keymap.set('n', '<leader>sg', function() Snacks.picker.grep() end, { desc = 'Search by [G]rep' })
 vim.keymap.set('n', '<leader>sd', function() Snacks.picker.diagnostics() end, { desc = 'Search [D]iagnostics' })
-vim.keymap.set('n', '<leader>sR', function() Snacks.picker.resume() end, { desc = 'Search Resume' })
+vim.keymap.set('n', '<leader>sR', function() Snacks.picker.resume() end, { desc = 'Search [R]esume' })
 vim.keymap.set('n', '<leader>sr', function() Snacks.picker.recent() end, { desc = 'Search [R]ecent Files' })
 vim.keymap.set('n', '<leader>sc', function() Snacks.picker.commands() end, { desc = 'Search [C]ommands' })
 vim.keymap.set('n', '<leader><leader>', function() Snacks.picker.buffers() end, { desc = 'Search existing buffers' })
