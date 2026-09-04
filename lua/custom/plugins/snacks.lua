@@ -217,9 +217,8 @@ vim.keymap.set('n', '-', function() Snacks.explorer() end, { desc = 'Open file e
 
 
 -- Lazygit keymaps
-vim.keymap.set('n', '<leader>ug', function() Snacks.lazygit() end, { desc = 'Toggle Lazygit' })
-vim.keymap.set('n', '<leader>ulf', function() Snacks.lazygit.log() end, { desc = 'Lazygit [F]ilter (project commits)' })
-vim.keymap.set('n', '<leader>ulc', function() Snacks.lazygit.log { current_file = true } end, { desc = 'Lazygit [C]urrent file commits' })
+vim.keymap.set('n', '<leader>ugg', function() Snacks.lazygit() end, { desc = 'Toggle Lazygit' })
+vim.keymap.set('n', '<leader>ugc', function() Snacks.lazygit.log_file() end, { desc = 'Lazygit [C]urrent file commits' })
 
 -- 终端模式下空格立即透传，避免 leader 等待超时
 vim.api.nvim_create_autocmd('TermOpen', {
