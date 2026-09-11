@@ -57,7 +57,9 @@ require('snacks').setup {
   -- 位置一律在各自的 keymap 里传,保持全局配置只放通用项。
   terminal = {
     win = {
-      -- winbar 交给 snacks 智能默认:split 自动显示「编号: 进程名」,float 不显示。
+      border = 'rounded',
+      -- split 终端用微妙的背景色差，和代码 buffer 区分
+      wo = { winhighlight = 'Normal:SnacksTerminal' },
       keys = {
         term_normal = { '<esc>', '<C-\\><C-n>', mode = 't', desc = 'Exit terminal mode' },
       },
@@ -233,12 +235,12 @@ vim.api.nvim_create_autocmd('TermOpen', {
 
 -- t: 浮动终端。count=1（默认）。
 vim.keymap.set('n', 't', function()
-  Snacks.terminal.toggle(nil, { win = { position = 'float', height = 0.8, width = 0.8 } })
+  Snacks.terminal.toggle(nil, { win = { position = 'bottom', height = 0.3 } })
 end, { desc = 'Toggle Terminal' })
 
 -- T: 当前文件所在目录的浮动终端。cwd 不同 → 独立实例。
 vim.keymap.set('n', 'T', function()
-  Snacks.terminal.toggle(nil, { cwd = vim.fn.expand('%:p:h'), win = { position = 'float', height = 0.8, width = 0.8 } })
+  Snacks.terminal.toggle(nil, { cwd = vim.fn.expand('%:p:h'), win = { position = 'bottom', height = 0.3 } })
 end, { desc = 'Toggle Terminal (buffer dir)' })
 
 -- 额外的独立终端：靠不同 count 区分身份（tid 含 count），各自稳定互不干扰。
@@ -246,7 +248,7 @@ end, { desc = 'Toggle Terminal (buffer dir)' })
 vim.keymap.set('n', '<leader>utf', function()
   Snacks.terminal.toggle(nil, { count = 1, win = { position = 'float', height = 0.8, width = 0.8 } })
 end, { desc = 'Terminal [F]loat' })
-vim.keymap.set('n', '<leader>uth', function()
+vim.keymap.set('n', '<leader>utt', function()
   Snacks.terminal.toggle(nil, { count = 4, win = { position = 'bottom', height = 0.3 } })
 end, { desc = 'Terminal [H]orizontal' })
 vim.keymap.set('n', '<leader>utv', function()
