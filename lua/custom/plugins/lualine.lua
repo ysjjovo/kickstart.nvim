@@ -7,6 +7,8 @@ vim.pack.add {
 
 -- 禁用顶部 tabline，避免多 tab 时把 dropbar 挤下去
 vim.o.showtabline = 0
+-- 全局 statusline，多 split 时 tab 信息始终在最底部
+vim.o.laststatus = 3
 
 require('lualine').setup {
   sections = {
@@ -21,13 +23,12 @@ require('lualine').setup {
         end,
       },
     },
-    -- 多 tab 时在右下角显示页码，modified tab 带 ● 标记
+    -- 右下角始终显示 tab 页码，箭头样式
     lualine_z = {
       {
         'tabs',
         mode = 0,
         show_modified_status = true,
-        -- symbols = { modified = ' ●' },
       },
     },
   },
