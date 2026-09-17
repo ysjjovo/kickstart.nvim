@@ -94,18 +94,75 @@ require('snacks').setup {
         -- 显示 dotfiles（.env、.github 等），但仍然尊重 .gitignore（ignored 保持默认 false，
         -- 否则等于 --no-ignore，node_modules/dist 全被搜出来）。
         -- .gitignore 里的 .env 靠 ~/.ignore 的 `!.env` 白名单捞回来。
-        hidden = true,
+        hidden = false,
       },
       explorer = {
         -- 默认显示 dotfiles，同样保持 ignored = false 尊重 .gitignore
-        hidden = true,
+        hidden = false,
         -- explorer 的 ignored 标记来自 git status --ignored，不走 fd，
         -- 所以 ~/.ignore 的 `!.env` 白名单对它无效。include 优先级压过
         -- hidden/ignored/exclude，在这里补回同一份白名单。
-        include = { '**/.env', 'tmp', '.claude' },
+        include = { '**/.env', 'tmp'},
         win = {
           list = {
             keys = {
+              -- 覆盖默认 y：文件已存在时自动加 _1, _2… 后缀，不再报错
+              ["y"] = {
+                function()
+                  local picker = Snacks.picker.get({ source = 'explorer' })[1]
+                  if not picker then return end
+                  local uv = vim.uv or vim.loop
+                  local Tree = require('snacks.explorer.tree')
+
+                  --- 给路径加递增后缀直到不冲突
+                  local function unique_path(path)
+                    if not uv.fs_stat(path) then return path end
+                    local dir = vim.fs.dirname(path)
+                    local base = vim.fn.fnamemodify(path, ':t:r')
+                    local ext = vim.fn.fnamemodify(path, ':e')
+                    -- 目录没有扩展名
+                    if uv.fs_stat(path) and vim.fn.isdirectory(path) == 1 then
+                      base, ext = vim.fn.fnamemodify(path, ':t'), ''
+                    end
+                    local i = 1
+                    while true do
+                      local name = ext ~= '' and ('%s_%d.%s'):format(base, i, ext) or ('%s_%d'):format(base, i)
+                      local candidate = dir .. '/' .. name
+                      if not uv.fs_stat(candidate) then return candidate end
+                      i = i + 1
+                    end
+                  end
+
+                  local selected = picker:selected()
+                  local paths = vim.tbl_map(Snacks.picker.util.path, selected)
+
+                  if #paths > 0 then
+                    -- 多选：复制到当前目录，冲突时自动重命名
+                    local dir = picker:dir()
+                    for _, from in ipairs(paths) do
+                      local to = unique_path(dir .. '/' .. vim.fn.fnamemodify(from, ':t'))
+                      Snacks.picker.util.copy_path(from, to)
+                    end
+                    picker.list:set_selected()
+                    Tree:refresh(dir)
+                    Tree:open(dir)
+                    require('snacks.explorer.actions').update(picker, { target = dir })
+                  else
+                    -- 单文件：弹出输入框，输入名字存在时自动加后缀
+                    local item = picker:current()
+                    if not item then return end
+                    Snacks.input({ prompt = 'Copy to' }, function(value)
+                      if not value or value:find('^%s$') then return end
+                      local dir = vim.fs.dirname(item.file)
+                      local to = unique_path(vim.fs.normalize(dir .. '/' .. value))
+                      Snacks.picker.util.copy_path(item.file, to)
+                      Tree:refresh(vim.fs.dirname(to))
+                      require('snacks.explorer.actions').update(picker, { target = to })
+                    end)
+                  end
+                end,
+                desc = 'Copy file (auto-increment on conflict)',
+              },
               ["gd"] = {
                 function()
                   local picker = Snacks.picker.get({ source = 'explorer' })[1]

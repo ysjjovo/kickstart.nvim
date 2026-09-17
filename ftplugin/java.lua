@@ -82,9 +82,9 @@ local workspace = vim.fn.stdpath 'data' .. '/jdtls-workspace/' .. project_name
 -- 收集 DAP / 测试 bundle：java-debug-adapter 提供调试，java-test 提供 JUnit 运行/发现
 local bundles = {}
 vim.list_extend(bundles, vim.split(vim.fn.glob(mason .. '/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar', true), '\n'))
--- java-test 的全部 server jar，但排除 runner 自身（nvim-jdtls 文档要求）
+-- java-test 只取 plugin bundle 自身，排除 runner / jacoco agent / junit 等运行时依赖
 for _, jar in ipairs(vim.split(vim.fn.glob(mason .. '/packages/java-test/extension/server/*.jar', true), '\n')) do
-  if jar ~= '' and not jar:match 'com.microsoft.java.test.runner%-jar%-with%-dependencies' then table.insert(bundles, jar) end
+  if jar:match 'com.microsoft.java.test.plugin' then table.insert(bundles, jar) end
 end
 bundles = vim.tbl_filter(function(j) return j ~= '' end, bundles)
 
