@@ -148,17 +148,14 @@ require('snacks').setup {
                     Tree:open(dir)
                     require('snacks.explorer.actions').update(picker, { target = dir })
                   else
-                    -- 单文件：弹出输入框，输入名字存在时自动加后缀
+                    -- 单文件：直接复制到同目录，自动加 _1, _2… 后缀
                     local item = picker:current()
-                    if not item then return end
-                    Snacks.input({ prompt = 'Copy to' }, function(value)
-                      if not value or value:find('^%s$') then return end
-                      local dir = vim.fs.dirname(item.file)
-                      local to = unique_path(vim.fs.normalize(dir .. '/' .. value))
-                      Snacks.picker.util.copy_path(item.file, to)
-                      Tree:refresh(vim.fs.dirname(to))
-                      require('snacks.explorer.actions').update(picker, { target = to })
-                    end)
+                    if not item or not item.file then return end
+                    local from = tostring(item.file)
+                    local to = unique_path(from)
+                    Snacks.picker.util.copy_path(from, to)
+                    Tree:refresh(vim.fs.dirname(to))
+                    require('snacks.explorer.actions').update(picker, { target = to })
                   end
                 end,
                 desc = 'Copy file (auto-increment on conflict)',

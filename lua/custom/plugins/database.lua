@@ -7,6 +7,10 @@ vim.pack.add {
   'https://github.com/kristijanhusak/vim-dadbod-completion',
 }
 
+-- 防止 dadbod-completion 自动拾取 $DATABASE_URL（SQLAlchemy 格式不兼容）
+-- 通过 DBUI 手动选库时补全仍然可用
+vim.env.DATABASE_URL = nil
+
 vim.g.db_ui_use_nerd_fonts = 1
 vim.g.db_ui_save_location = vim.fn.stdpath 'data' .. '/db_ui'
 vim.g.db_ui_winwidth = 50
